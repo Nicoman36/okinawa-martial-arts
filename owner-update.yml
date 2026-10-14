@@ -1,0 +1,19 @@
+name: I run this place — update or remove my listing
+description: Owners and instructors
+title: "[Owner] "
+labels: ["data", "owner"]
+body:
+  - type: input
+    id: listing
+    attributes: {label: Listing ID or name}
+    validations: {required: true}
+  - type: dropdown
+    id: action
+    attributes: {label: What would you like?, options: ["Update details", "Remove listing", "Remove only my personal details / address"]}
+    validations: {required: true}
+  - type: textarea
+    id: details
+    attributes: {label: New details}
+  - type: input
+    id: proof
+    attributes: {label: Link that shows you run this place, description: "Official website or social page is enough."}

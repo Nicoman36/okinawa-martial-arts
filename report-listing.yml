@@ -1,0 +1,25 @@
+name: Report incorrect info
+description: A listing is wrong, closed, moved or out of date
+title: "[Edit] "
+labels: ["data", "needs-triage"]
+body:
+  - type: input
+    id: listing
+    attributes: {label: Listing ID, description: "Pre-filled from the listing page.", placeholder: "e.g. pacific-grappler-mihara"}
+    validations: {required: true}
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What's wrong?
+      options: ["Closed / no longer operating", "Moved to a new address", "Wrong phone / website / hours", "Wrong style / art", "Other"]
+    validations: {required: true}
+  - type: textarea
+    id: details
+    attributes: {label: Correct details, description: "New address, phone, website, hours — whatever you know."}
+    validations: {required: true}
+  - type: input
+    id: how
+    attributes: {label: How do you know?, description: "e.g. I trained there last week; their website; I called."}
+  - type: dropdown
+    id: role
+    attributes: {label: Your connection, options: ["I'm a member/visitor", "I run or teach here", "Just noticed"]}

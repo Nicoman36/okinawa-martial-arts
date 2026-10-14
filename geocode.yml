@@ -1,0 +1,17 @@
+name: Geocode addresses (manual)
+on: workflow_dispatch
+permissions: {contents: write, pull-requests: write}
+jobs:
+  geo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python3 scripts/geocode.py
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Add coordinates from GSI address search"
+          title: "Add coordinates (GSI geocoder)"
+          branch: geocode
+          body: "Spot-check ~10 pins on /map/ before merging."

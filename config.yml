@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Email instead (no GitHub account)
+    url: mailto:OWNER-EMAIL@example.com
+    about: Send corrections by email — we'll enter them for you.

@@ -1,0 +1,26 @@
+name: Add a missing place
+description: A dojo, gym or club that isn't listed
+title: "[Add] "
+labels: ["data", "new-listing"]
+body:
+  - type: input
+    id: name
+    attributes: {label: Name (English and/or Japanese)}
+    validations: {required: true}
+  - type: input
+    id: art
+    attributes: {label: Art(s), placeholder: "Goju-ryu karate, BJJ, boxing…"}
+    validations: {required: true}
+  - type: input
+    id: where
+    attributes: {label: Area / address}
+    validations: {required: true}
+  - type: input
+    id: contact
+    attributes: {label: Phone, website or social link}
+  - type: textarea
+    id: more
+    attributes: {label: Hours, English spoken?, visitors welcome?, anything else}
+  - type: input
+    id: how
+    attributes: {label: How do you know about it?}
