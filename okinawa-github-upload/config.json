@@ -3,7 +3,7 @@
   "site_name_ja": "沖縄 武道・格闘技ディレクトリ",
   "tagline": "Find a place to start — or keep — training in Okinawa.",
   "base_url": "https://okinawamartialarts.com",
-  "base_path": "/okinawa-martial-arts",
+  "base_path": "",
   "github_repo": "Nicoman36/okinawa-martial-arts",
   "contact_email": "OWNER-EMAIL@example.com",
   "data_license": "CC BY 4.0 (our compilation of facts; underlying facts belong to no one — see Sources)",
