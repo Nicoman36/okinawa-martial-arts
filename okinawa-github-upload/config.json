@@ -17,6 +17,6 @@
   "_owner_note": "Replace OWNER / email / base_url before publishing. These are the only values that must change.",
   "analytics_snippet": "",
   "_analytics_note": "Optional. Paste a cookie-free analytics <script> tag (e.g. GoatCounter / Plausible / Cloudflare Web Analytics) as one string.",
-  "use_github": true,
+  "use_github": false,
   "_use_github_note": "false = every 'report a problem' link is an email link (no GitHub needed). true = GitHub issue forms."
 }
