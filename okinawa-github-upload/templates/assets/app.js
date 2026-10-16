@@ -33,6 +33,8 @@
     var h='<article class="card"><div class="pill-row"><span class="badge '+x.v+'" title="'+esc(D.verif[x.v][1])+'">'+esc(D.verif[x.v][0])+'</span>';
     if(x.k==='organization') h+='<span class="chip">'+esc(U.org)+'</span>';
     x.d.forEach(function(d){ h+='<span class="chip">'+esc(D.disc[d])+'</span>'; });
+    if(x.e===1) h+='<span class="chip">🗣 '+esc(U.eng)+'</span>'; else if(x.e===2) h+='<span class="chip">🗣 '+esc(U.engl)+'</span>';
+    if(x.r) h+='<span class="chip">★ '+esc(x.r[0])+' ('+esc(x.r[1])+')</span>';
     h+='</div><h3><a href="'+D.base+D.pfx+'/l/'+x.id+'/">'+esc(x.n)+'</a></h3>';
     if(x.j) h+='<div class="ja">'+esc(x.j)+'</div>';
     h+='<div class="meta"><span>📍 '+esc(x.a||x.m_en||U.noloc)+'</span>';
