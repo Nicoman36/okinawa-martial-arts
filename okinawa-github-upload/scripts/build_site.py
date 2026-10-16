@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Static site generator (stdlib only).  python3 scripts/build_site.py  ->  dist/"""
-import csv, html, json, os, shutil, sys, urllib.parse, datetime
+import csv, html, json, os, re, shutil, sys, urllib.parse, datetime
 from collections import Counter, defaultdict
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -21,7 +21,11 @@ def load():
         r["disc"] = [d for d in r["disciplines"].split(";") if d]
         r["srcs"] = [s for s in r["sources"].split(";") if s]
         r["is_org"] = r["kind"] == "organization"
-        r["eng"] = r["english"].lower().startswith(("yes", "reported"))
+        _el = r["english"].lower()
+        r["eng_level"] = 1 if _el.startswith(("yes", "reported")) else (2 if _el.startswith("likely") else 0)
+        r["eng"] = r["eng_level"] > 0
+        _m = re.search(r"(?:Google rating|rated) (\d\.\d) \((\d+)(?: reviews?)?\)", r["notes"])
+        r["rating"] = (_m.group(1), _m.group(2)) if _m else None
         if r["municipality"] in MUNI_SLUGS:
             r["m_ja"], r["m_en"], r["region"] = MUNI_SLUGS[r["municipality"]]
         else:
@@ -127,6 +131,13 @@ def loc_text(r):
     if LANG == "ja": return r["address_ja"] or r["address_en"] or r["m_ja"] or "所在地未掲載"
     return r["address_en"] or r["m_en"]
 
+def eng_chips(r):
+    out = ""
+    if r["eng_level"] == 1: out += f"<span class='chip'>🗣 {T('English','英語OK')}</span>"
+    elif r["eng_level"] == 2: out += f"<span class='chip'>🗣 {T('English (likely)','英語可の可能性')}</span>"
+    if r["rating"]: out += f"<span class='chip' title='{T('Google rating (number of reviews)','Googleの評価（口コミ件数）')}'>★ {r['rating'][0]} ({r['rating'][1]})</span>"
+    return out
+
 def card(r):
     chips = "".join(f'<span class="chip">{esc(dname(d))}</span>' for d in r["disc"] if d in DISC)
     phone = f'<a href="tel:{esc("".join(c for c in r["phone"] if c.isdigit() or c=="+"))}">☎ {esc(r["phone"])}</a>' if r["phone"] and r["phone"][0].isdigit() else ""
@@ -135,7 +146,7 @@ def card(r):
     jl = ' lang="ja"' if LANG == "en" else ""
     sec_html = f'<div class="ja"{jl}>{esc(sec)}</div>' if sec else ""
     org = f"<span class='chip'>{T('Organization','団体')}</span>" if r["is_org"] else ""
-    return f'''<article class="card"><div class="pill-row">{badge(r["verification"])}{org}{chips}</div>
+    return f'''<article class="card"><div class="pill-row">{badge(r["verification"])}{org}{chips}{eng_chips(r)}</div>
 <h3><a href="{url("/l/"+r["id"]+"/")}">{esc(primary_name(r))}</a></h3>{sec_html}
 <div class="meta"><span>📍 {esc(loc_text(r))}</span>{phone}{web}</div></article>'''
 
@@ -309,7 +320,7 @@ def build_listing(r):
     sec = secondary_name(r)
     nt = f'<p>{esc(r["notes"])}</p>' if r["notes"] else ""
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › {f'<a href="{url("/arts/"+first+"/")}">{esc(dname(first))}</a>' if first else ""} › {esc(primary_name(r))}</div>
-<div class="pill-row" style="margin-top:8px">{chips}{"<span class='chip'>"+T("Organization","団体")+"</span>" if r["is_org"] else ""}</div>
+<div class="pill-row" style="margin-top:8px">{chips}{"<span class='chip'>"+T("Organization","団体")+"</span>" if r["is_org"] else ""}{eng_chips(r)}</div>
 <h1>{esc(primary_name(r))}</h1>{f'<div lang="{T("ja","en")}" style="font-family:var(--jp);color:var(--muted);font-size:1.15rem">{esc(sec)}</div>' if sec else ""}
 <div style="margin:14px 0">{verif_txt}</div>
 <div class="two"><div><dl class="facts">{facts}</dl>{nt}
@@ -326,12 +337,13 @@ def build_listing(r):
 def data_blob():
     ui = T({"places":"places","place":"place","none":"No matches. Try removing a filter — many small dojo are listed in Japanese only, so a Japanese place name (e.g. 那覇) can help.","more":"Show more","website":"Website ↗","noloc":"Location not listed","km":"km","org":"Organization","nocoord":"Distance needs coordinates — only places with a map position are ranked.","locating":"Finding your location…","denied":"Couldn’t get your location (permission denied or unavailable)."},
            {"places":"件","place":"件","none":"該当なし。絞り込みを外してみてください。小規模な道場は日本語表記のみのことが多く、地名（例：那覇）で探すと見つかる場合があります。","more":"さらに表示","website":"ウェブサイト ↗","noloc":"所在地未掲載","km":"km","org":"団体","nocoord":"距離順は、地図上の位置が分かる場所のみが対象です。","locating":"現在地を取得中…","denied":"現在地を取得できませんでした（許可がない、または利用できません）。"})
+    ui = dict(ui); ui.update(T({"eng":"English","engl":"English (likely)"},{"eng":"英語OK","engl":"英語可の可能性"}))
     locs = []
     for r in ROWS:
         if r["status"] == "closed": continue
         locs.append({"id": r["id"], "n": primary_name(r), "j": secondary_name(r), "a": loc_text(r), "aj": r["address_ja"], "m": r["municipality"], "m_en": r["m_en"] if LANG=="en" else r["m_ja"],
                      "d": r["disc"], "k": r["kind"], "v": r["verification"], "p": r["phone"], "w": (r["website"] if r["website"].startswith("http") or not r["website"] else "https://"+r["website"]),
-                     "c": r["contact"], "s": style_txt(r), "al": r["aliases"], "e": r["eng"],
+                     "c": r["contact"], "s": style_txt(r), "al": r["aliases"], "e": r["eng_level"], "r": list(r["rating"]) if r["rating"] else None,
                      "la": float(r["lat"]) if r["lat"] else None, "lo": float(r["lon"]) if r["lon"] else None, "ne": r["name_en"] if LANG=="ja" else r["name_ja"]})
     return {"base": BASE, "pfx": "/ja" if LANG == "ja" else "", "disc": {k: dname(k) for k in DISC}, "verif": {k: list(vlabel(k)) for k in "ABCD"}, "ui": ui, "locations": locs}
 
