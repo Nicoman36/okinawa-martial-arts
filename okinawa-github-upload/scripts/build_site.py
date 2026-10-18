@@ -603,6 +603,7 @@ def build_static():
     (DIST/"data").mkdir(exist_ok=True)
     shutil.copy(ROOT/"data/locations.csv", DIST/"data/locations.csv")
     (DIST/".nojekyll").write_text("")
+    if CFG.get("indexnow_key"): (DIST/(CFG["indexnow_key"]+".txt")).write_text(CFG["indexnow_key"])
     global OG_ON
     og = ROOT/"scripts"/"og.b64"
     if og.exists():
