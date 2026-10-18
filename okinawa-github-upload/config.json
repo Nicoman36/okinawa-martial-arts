@@ -15,6 +15,7 @@
     "D": 90
   },
   "_owner_note": "Replace OWNER / email / base_url before publishing. These are the only values that must change.",
+  "indexnow_key": "cb2fbe7dc7dd4b6843eb393ce2efcdb7",
   "analytics_snippet": "<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{\"token\": \"4313b93e97dc40f8b2e2b1bcb2a700e0\"}'></script>",
   "_analytics_note": "Optional. Paste a cookie-free analytics <script> tag (e.g. GoatCounter / Plausible / Cloudflare Web Analytics) as one string.",
   "use_github": false,
