@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from catalog import DISC, DISCIPLINES, GROUPS, VERIF, STATUS, GROUPS_JA, REGIONS_JA, VERIF_JA, KIND_JA, STYLE_JA, DISC_JA
 from geo import MUNI_SLUGS, REGIONS
 from seo_content import AREA_NOTES, NOUN_EN, NOUN_JA
+from guides import GUIDES
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = Path(os.environ.get("DIST_DIR", ROOT / "dist"))
@@ -94,12 +95,12 @@ def footer():
     if LANG == "ja":
         return f'''<footer class="site"><div class="wrap"><div class="cols">
 <div><h4>{esc(CFG["site_name_ja"])}</h4><p>沖縄の武道・格闘技を紹介する、独立した有志運営のガイドです。道場・連盟・行政機関とは関係ありません。最終ビルド {TODAY}。※営業時間・備考など掲載詳細の一部は原文（英語）のままです。</p></div>
-<div><h4>探す</h4><ul><li><a href="{url("/find/")}">すべてを検索</a></li><li><a href="{url("/areas/")}">地域から探す</a></li><li><a href="{url("/map/")}">地図</a></li><li><a href="{url("/start/")}">初めての方へ</a></li><li><a href="{url("/english-friendly/")}">英語対応の道場・ジム</a></li><li><a href="{url("/visitors/")}">旅行者向け体験</a></li><li><a href="{url("/military-families/")}">米軍基地周辺</a></li></ul></div>
+<div><h4>探す</h4><ul><li><a href="{url("/find/")}">すべてを検索</a></li><li><a href="{url("/areas/")}">地域から探す</a></li><li><a href="{url("/map/")}">地図</a></li><li><a href="{url("/start/")}">初めての方へ</a></li><li><a href="{url("/english-friendly/")}">英語対応の道場・ジム</a></li><li><a href="{url("/visitors/")}">旅行者向け体験</a></li><li><a href="{url("/military-families/")}">米軍基地周辺</a></li><li><a href="{url("/guides/")}">ガイド</a></li></ul></div>
 <div><h4>信頼性・お問い合わせ</h4><ul><li><a href="{url("/about-data/")}">データについて</a></li><li><a href="{url("/sources/")}">情報源と帰属</a></li><li><a href="{url("/suggest-edit/")}">修正・追加の提案</a></li><li><a href="{url("/for-dojos/")}">道場・ジムの運営者の方へ</a></li><li><a href="{url("/privacy/")}">プライバシーと削除依頼</a></li></ul></div>
 </div></div></footer>'''
     return f'''<footer class="site"><div class="wrap"><div class="cols">
 <div><h4>{esc(CFG["site_name"])}</h4><p>An independent, community-maintained guide to martial arts and combat sports in Okinawa. Not affiliated with any dojo, federation or government body. Last built {TODAY}.</p></div>
-<div><h4>Explore</h4><ul><li><a href="{url("/find/")}">Search all places</a></li><li><a href="{url("/areas/")}">Browse by area</a></li><li><a href="{url("/map/")}">Map</a></li><li><a href="{url("/start/")}">Beginner guide</a></li><li><a href="{url("/arts/")}">All arts</a></li><li><a href="{url("/english-friendly/")}">English-friendly places</a></li><li><a href="{url("/visitors/")}">Trial classes for visitors</a></li><li><a href="{url("/military-families/")}">Near US bases</a></li></ul></div>
+<div><h4>Explore</h4><ul><li><a href="{url("/find/")}">Search all places</a></li><li><a href="{url("/areas/")}">Browse by area</a></li><li><a href="{url("/map/")}">Map</a></li><li><a href="{url("/start/")}">Beginner guide</a></li><li><a href="{url("/arts/")}">All arts</a></li><li><a href="{url("/english-friendly/")}">English-friendly places</a></li><li><a href="{url("/visitors/")}">Trial classes for visitors</a></li><li><a href="{url("/military-families/")}">Near US bases</a></li><li><a href="{url("/guides/")}">Guides</a></li></ul></div>
 <div><h4>Trust &amp; help</h4><ul><li><a href="{url("/about-data/")}">About this data</a></li><li><a href="{url("/sources/")}">Sources &amp; attribution</a></li><li><a href="{url("/suggest-edit/")}">Suggest an edit</a></li><li><a href="{url("/for-dojos/")}">For dojo &amp; gym owners</a></li><li><a href="{url("/privacy/")}">Privacy &amp; removal</a></li></ul></div>
 </div></div></footer>'''
 
@@ -642,7 +643,7 @@ for _r in PLACES:
         if _d in DISC: LAND.setdefault((_r["municipality"], _d), []).append(_r)
 LAND = {k: v for k, v in LAND.items() if len(v) >= 3}
 LASTMOD = max([r["last_verified"] for r in ROWS if r["last_verified"]] or [TODAY])
-TOPICAL = ["/english-friendly/", "/visitors/", "/military-families/"]
+TOPICAL = ["/english-friendly/", "/visitors/", "/military-families/", "/guides/"] + [f"/guides/{g['slug']}/" for g in GUIDES]
 
 def itemlist(rs, name):
     rs = [r for r in rs if r["verification"] != "C"][:50]
@@ -805,8 +806,31 @@ def build_military():
                  trim(T(f"On-base martial arts programmes and {len(off)} English-friendly dojo and gyms near Kadena, Foster, Futenma and the other bases in Okinawa.", f"基地内の武道プログラムと、嘉手納・フォスター・普天間など基地周辺の英語対応の道場・ジム{len(off)}件。")),
                  T("Martial arts near the US bases in Okinawa","米軍基地周辺の武道・格闘技"), T("On-base programmes and English-friendly places for service members and families","基地内プログラムと、軍関係者・ご家族向けの英語対応の場所"), intro, secs, T("Near US bases","基地周辺"), onbase + off)
 
+def build_guides():
+    def res(h): return re.sub(r"@@(/[^@]*)@@", lambda m: url(m.group(1)), h)
+    li = LANG
+    items = ""
+    for g in GUIDES:
+        c = g[li]
+        items += f'<a class="art-card" href="{url("/guides/"+g["slug"]+"/")}"><span class="name">{esc(c["h1"])}</span><p>{esc(c["desc"])}</p></a>'
+    body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › {T("Guides","ガイド")}</div><h1>{T("Guides to martial arts in Okinawa","沖縄の武道ガイド")}</h1><p class="sub">{T("Practical, plain-language guides for visitors, new residents and beginners.","旅行者・移住者・初心者のための、わかりやすい実用ガイドです。")}</p><div class="cards">{items}</div></div>'''
+    page("/guides/", T("Guides to martial arts in Okinawa — karate, dojo etiquette, styles","沖縄の武道ガイド｜空手・道場の礼儀・流派"), T("Practical guides to karate and martial arts in Okinawa: where to train, dojo etiquette, styles explained, and Karate Day.","沖縄で空手・武道を始めるための実用ガイド。稽古できる場所、道場の礼儀、流派の解説、空手の日。"), body,
+         crumbs=[(T("Home","ホーム"), "/"), (T("Guides","ガイド"), None)])
+    for g in GUIDES:
+        c = g[li]
+        src = ""
+        if c.get("sources"):
+            src = f'<h2>{T("Sources","出典")}</h2><ul>' + "".join(f'<li><a href="{esc(u)}" rel="noopener" target="_blank">{esc(n)}</a></li>' for n, u in c["sources"]) + "</ul>"
+        body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/guides/")}">{T("Guides","ガイド")}</a> › {esc(c["h1"])}</div><h1>{esc(c["h1"])}</h1><p class="sub">{esc(c["sub"])}</p>
+<div class="prose">{res(c["body"])}{src}<p class="sub">{T("Published","公開")} {g["date"]} · {T("Updated","更新")} {g["updated"]}. {T("Spot an error? ","誤りを見つけたら ")}<a href="{url("/suggest-edit/")}">{T("Tell us","お知らせください")}</a>.</p></div></div>'''
+        ld = {"@context": "https://schema.org", "@type": "Article", "headline": c["h1"], "description": c["desc"], "inLanguage": li,
+              "datePublished": g["date"], "dateModified": g["updated"], "mainEntityOfPage": CFG["base_url"] + ("/ja" if li == "ja" else "") + "/guides/" + g["slug"] + "/",
+              "author": {"@type": "Organization", "name": CFG["site_name"], "url": CFG["base_url"] + "/"}, "publisher": {"@type": "Organization", "name": CFG["site_name"], "url": CFG["base_url"] + "/"}}
+        page("/guides/" + g["slug"] + "/", c["title"], c["desc"], body, jsonld=ld, og_type="article",
+             crumbs=[(T("Home","ホーム"), "/"), (T("Guides","ガイド"), "/guides/"), (c["h1"], None)])
+
 def build_language():
-    build_home(); build_arts_index(); build_areas(); build_find(); build_map(); build_start(); build_about(); build_sources(); build_suggest(); build_dojos(); build_privacy(); build_english(); build_visitors(); build_military()
+    build_home(); build_arts_index(); build_areas(); build_find(); build_map(); build_start(); build_about(); build_sources(); build_suggest(); build_dojos(); build_privacy(); build_english(); build_visitors(); build_military(); build_guides()
     for d in DISC.values():
         if by_disc[d["slug"]]: build_art(d)
     for s in {r["municipality"] for r in ROWS if r["municipality"]}: build_area(s)
