@@ -356,7 +356,7 @@ def build_listing(r):
 <p class="sub" style="font-size:.85rem">{T("Sources","情報源")}: {srcs or "—"} · {T("Source date","情報の時点")}: {esc(r["source_date"] or "—")} · {T("Last verified","最終確認")}: {esc(r["last_verified"] or T("not yet","未確認"))}{(" · "+esc(r["privacy_note"])) if r["privacy_note"] else ""}</p></div>
 <div><div class="callout info"><b>{T("Something wrong or changed?","誤りや変更がありますか？")}</b><p style="margin:.4em 0">{T("Dojo close, move and change numbers. Two minutes of your time keeps this useful for the next person.","道場は閉鎖・移転・番号変更があります。数分のご協力が、次に探す人の助けになります。")}</p>
 <p>{report_buttons(r)}</p>
-<p style="font-size:.88rem;margin-bottom:0">{T("Run this place?","運営者の方は")} <a href="{url("/for-dojos/")}">{T("Claim, update or remove it","掲載の更新・削除")}</a>.</p></div>
+<p style="font-size:.88rem;margin-bottom:0">{T("Run this place?","運営者の方は")} <a href="{esc(claim_mail(r))}">{T("Claim this listing","この掲載を確認する")}</a> · <a href="{url("/for-dojos/")}">{T("How it works","詳しく")}</a>.</p></div>
 {f'<p><a class="btn secondary" href="{esc(gmaps)}" rel="noopener nofollow">{T("Open in Google Maps ↗","Googleマップで開く ↗")}</a> <a class="btn secondary" href="{url("/map/?id="+r["id"])}">{T("Show on our map","このサイトの地図で見る")}</a></p>' if gmaps else ""}
 <p class="sub" style="font-size:.85rem">{T("We don't embed Google Maps or copy map-service data; the link opens a search in your own map app.","Googleマップの埋め込みや地図サービスのデータの複製は行いません。リンクは、お使いの地図アプリで検索を開きます。")}</p></div></div>{related_block(r)}</div>'''
     noindex = (r["verification"] == "C" and not CFG["index_roster_pages"])
@@ -564,25 +564,62 @@ def build_suggest():
 <p>We review reports and update the data regularly. See <a href="{url("/about-data/")}">About this data</a>.</p></div>'''
     page("/suggest-edit/", "Suggest an edit or add a place", "Report incorrect information or add a missing martial arts place in Okinawa.", body)
 
+def claim_mail(r=None):
+    name = f"{r['name_en']} ({r['id']})" if r else ""
+    s = urllib.parse.quote(f"Claim listing: {name}" if r else "Claim my listing / 掲載の確認")
+    lst = f"{CFG['base_url']}/l/{r['id']}/" if r else "(paste your listing link / 掲載ページのリンク)"
+    b = urllib.parse.quote("Listing / 掲載ページ: " + lst + "\n\nYour name and role (owner, instructor, staff) / お名前と立場:\n\nHow we can confirm (official website or Instagram/Facebook link) / 確認方法（公式サイトやSNSのリンク）:\n\nClass times / 稽古日時:\n\nTrial or visitor classes? (yes / no / by request) / 体験・見学の可否:\n\nEnglish spoken in class? / 英語対応:\n\nAnything else to correct or add / その他の修正・追加:\n")
+    return f"mailto:{CFG['contact_email']}?subject={s}&body={b}"
+
 def build_dojos():
-    repo = CFG["github_repo"]
-    OWNER_LINK = f"https://github.com/{repo}/issues/new?template=owner-update.yml" if CFG.get("use_github", True) else f"mailto:{CFG['contact_email']}?subject=" + urllib.parse.quote("Owner update")
+    CLAIM = esc(claim_mail())
+    EM = esc(CFG["contact_email"])
     if LANG == "ja":
-        body = f'''<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">ホーム</a> › 運営者の方へ</div><h1>道場・ジムの運営者の方へ</h1>
-<p class="sub">掲載内容の修正・追加・削除は、いつでもお申し込みいただけます。掲載は無料です。</p>
-<h2>掲載の更新・確認</h2><p>掲載ページの「誤りを報告」から「運営者です」を選び、変更内容と、ご本人であることの確認方法（公式サイトやSNSで十分です）をお知らせください。電話番号・営業時間・体験の可否・英語対応の有無を教えていただけると、利用者の助けになります。</p>
-<p><a class="btn" href="{OWNER_LINK}" rel="noopener">運営者用フォーム</a> <a class="btn secondary" href="mailto:{esc(CFG["contact_email"])}">メールで連絡</a></p>
-<h2>掲載・個人情報の削除</h2><p>2019年の名簿に基づく指導者名や住所は県が公表した情報ですが、ご希望があれば、速やかに削除または縮小します。理由は不要です。上記フォームまたはメールでご連絡ください。</p>
-<h2>表示している内容</h2><p>名称・流派・地域・住所・電話・ウェブサイト／SNS・稽古日時・連絡先担当者・見学や英語対応の可否。会員名簿や生徒の写真は掲載しません。</p></div>'''
-        page("/for-dojos/", "道場・ジムの運営者の方へ — 掲載の更新・削除", "運営者が掲載を修正・確認・削除する方法。", body); return
-    body = f'''<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">Home</a> › For dojo &amp; gym owners</div><h1>For dojo &amp; gym owners</h1>
-<p class="sub">道場・ジムの運営者の方へ — You can correct, complete or remove your listing at any time.</p>
-<h2>Update or claim your listing</h2><p>Find your listing, press “Report a problem”, and choose “I run this place”. Give us the changes and a way to confirm it's you (your official website or social page is enough). We don't charge for listings.</p>
-<p><a class="btn" href="{OWNER_LINK}" rel="noopener">Owner update form</a> <a class="btn secondary" href="mailto:{esc(CFG["contact_email"])}">Email us</a></p>
-<h2>Remove your listing or your personal details</h2><p>Instructor names and addresses from the 2019 roster were published by the prefecture, but you can ask us to remove or trim them at any time. We will do so promptly. Use the owner form or email — no reason needed.</p>
-<h2>日本語でのご連絡</h2><p lang="ja">掲載内容の修正・追加・削除のご希望は、上記のメールまたはフォームからご連絡ください。電話番号・営業時間・体験の可否・英語対応の有無をお知らせいただけると、利用者の役に立ちます。掲載の削除も、理由なくお受けします。</p>
-<h2>What we show</h2><p>Name, style, area, address, phone, website/social, hours, contact person, and whether visitors/English are welcome. We never show member lists or photos of students.</p></div>'''
-    page("/for-dojos/", "For dojo & gym owners — update or remove your listing", "How owners can correct, claim or remove a listing in the Okinawa martial arts directory.", body)
+        body = f"""<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">ホーム</a> › 運営者の方へ</div><h1>掲載を確認・更新する（道場・ジム運営者の方へ）</h1>
+<p class="sub">掲載は無料です。内容を確認していただくと、旅行者・移住者・米軍関係の方に、より正確な情報を届けられます。</p>
+<p><a class="btn" href="{CLAIM}">メールで掲載を確認する</a> <a class="btn secondary" href="{url("/find/")}">掲載を探す</a></p>
+<h2>確認すると何が良くなるか</h2>
+<ul><li><b>正しい情報が載ります。</b>電話番号、稽古日時、住所、料金の目安、体験や見学の可否を、運営者ご自身の情報で更新します。</li>
+<li><b>確認済みの表示。</b>運営者への確認が取れた掲載は、確認日とともに「確認済み」として表示されます。</li>
+<li><b>英語対応・体験の案内が伝わります。</b>英語での指導や、旅行者・初心者の受け入れを教えていただくと、<a href="{url("/english-friendly/")}">英語対応</a>や<a href="{url("/visitors/")}">旅行者向け体験</a>のページにも載ります。</li>
+<li><b>写真（任意）。</b>ご自身が撮影した、または撮影された方の同意がある写真があれば、出典を明記して掲載できます。生徒さんの写真は同意が確認できるものだけです。</li></ul>
+<h2>お知らせいただきたいこと</h2>
+<ol><li>掲載ページのリンク（<a href="{url("/find/")}">検索</a>で見つかります）。</li>
+<li>お名前と立場（運営者・指導者・スタッフ）。</li>
+<li>ご本人確認の方法：公式サイトやInstagram・Facebookのリンクで十分です。</li>
+<li>稽古日時、体験・見学の可否、英語対応、連絡先の希望。</li></ol>
+<p>上のボタンを押すと、この項目が入ったメールが開きます。</p>
+<h2>流れ</h2>
+<ol><li>メールをいただきます。</li><li>公式サイトやSNSなどで内容を確認し、必要なら一度お尋ねします。</li><li>掲載を更新し、確認日を記録します。</li></ol>
+<p>有志による運営のため、返信までお時間をいただくことがあります。</p>
+<h2>お約束</h2>
+<ul><li>基本の掲載は無料で、今後も無料です。</li><li>「確認済み」の表示や掲載の並び順は、お金では変わりません。データの根拠だけで決まります。</li><li>会員名簿の公開や、会員への連絡は行いません。</li></ul>
+<h2>掲載・個人情報の削除</h2><p>2019年の名簿に基づく指導者名や住所は県が公表した情報ですが、ご希望があれば、速やかに削除または縮小します。理由は不要です。<a href="mailto:{EM}">{EM}</a> までご連絡ください。</p>
+<h2>表示している内容</h2><p>名称・流派・地域・住所・電話・ウェブサイト／SNS・稽古日時・連絡先担当者・見学や英語対応の可否。会員名簿や生徒の写真は掲載しません。</p></div>"""
+        page("/for-dojos/", "掲載を確認・更新する｜道場・ジム運営者の方へ", "道場・ジムの運営者が、無料で掲載内容を確認・更新・削除する方法。確認済みの表示、英語対応、体験の案内。", body); return
+    body = f"""<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">Home</a> › For dojo &amp; gym owners</div><h1>Claim your listing</h1>
+<p class="sub">For dojo and gym owners. 道場・ジムの運営者の方へ — Free. Confirm your details so visitors, new residents and military families find accurate information.</p>
+<p><a class="btn" href="{CLAIM}">Claim by email</a> <a class="btn secondary" href="{url("/find/")}">Find your listing</a></p>
+<h2>What you get</h2>
+<ul><li><b>Correct details.</b> Phone, class times, address, rough fees and whether visitors can drop in, updated from you directly.</li>
+<li><b>A verified date.</b> Once we have confirmed with you, your listing shows it as verified, with the date.</li>
+<li><b>Seen by the right people.</b> Tell us if English is spoken or visitors and beginners are welcome, and you can appear on the <a href="{url("/english-friendly/")}">English-friendly</a> and <a href="{url("/visitors/")}">trial classes for visitors</a> pages. Gyms near the bases can also show up on the <a href="{url("/military-families/")}">US bases</a> page.</li>
+<li><b>Photos, if you like.</b> Send photos you took or that everyone pictured agreed to share, and we can credit you. We never show students without clear consent.</li></ul>
+<h2>What to send us</h2>
+<ol><li>Your listing link (you can <a href="{url("/find/")}">search for it</a>).</li>
+<li>Your name and role: owner, instructor or staff.</li>
+<li>A way to confirm it's you. Your official website or Instagram or Facebook page is enough.</li>
+<li>Class times, whether trial or visitor classes are available, whether English is spoken, and how you'd like people to contact you.</li></ol>
+<p>The button above opens an email with these headings ready to fill in. Prefer to write your own? Email <a href="mailto:{EM}">{EM}</a>. Japanese is fine.</p>
+<h2>How it works</h2>
+<ol><li>You email us.</li><li>We check against your official site or social pages and, if needed, ask you a question.</li><li>We update the listing and record the verification date.</li></ol>
+<p>This is a volunteer project, so replies can take a little while.</p>
+<h2>Our promises</h2>
+<ul><li>A basic listing is free, and will stay free.</li><li>Verified status and the order of listings cannot be bought. They rest on the evidence in the data.</li><li>We never publish member lists or contact your members.</li></ul>
+<h2>Remove your listing or your personal details</h2><p>Instructor names and addresses from the 2019 roster were published by the prefecture, but you can ask us to remove or trim them at any time. We will do so promptly, with no reason needed. Email <a href="mailto:{EM}">{EM}</a>.</p>
+<h2>What we show</h2><p>Name, style, area, address, phone, website/social, hours, contact person, and whether visitors and English are welcome. We never show member lists or photos of students.</p>
+<h2 lang="ja">日本語でのご連絡</h2><p lang="ja">掲載内容の確認・修正・削除は、上のボタンまたはメールからご連絡ください。日本語で構いません。基本の掲載は無料です。</p></div>"""
+    page("/for-dojos/", "Claim your listing — for dojo & gym owners", "Dojo and gym owners can claim a listing free: confirm your details, show a verified date, and reach visitors and military families.", body)
 
 def build_privacy():
     an_en = "This site uses privacy-friendly, cookie-free analytics (page views only, no personal profiles)." if ANALYTICS else "This site has no accounts, no ads and sets no tracking cookies."
