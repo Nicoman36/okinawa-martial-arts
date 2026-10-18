@@ -36,3 +36,10 @@ jobs:
     steps:
       - id: d
         uses: actions/deploy-pages@v4
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - run: sleep 20 && python3 okinawa-github-upload/scripts/indexnow.py
