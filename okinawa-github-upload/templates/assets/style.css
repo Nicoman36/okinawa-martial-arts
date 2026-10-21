@@ -97,7 +97,7 @@ h2.region{margin-top:28px;font-size:1.2rem;border-bottom:1px solid var(--line);p
 .muni-head{font-size:1rem;margin:16px 0 6px;color:var(--teal)}
 .switcher{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);padding:10px 14px;border-radius:var(--radius);margin:14px 0}
 .switcher select{max-width:340px}
-.pagehead{padding:30px 0 10px}
+.pagehead{padding-top:30px;padding-bottom:10px}
 .pagehead h1{font-family:var(--serif);font-size:clamp(1.8rem,4.5vw,2.8rem);margin:.1em 0;line-height:1.15}
 .pagehead .kanji{font-family:var(--jp);font-size:clamp(2.6rem,9vw,5rem);color:var(--indigo);font-weight:700;line-height:1;letter-spacing:.04em;display:block}
 .crumbs{font-size:.85rem;color:var(--muted)}.crumbs a{color:var(--muted)}
@@ -126,3 +126,6 @@ footer.site a{color:var(--muted)}footer.site h4{color:var(--ink);margin:.2em 0 .
 .filters label{text-transform:none;letter-spacing:0;font-size:.88rem;color:var(--ink)}.filters label[for]{text-transform:uppercase;letter-spacing:.07em;font-size:.72rem;color:var(--muted)}
 
 .filters .btn,.switcher .btn{white-space:nowrap}.filters>div:last-child{flex-wrap:wrap}
+.two>*,.tilemap-wrap,.cards>*{min-width:0}
+@media (max-width:640px){table.data{display:block;overflow-x:auto;max-width:100%}}
+@media (max-width:640px){header.site{position:relative}nav.main a,nav.main summary{padding:6px 9px;font-size:.9rem}}
