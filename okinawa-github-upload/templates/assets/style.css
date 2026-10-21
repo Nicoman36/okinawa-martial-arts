@@ -38,7 +38,7 @@ nav.main details[open]>.menu{display:grid}
 .menu h3{grid-column:1/-1;margin:6px 8px 2px;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .menu a{display:flex;justify-content:space-between;gap:8px}
 .menu a span.n{color:var(--muted);font-variant-numeric:tabular-nums}
-@media (max-width:640px){.menu{grid-template-columns:1fr;right:-8px}}
+@media (max-width:640px){nav.main details{position:static}.menu{grid-template-columns:1fr;left:8px;right:8px;top:100%;min-width:0;max-height:calc(100vh - 190px);max-height:calc(100dvh - 190px);overflow-y:auto;overscroll-behavior:contain}}
 .hero{padding:44px 0 26px;background:
   linear-gradient(180deg,color-mix(in srgb,var(--indigo) 9%,transparent),transparent 70%)}
 .hero h1{font-family:var(--serif);font-size:clamp(1.9rem,5vw,3.1rem);line-height:1.15;margin:.2em 0 .25em;max-width:18ch;letter-spacing:-.01em}
