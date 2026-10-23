@@ -55,7 +55,7 @@ GUIDES = [
 {
  "slug": "dojo-etiquette", "date": "2026-10-18", "updated": "2026-10-18",
  "en": {
-  "title": "Dojo etiquette in Okinawa: how to visit, what to say, what to bring",
+  "title": "Dojo etiquette in Okinawa: how to visit and what to bring",
   "desc": "A practical guide to visiting a karate or kobudo dojo in Okinawa: how to ask, bowing, shoes, photos, fees, gifts, and what to do if you do not speak Japanese.",
   "h1": "Dojo etiquette in Okinawa",
   "sub": "How to ask, how to behave, and what to bring — for karate and kobudo dojo, and most traditional clubs.",
@@ -113,7 +113,7 @@ GUIDES = [
 {
  "slug": "okinawan-karate-styles", "date": "2026-10-18", "updated": "2026-10-18",
  "en": {
-  "title": "Okinawan karate and kobudo styles explained: Shorin-ryu, Goju-ryu, Uechi-ryu and more",
+  "title": "Okinawan karate styles explained: Shorin, Goju, Uechi",
   "desc": "A plain-English guide to the main Okinawan karate styles — Shorin-ryu, Goju-ryu, Uechi-ryu — plus kobudo, and how to choose a dojo that suits you.",
   "h1": "Okinawan karate and kobudo styles, explained",
   "sub": "What the style names mean, how they differ in feel, and how to choose.",
