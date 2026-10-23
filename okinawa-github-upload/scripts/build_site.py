@@ -46,7 +46,7 @@ def n_places(d): return sum(1 for r in by_disc[d] if not r["is_org"])
 # ------------------------------------------------------------------ helpers
 LANG = "en"
 def T(en, ja): return ja if LANG == "ja" else en
-LOCAL_PREFIXES = ("/arts", "/areas", "/find", "/start", "/about-data", "/sources", "/suggest-edit", "/for-dojos", "/privacy", "/l/", "/map", "/english-friendly", "/visitors", "/military-families", "/guides")
+LOCAL_PREFIXES = ("/arts", "/areas", "/find", "/start", "/about-data", "/sources", "/suggest-edit", "/for-dojos", "/privacy", "/l/", "/map", "/english-friendly", "/visitors", "/military-families", "/guides", "/styles")
 def url(p):
     if LANG == "ja" and (p == "/" or p.startswith(LOCAL_PREFIXES)): p = "/ja" + (p if p != "/" else "/")
     return f"{BASE}{p}"
@@ -229,10 +229,10 @@ def build_home():
 <div class="stats"><div><b>{n}</b><span>{T("places listed","掲載件数")}</span></div><div><b>{na}</b><span>{T("arts","種目")}</span></div><div><b>{len(muni_counts)}</b><span>{T("municipalities","市町村")}</span></div><div><b>{verified}</b><span>{T("checked Oct 2026","2026年10月確認")}</span></div></div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by art","種目から探す")} <span class="jp">武道</span></h2><p class="sub">{T("Each art has its own page with an explanation, beginner notes and every listing. Use the “Switch art” menu on any page to hop between them.","各種目に、解説・初心者向けの案内・全掲載をまとめたページがあります。どのページでも「種目を切り替え」から移動できます。")}</p><div class="arts-grid">{arts}</div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by area","地域から探す")} <span class="jp">地域</span></h2><p class="sub">{T("Each tile is a municipality, placed roughly where it sits on the island. Darker means more listings.","各タイルは市町村で、おおよその位置に並べています。色が濃いほど掲載が多い地域です。")} <a href="{url("/map/")}">{T("Open the map →","地図を開く →")}</a></p>{tilemap(muni_counts)}</div></section>
-<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a></div></div></section>
+<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> {style_chips()}</div></div></section>
 <section class="block"><div class="wrap two"><div><h2>{T("New to training here?","初めての方へ")}</h2><p>{T("Visiting for a week or settling in for years — our beginner guide covers how to ask for a trial in Japanese, etiquette, what to bring, and which places are used to English speakers.","数日の滞在でも長期の移住でも。体験の申し込み方、礼儀作法、持ち物、英語対応のある場所などを案内します。")}</p><p><a class="btn" href="{url("/start/")}">{T("Read the guide","ガイドを読む")}</a> <a class="btn secondary" href="{url("/find/?eng=1")}">{T("English-friendly places","英語対応あり")}</a></p></div>
 <div><h2>{T("Know something we don't?","情報をお持ちですか？")}</h2><p>{T("Dojo move, close and change phone numbers. Every listing has a “Report a problem” link, and owners can claim, update or remove their entry.","道場の移転・閉鎖・電話番号の変更はよくあります。各掲載に「誤りを報告」リンクがあり、運営者ご本人は掲載の更新・削除もできます。")} <a href="{url("/about-data/")}">{T("How we check the data","確認方法")}</a> · <a href="{url("/sources/")}">{T("Sources","情報源")}</a></p><p><a class="btn secondary" href="{url("/suggest-edit/")}">{T("Suggest an edit","修正・追加を提案")}</a></p></div></div></section>'''
-    page("/", T(f'{CFG["site_name"]} — find a dojo, gym or club', f'{CFG["site_name_ja"]} — 道場・ジム・クラブを探す'),
+    page("/", T(f'{CFG["site_name"]} — Karate Dojo, BJJ & Gyms', f'{CFG["site_name_ja"]} — 道場・ジム・クラブを探す'),
          T(f'{n} karate, kobudo, judo, BJJ, MMA, boxing, kendo and other martial arts places in Okinawa, searchable by area and style.', f'沖縄の空手・古武道・柔道・BJJ・MMA・ボクシング・剣道など{n}か所を、地域と種目で検索。'), body, cur="home",
          jsonld={"@context":"https://schema.org","@type":"WebSite","name":CFG["site_name"],"alternateName":[CFG["site_name_ja"], "okinawamartialarts.com"],"url":CFG["base_url"],"inLanguage":["en","ja"]})
 
@@ -259,7 +259,7 @@ def build_art(d):
     land_links = landing_links(d=s, limit=14)
     sub = T(f'{len(places)} place{"s" if len(places)!=1 else ""} to train · {len(mc)} municipalit{"ies" if len(mc)!=1 else "y"} · {chk["A"]} checked Oct 2026', f'稽古場所 {len(places)}か所 · {len(mc)}市町村 · 2026年10月確認 {chk["A"]}件')
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/arts/")}">{T("Arts","種目")}</a> › {esc(nm)}</div>
-<span class="kanji" lang="ja">{esc(d["ja"])}</span><h1>{esc(T(d["en"]+" in Okinawa", "沖縄の"+d["ja"]))}</h1><p class="sub">{sub}</p>{switcher(s)}
+<span class="kanji" lang="ja">{esc(d["ja"])}</span><h1>{esc(T(d["en"]+" in Okinawa", "沖縄の"+d["ja"]))}</h1><p class="sub">{sub}</p>{switcher(s)}{art_extra(s)}
 {('<h2 class="region">'+T("Browse by area","地域別に見る")+'</h2><div class="pill-row">'+land_links+'</div>') if land_links else ""}
 <div class="two"><div class="prose"><p>{esc(dtext(s,1))}</p><div class="callout info"><b>{T("For beginners:","初心者の方へ：")}</b> {esc(dtext(s,2))}</div>
 <p><a class="btn" href="{url("/find/?art="+s)}">{T("Search & filter","検索・絞り込み")}</a> <a class="btn secondary" href="{url("/map/?art="+s)}">{T("See on map","地図で見る")}</a></p></div>
@@ -301,12 +301,12 @@ def build_area(slug):
     engn = sum(1 for r in places if r["eng_level"])
     facts = T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed across {len(dc)} art{"s" if len(dc)!=1 else ""}; {chk} checked against the operator\'s own page in October 2026' + (f', {engn} English-friendly or likely' if engn else '') + '.',
               f'{len(places)}か所・{len(dc)}種目を掲載。うち{chk}件は2026年10月に運営者の公式ページで確認済み' + (f'、英語対応（または可能性あり）{engn}件' if engn else '') + '。')
-    intro = f'<div class="prose" style="margin:6px 0 14px">{"<p>"+esc(note)+"</p>" if note else ""}<p>{esc(facts)}</p></div>'
+    intro = f'<div class="prose" style="margin:6px 0 14px">{"<p>"+esc(note)+"</p>" if note else ""}<p>{esc(facts)}</p>{guide_line()}</div>'
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/areas/")}">{T("Areas","地域")}</a> › {esc(nm)}</div>
 <span class="kanji" lang="ja">{esc(ja)}</span><h1>{esc(T("Martial arts in "+en, ja+"の武道・格闘技"))}</h1><p class="sub">{T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed · {len(dc)} art{"s" if len(dc)!=1 else ""}', f'{len(places)}か所掲載 · {len(dc)}種目')}</p>{intro}
 <h2 class="region">{T("Browse by art","種目から探す")}</h2><div class="pill-row" style="margin:10px 0 18px">{pills}</div><h2 class="region">{T("All listings","すべての掲載")}</h2><div class="cards">{"".join(card(r) for r in ordered)}</div></div>'''
     top = ", ".join(f"{dname(d)} ({n})" for d, n in dc.most_common(4) if d in DISC)
-    page(f"/areas/{slug}/", T(f"Martial arts in {en.split(' (')[0]}, Okinawa — dojo, gyms and clubs ({len(places)} listed)", f"{ja}の武道・格闘技｜道場・ジム・クラブ一覧（{len(places)}件）"),
+    page(f"/areas/{slug}/", T(f"Martial arts in {en.split(' (')[0]}, Okinawa — {len(places)} dojo & gyms", f"{ja}の武道・格闘技｜道場・ジム・クラブ一覧（{len(places)}件）"),
          trim(T(f"{len(places)} dojo, gyms and clubs in {en.split(' (')[0]} ({ja}), Okinawa: {top}. Addresses, phone numbers and English-support notes.", f"{ja}の道場・ジム・クラブ{len(places)}件：{top}。住所・電話番号・英語対応の情報つき。")),
          body, cur="areas", jsonld=itemlist(ordered, nm), crumbs=[(T("Home","ホーム"), "/"), (T("Areas","地域"), "/areas/"), (nm, None)])
 
@@ -363,7 +363,10 @@ def build_listing(r):
     where = r["m_en"] if r["municipality"] else "Okinawa"
     art1 = dname(first) if first else ""
     t_en = f'{r["name_en"]} — {art1} in {where}, Okinawa' if (art1 and r["municipality"]) else f'{r["name_en"]} — {where}, Okinawa'
-    if len(t_en) > 72: t_en = f'{r["name_en"]} — {where}, Okinawa'
+    if len(t_en) > 62: t_en = f'{r["name_en"]} — {where}, Okinawa'
+    if len(t_en) > 66 and r["municipality"]: t_en = f'{r["name_en"]} — {where}'
+    if len(t_en) > 66: t_en = r["name_en"]
+    if len(t_en) > 66: t_en = t_en[:63].rsplit(" ", 1)[0] + "…"
     t_ja = f'{primary_name(r)} — {r["m_ja"] or "沖縄"}の{art1}' if (art1 and r["municipality"]) else f'{primary_name(r)} — {r["m_ja"] or "沖縄"}'
     gone = {"closed": ("Closed: ", "閉鎖：", ), "moved": ("Moved: ", "移転：")}.get(r["status"], ("", ""))
     sty_en = r["style"] if (r["style"] and len(r["style"]) <= 32 and "(" not in r["style"] and r["style"].lower() not in r["name_en"].lower()) else ""
@@ -376,6 +379,7 @@ def build_listing(r):
     bits_ja = [f'{primary_name(r)}（{sty_ja}）。' if sty_ja else f'{primary_name(r)}。']
     if r["eng_level"] == 1: bits_ja.append("英語対応あり。")
     elif r["eng_level"] == 2: bits_ja.append("英語対応の可能性あり。")
+    if art1 and r["m_ja"]: bits_ja.insert(0, f'{r["m_ja"]}の{art1}。')
     bits_ja.append(VERIF_JA[r["verification"]][0] + "。")
     if r["address_ja"] or r["m_ja"]: bits_ja.append((r["address_ja"] or r["m_ja"]) + "。")
     page(f'/l/{r["id"]}/', T(t_en, t_ja), trim(gone[1 if LANG == "ja" else 0] + T(" ".join(bits_en), "".join(bits_ja))), body, cur="", noindex=noindex, jsonld=ld,
@@ -650,7 +654,7 @@ def build_static():
 ARTS_WITH = [d for d in DISC if n_places(d)]
 
 def sitemap():
-    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL
+    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES]
     pages += [f"/arts/{d}/" for d in DISC if by_disc[d]] + [f"/areas/{s}/" for s in {r["municipality"] for r in ROWS if r["municipality"]}]
     pages += [f"/areas/{m}/{d}/" for m, d in LAND]
     pages += [f'/l/{r["id"]}/' for r in ROWS if not (r["verification"] == "C" and not CFG["index_roster_pages"])]
@@ -806,7 +810,7 @@ def build_visitors():
 <li><b>持ち物。</b>打撃・組技系は、清潔なTシャツ・短パン・タオルで足りることが多く、道着やグローブを貸してくれるジムもあります。</li>
 <li><b>伝統道場。</b>空手・古武道の道場は、紹介や、まず見学（けんがく）をお願いする形を好むことがあります。表現例と礼儀は<a href="{url("/start/")}">初めての方へ</a>をご覧ください。</li></ul>
 <p>空手ファンの方は、県の空手の拠点で、見学者向けの空手・古武道の体験もある豊見城市の<a href="{url("/l/okinawa-karate-kaikan/")}">沖縄空手会館</a>もおすすめです。</p>''')
-    topical_page("/visitors/", T("Try a martial arts class in Okinawa — trials and drop-ins for visitors","沖縄で武道・格闘技を体験｜旅行者向けの体験・見学"),
+    topical_page("/visitors/", T("Try a martial arts class in Okinawa — visitor trials","沖縄で武道・格闘技を体験｜旅行者向けの体験・見学"),
                  trim(T(f"{len(rs)} dojo and gyms in Okinawa that welcome visitors or advertise trial lessons, with prices where published, plus how to book and what to bring.", f"体験・見学を案内している沖縄の道場・ジム{len(rs)}件。料金（公表されているもの）、予約方法、持ち物も紹介。")),
                  T("Try a martial arts class in Okinawa","沖縄で武道・格闘技を体験する"), T("Trial lessons, drop-ins and visitor-friendly dojo","体験レッスン・ドロップイン・見学歓迎の道場"), intro, region_sections(rs), T("Trial classes for visitors","旅行者向け体験"), rs)
 
@@ -840,9 +844,58 @@ def build_military():
 <div class="callout info"><b>Good to know.</b> Off-base gyms are usually easiest to join: no base access needed, and many have English-speaking staff. Traditional karate dojo are rewarding but often work by introduction — see our <a href="{url("/start/")}">beginner guide</a> for phrases and etiquette. “Base towns” here means the municipalities around the main installations, not a distance guarantee.</div>''',
               f'''<p>沖縄には大きな米軍関係のコミュニティがあり、基地の中でも周辺の町でも、空手・古武道・BJJ・ボクシングなどを稽古する方が多くいます。このページでは、基地内のプログラム{len(onbase)}件と、基地外で英語対応が確認できた（または可能性のある）{len(off)}件をまとめています。</p>
 <div class="callout info"><b>ご参考に。</b>基地外のジムは入場許可が不要で、英語スタッフがいるところも多く、入りやすい選択肢です。伝統空手道場は紹介制のことも多いため、表現例と礼儀は<a href="{url("/start/")}">初めての方へ</a>をご覧ください。ここでの「基地周辺の町」は主要な基地の周りの市町村を指し、距離を保証するものではありません。</div>''')
-    topical_page("/military-families/", T("Martial arts near US bases in Okinawa — for service members and families","米軍基地周辺の武道・格闘技｜沖縄の英語対応の道場・ジム"),
+    topical_page("/military-families/", T("Martial arts near US bases in Okinawa — military families","米軍基地周辺の武道・格闘技｜沖縄の英語対応の道場・ジム"),
                  trim(T(f"On-base martial arts programmes and {len(off)} English-friendly dojo and gyms near Kadena, Foster, Futenma and the other bases in Okinawa.", f"基地内の武道プログラムと、嘉手納・フォスター・普天間など基地周辺の英語対応の道場・ジム{len(off)}件。")),
                  T("Martial arts near the US bases in Okinawa","米軍基地周辺の武道・格闘技"), T("On-base programmes and English-friendly places for service members and families","基地内プログラムと、軍関係者・ご家族向けの英語対応の場所"), intro, secs, T("Near US bases","基地周辺"), onbase + off)
+
+# ---------------------------------------------------------------- style pages (Shorin-ryu, Goju-ryu, Uechi-ryu)
+STYLES = [
+ ("shorin-ryu", r"sh[oō]rin|kobayashi|matsubayashi|shobayashi", "Shorin-ryu", "少林流",
+  "Shorin-ryu (少林流) is the large family of Okinawan karate that descends from the Shuri and Tomari traditions. It has several branches, each with its own organisation, including Kobayashi-ryu, Matsubayashi-ryu and Shobayashi-ryu. Stances are generally natural and upright, with an emphasis on speed and straight-line technique.",
+  "少林流は、首里手・泊手の流れをくむ沖縄空手の大きな系統です。小林流、松林流、少林流（昭林流）など、団体ごとに分かれています。立ち方は自然で姿勢が高く、速さと直線的な動きが特徴とされます。"),
+ ("goju-ryu", r"goj[uū]", "Goju-ryu", "剛柔流",
+  "Goju-ryu (剛柔流) comes from the Naha-te tradition. The name means “hard–soft”: close-range technique, firm stances and deliberate breathing, using both circular and straight movements. Many dojo include strong body conditioning (kitae).",
+  "剛柔流は、那覇手の系統の流派です。名称は「剛と柔」の意味で、近い間合い、しっかりした立ち方、呼吸法、円と直線の技が特徴です。体を鍛える「鍛え」を重視する道場も多くあります。"),
+ ("uechi-ryu", r"uechi", "Uechi-ryu", "上地流",
+  "Uechi-ryu (上地流) was founded by Uechi Kanbun and is based on a Chinese system he studied in Fuzhou. It is known for firm, close-range technique, body conditioning and a small set of kata.",
+  "上地流は、上地完文が福州で学んだ中国の武術をもとに創始した流派です。近い間合いの技と体づくり、少数の型が特徴です。"),
+]
+STYLE_PLACES = {x[0]: [r for r in PLACES if r["verification"] != "C" and re.search(x[1], r["style"], re.I)] for x in STYLES}
+
+def style_chips():
+    return " ".join(f'<a class="chip" href="{url("/styles/" + x[0] + "/")}">{esc(T(x[2] + " in Okinawa", "沖縄の" + x[3]))} · {len(STYLE_PLACES[x[0]])}</a>' for x in STYLES if len(STYLE_PLACES[x[0]]) >= 3)
+def guide_line():
+    return f'<p class="sub" style="font-size:.92rem">{T("Planning a visit? See", "訪れる前に：")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train karate in Okinawa", "沖縄で空手を稽古するには")}</a> {T("and", "と")} <a href="{url("/guides/dojo-etiquette/")}">{T("dojo etiquette", "道場での礼儀作法")}</a>.</p>'
+def art_extra(s):
+    if s not in ("karate", "kobudo", "kyokushin"): return ""
+    sc = style_chips() if s in ("karate", "kobudo") else ""
+    return (f'<h2 class="region">{T("Karate styles", "流派から探す")}</h2><div class="pill-row" style="margin:10px 0 6px">{sc} <a class="chip" href="{url("/guides/okinawan-karate-styles/")}">{T("Styles explained", "流派ガイド")}</a></div>' if sc else "") + guide_line()
+
+def build_style(x):
+    slug, pat, en, ja, d_en, d_ja = x
+    rs = sorted(STYLE_PLACES[slug], key=lambda r: ({"A": 0, "B": 1, "D": 2}.get(r["verification"], 3), r["name_en"].lower()))
+    n = len(rs); nm = ja if LANG == "ja" else en
+    chk = sum(1 for r in rs if r["verification"] == "A")
+    mc = Counter(r["municipality"] for r in rs if r["municipality"])
+    area_chips = " ".join(f'<a class="chip" href="{url("/areas/" + m + "/")}">{esc(MUNI_SLUGS[m][0] if LANG == "ja" else MUNI_SLUGS[m][1].split(" (")[0])} · {c}</a>' for m, c in mc.most_common())
+    branch = ""
+    if slug == "shorin-ryu":
+        bs = [("Kobayashi", "小林流", r"kobayashi"), ("Matsubayashi", "松林流", r"matsubayashi"), ("Shobayashi", "昭林流・少林流", r"shobayashi")]
+        parts = [(T(a, b), sum(1 for r in rs if re.search(c, r["style"], re.I))) for a, b, c in bs]
+        parts = [(a, k) for a, k in parts if k]
+        if parts: branch = "<p>" + T("Branches named in the listings: ", "掲載で流派名が分かる分派：") + T(", ", "、").join(f"{esc(a)} ({k})" for a, k in parts) + T(". Many listings give only “Shorin-ryu”.", "。「少林流」とだけ記載のものも多くあります。") + "</p>"
+    p1 = T(f"{n} {en} dojo in Okinawa are listed on this page" + (f", {chk} of them checked against the operator's own page in October 2026" if chk else "") + ".",
+           f"沖縄の{ja}の道場を{n}件掲載しています" + (f"（うち{chk}件は2026年10月に運営者の公式ページで確認済み）" if chk else "") + "。")
+    note = T("Lineages and histories differ between schools and are sometimes disputed; treat this as orientation, not a ruling. See", "系統や歴史は流派により異なり、諸説あります。目安としてご覧ください。")
+    intro = f'<div class="prose" style="margin:8px 0 18px"><p>{esc(d_ja if LANG == "ja" else d_en)}</p>{branch}<p>{esc(p1)}</p><p class="sub">{note} <a href="{url("/guides/okinawan-karate-styles/")}">{T("Okinawan karate styles explained", "沖縄の空手・古武道の流派ガイド")}</a>{T(" and", "・")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train", "稽古の始め方")}</a>.</p></div>'
+    body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/arts/karate/")}">{esc(dname("karate"))}</a> › {esc(nm)}</div>
+<span class="kanji" lang="ja">{esc(ja)}</span><h1>{esc(T(en + " karate in Okinawa", "沖縄の" + ja + "の道場"))}</h1>{intro}
+<h2 class="region">{T("By area","地域別")}</h2><div class="pill-row" style="margin:10px 0 18px">{area_chips}</div>
+<h2 class="region">{T("All listings","すべての掲載")}</h2><div class="cards">{"".join(card(r, vis_extra(r)) for r in rs)}</div></div>'''
+    top = T(", ", "、").join(esc(MUNI_SLUGS[m][0] if LANG == "ja" else MUNI_SLUGS[m][1].split(" (")[0]) for m, c in mc.most_common(3))
+    page(f"/styles/{slug}/", T(f"{en} karate in Okinawa — {n} dojo to train", f"沖縄の{ja}｜道場{n}か所"),
+         trim(T(f"{n} {en} dojo in Okinawa with addresses, phone numbers, trial-class and English notes. Most are in {top}.", f"沖縄の{ja}の道場{n}件。住所・電話・体験や英語対応の情報つき。{top}など。")),
+         body, jsonld=itemlist(rs, nm), crumbs=[(T("Home","ホーム"), "/"), (dname("karate"), "/arts/karate/"), (T(en, ja), None)])
 
 def build_guides():
     def res(h): return re.sub(r"@@(/[^@]*)@@", lambda m: url(m.group(1)), h)
@@ -852,7 +905,7 @@ def build_guides():
         c = g[li]
         items += f'<a class="art-card" href="{url("/guides/"+g["slug"]+"/")}"><span class="name">{esc(c["h1"])}</span><p>{esc(c["desc"])}</p></a>'
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › {T("Guides","ガイド")}</div><h1>{T("Guides to martial arts in Okinawa","沖縄の武道ガイド")}</h1><p class="sub">{T("Practical, plain-language guides for visitors, new residents and beginners.","旅行者・移住者・初心者のための、わかりやすい実用ガイドです。")}</p><div class="cards">{items}</div></div>'''
-    page("/guides/", T("Guides to martial arts in Okinawa — karate, dojo etiquette, styles","沖縄の武道ガイド｜空手・道場の礼儀・流派"), T("Practical guides to karate and martial arts in Okinawa: where to train, dojo etiquette, styles explained, and Karate Day.","沖縄で空手・武道を始めるための実用ガイド。稽古できる場所、道場の礼儀、流派の解説、空手の日。"), body,
+    page("/guides/", T("Okinawa martial arts guides — karate, etiquette, styles","沖縄の武道ガイド｜空手・道場の礼儀・流派"), T("Practical guides to karate and martial arts in Okinawa: where to train, dojo etiquette, styles explained, and Karate Day.","沖縄で空手・武道を始めるための実用ガイド。稽古できる場所、道場の礼儀、流派の解説、空手の日。"), body,
          crumbs=[(T("Home","ホーム"), "/"), (T("Guides","ガイド"), None)])
     for g in GUIDES:
         c = g[li]
@@ -869,6 +922,7 @@ def build_guides():
 
 def build_language():
     build_home(); build_arts_index(); build_areas(); build_find(); build_map(); build_start(); build_about(); build_sources(); build_suggest(); build_dojos(); build_privacy(); build_english(); build_visitors(); build_military(); build_guides()
+    for x in STYLES: build_style(x)
     for d in DISC.values():
         if by_disc[d["slug"]]: build_art(d)
     for s in {r["municipality"] for r in ROWS if r["municipality"]}: build_area(s)
