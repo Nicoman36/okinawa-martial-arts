@@ -7,7 +7,7 @@
   "github_repo": "Nicoman36/okinawa-martial-arts",
   "contact_email": "info@okinawamartialarts.com",
   "data_license": "CC BY 4.0 (our compilation of facts; underlying facts belong to no one — see Sources)",
-  "index_roster_pages": false,
+  "index_roster_pages": true,
   "stale_days": {
     "A": 180,
     "B": 365,
