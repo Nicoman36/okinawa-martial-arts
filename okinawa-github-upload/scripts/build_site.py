@@ -903,7 +903,7 @@ STYLE_PLACES = {x[0]: [r for r in PLACES if (r["verification"] != "C" or CFG["in
 def style_chips():
     return " ".join(f'<a class="chip" href="{url("/styles/" + x[0] + "/")}">{esc(T(x[2] + " in Okinawa", "沖縄の" + x[3]))} · {len(STYLE_PLACES[x[0]])}</a>' for x in STYLES if len(STYLE_PLACES[x[0]]) >= 3)
 def guide_line():
-    return f'<p class="sub" style="font-size:.92rem">{T("Planning a visit? See", "訪れる前に：")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train karate in Okinawa", "沖縄で空手を稽古するには")}</a> {T("and", "と")} <a href="{url("/guides/dojo-etiquette/")}">{T("dojo etiquette", "道場での礼儀作法")}</a>.</p>'
+    return f'<p class="sub" style="font-size:.92rem">{T("Planning a visit? See", "訪れる前に：")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train karate in Okinawa", "沖縄で空手を稽古するには")}</a> {T("and", "と")} <a href="{url("/guides/dojo-etiquette/")}">{T("dojo etiquette", "道場での礼儀作法")}</a> · <a href="{url("/guides/training-costs/")}">{T("what training costs", "月謝・料金の目安")}</a>.</p>'
 def art_extra(s):
     if s not in ("karate", "kobudo", "kyokushin"): return ""
     sc = style_chips() if s in ("karate", "kobudo") else ""
@@ -1042,10 +1042,12 @@ def build_kids():
     intro = T(f'''<p>Martial arts are one of the most popular after-school activities in Okinawa. This page lists {n} dojo, clubs and gyms whose listing mentions classes for children or youth: {top}.</p>
 <p>Many karate dojo teach children too, even when their listing does not say so, so do not rule out a dojo near you because it is missing here. Browse the <a href="{url("/arts/karate/")}">karate list</a> or <a href="{url("/areas/")}">your area</a> and ask.</p>
 <div class="callout info"><b>Questions to ask before you join</b><ul style="margin:.4em 0 0"><li>From what age do they take children, and is there a separate kids' class?</li><li>Monthly fee (月謝), joining fee, uniform cost and sports insurance (スポーツ保険).</li><li>Whether parents can watch, and whether they need to help with events or tournaments.</li><li>Whether they can explain things in English, if your child does not speak Japanese.</li></ul></div>
+<p>Typical monthly fees for kids' classes are in our <a href="{url("/guides/training-costs/")}">training costs guide</a>.</p>
 <p>Most kids' classes run on weekday evenings after school, and schedules change in school holidays. A trial visit (見学, <i>kengaku</i>) is the usual first step; see <a href="{url("/guides/dojo-etiquette/")}">dojo etiquette</a> and our <a href="{url("/start/")}">beginner guide</a> for phrases.</p>''',
               f'''<p>沖縄では、武道は放課後の習い事として特に人気があります。このページでは、子ども・少年向けのクラスがあると記載されている道場・クラブ・ジム{n}件を紹介します（{top}）。</p>
 <p>記載がなくても、子どもを指導している空手道場は多くあります。このページにないからといって候補から外さず、<a href="{url("/arts/karate/")}">空手の一覧</a>や<a href="{url("/areas/")}">お住まいの地域</a>から探して問い合わせてみてください。</p>
 <div class="callout info"><b>入会前に確認したいこと</b><ul style="margin:.4em 0 0"><li>何歳から受け入れているか、子ども向けのクラスがあるか。</li><li>月謝・入会金・道着代・スポーツ保険。</li><li>保護者の見学や、大会・行事の手伝いが必要か。</li><li>日本語が得意でないお子さんの場合、英語での説明ができるか。</li></ul></div>
+<p>キッズクラスの月謝の目安は<a href="{url("/guides/training-costs/")}">月謝・料金の目安</a>をご覧ください。</p>
 <p>子ども向けのクラスは平日の放課後〜夕方が多く、学校の長期休みには日程が変わることがあります。まずは見学をお願いするのが一般的です。<a href="{url("/guides/dojo-etiquette/")}">道場での礼儀作法</a>や<a href="{url("/start/")}">初めての方へ</a>もご覧ください。</p>''')
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › {T("Kids' classes","子ども向け教室")}</div>
 <span class="kanji" lang="ja">子ども</span><h1>{esc(T("Kids' martial arts classes in Okinawa", "沖縄の子ども向け武道・格闘技教室"))}</h1><p class="sub">{T(f"{n} dojo and clubs that mention children's or youth classes", f"子ども・少年向けクラスの記載がある道場・クラブ{n}件")}</p>
