@@ -243,7 +243,7 @@ GUIDES = [
 <tr><td><a href="@@/l/pacific-grappler-mihara/@@">Pacific Grappler</a> (Okinawa City)</td><td>¥15,000</td><td>¥9,000</td><td>¥5,000</td></tr>
 <tr><td><a href="@@/l/kurohata-bjj/@@">Kuro Hata BJJ</a> (Uruma)</td><td>¥15,000</td><td>¥10,000</td><td>¥5,000</td></tr>
 </tbody></table></div>
-<p class="sub">*Impacto's fees were reported to us by the gym and are not on its website. Many gyms also offer cheaper women's, student, daytime or limited-class plans; see each listing.</p>
+<p class="sub">*Impacto's fees were reported to us by the gym and are not on its website; its kids' class is at the Chatan dojo. Many gyms also offer cheaper women's, student, daytime or limited-class plans; see each listing.</p>
 <p><b>In short:</b> adult BJJ runs about ¥8,000–¥15,000 a month at these gyms, kids' classes about ¥4,400–¥10,000, and joining fees ¥5,000–¥11,000.</p>
 <h2>Kickboxing and Muay Thai (6 gyms)</h2>
 <div style="overflow-x:auto"><table class="data"><thead><tr><th>Gym</th><th>Men monthly</th><th>Women monthly</th><th>Kids monthly</th><th>Joining fee</th></tr></thead><tbody>
@@ -296,7 +296,7 @@ GUIDES = [
 <tr><td><a href="@@/l/pacific-grappler-mihara/@@">パシフィック・グラップラー</a>（沖縄市）</td><td>15,000円</td><td>9,000円</td><td>5,000円</td></tr>
 <tr><td><a href="@@/l/kurohata-bjj/@@">黒旗BJJ</a>（うるま）</td><td>15,000円</td><td>10,000円</td><td>5,000円</td></tr>
 </tbody></table></div>
-<p class="sub">*IMPACTOの料金はジムから当サイトへのお知らせによるもので、ジムのサイトには掲載されていません。女性・学生・昼間・回数限定などの割安なプランを用意しているジムも多くあります。各掲載ページをご覧ください。</p>
+<p class="sub">*IMPACTOの料金はジムから当サイトへのお知らせによるもので、ジムのサイトには掲載されていません。キッズクラスは北谷道場で行われています。女性・学生・昼間・回数限定などの割安なプランを用意しているジムも多くあります。各掲載ページをご覧ください。</p>
 <p><b>まとめ：</b>大人の柔術は月およそ8,000〜15,000円、キッズは4,400〜10,000円、入会金は5,000〜11,000円です。</p>
 <h2>キックボクシング・ムエタイ（6か所）</h2>
 <div style="overflow-x:auto"><table class="data"><thead><tr><th>ジム</th><th>男性 月謝</th><th>女性 月謝</th><th>キッズ 月謝</th><th>入会金</th></tr></thead><tbody>
