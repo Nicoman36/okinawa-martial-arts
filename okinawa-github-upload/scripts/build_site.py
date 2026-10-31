@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Static site generator (stdlib only).  python3 scripts/build_site.py  ->  dist/"""
-import base64, csv, html, json, os, re, shutil, sys, urllib.parse, datetime
+import base64, csv, html, json, math, os, re, shutil, sys, urllib.parse, datetime
 from collections import Counter, defaultdict
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -46,7 +46,7 @@ def n_places(d): return sum(1 for r in by_disc[d] if not r["is_org"])
 # ------------------------------------------------------------------ helpers
 LANG = "en"
 def T(en, ja): return ja if LANG == "ja" else en
-LOCAL_PREFIXES = ("/arts", "/areas", "/find", "/start", "/about-data", "/sources", "/suggest-edit", "/for-dojos", "/privacy", "/l/", "/map", "/english-friendly", "/visitors", "/military-families", "/guides", "/styles")
+LOCAL_PREFIXES = ("/arts", "/areas", "/find", "/start", "/about-data", "/sources", "/suggest-edit", "/for-dojos", "/privacy", "/l/", "/map", "/english-friendly", "/visitors", "/military-families", "/guides", "/styles", "/near")
 def url(p):
     if LANG == "ja" and (p == "/" or p.startswith(LOCAL_PREFIXES)): p = "/ja" + (p if p != "/" else "/")
     return f"{BASE}{p}"
@@ -229,7 +229,7 @@ def build_home():
 <div class="stats"><div><b>{n}</b><span>{T("places listed","掲載件数")}</span></div><div><b>{na}</b><span>{T("arts","種目")}</span></div><div><b>{len(muni_counts)}</b><span>{T("municipalities","市町村")}</span></div><div><b>{verified}</b><span>{T("checked Oct 2026","2026年10月確認")}</span></div></div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by art","種目から探す")} <span class="jp">武道</span></h2><p class="sub">{T("Each art has its own page with an explanation, beginner notes and every listing. Use the “Switch art” menu on any page to hop between them.","各種目に、解説・初心者向けの案内・全掲載をまとめたページがあります。どのページでも「種目を切り替え」から移動できます。")}</p><div class="arts-grid">{arts}</div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by area","地域から探す")} <span class="jp">地域</span></h2><p class="sub">{T("Each tile is a municipality, placed roughly where it sits on the island. Darker means more listings.","各タイルは市町村で、おおよその位置に並べています。色が濃いほど掲載が多い地域です。")} <a href="{url("/map/")}">{T("Open the map →","地図を開く →")}</a></p>{tilemap(muni_counts)}</div></section>
-<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> {style_chips()}</div></div></section>
+{(f'<section class="block"><div class="wrap"><div class="callout info"><b>{T("Karate Day 2026:","2026年 空手の日：")}</b> {T("Shuri Castle demonstration on Sat 7 November and the mass demonstration on Kokusai-dori on Sun 8 November, 15:00–16:30.","11月7日（土）首里城で演武会、11月8日（日）15:00〜16:30 国際通りで記念演武祭。")} <a href="{url("/guides/karate-day-2026/")}">{T("Details and how to watch →","詳細と見学のコツ →")}</a></div></div></section>' if TODAY <= "2026-11-08" else "")}<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> {style_chips()}</div></div></section>
 <section class="block"><div class="wrap two"><div><h2>{T("New to training here?","初めての方へ")}</h2><p>{T("Visiting for a week or settling in for years — our beginner guide covers how to ask for a trial in Japanese, etiquette, what to bring, and which places are used to English speakers.","数日の滞在でも長期の移住でも。体験の申し込み方、礼儀作法、持ち物、英語対応のある場所などを案内します。")}</p><p><a class="btn" href="{url("/start/")}">{T("Read the guide","ガイドを読む")}</a> <a class="btn secondary" href="{url("/find/?eng=1")}">{T("English-friendly places","英語対応あり")}</a></p></div>
 <div><h2>{T("Know something we don't?","情報をお持ちですか？")}</h2><p>{T("Dojo move, close and change phone numbers. Every listing has a “Report a problem” link, and owners can claim, update or remove their entry.","道場の移転・閉鎖・電話番号の変更はよくあります。各掲載に「誤りを報告」リンクがあり、運営者ご本人は掲載の更新・削除もできます。")} <a href="{url("/about-data/")}">{T("How we check the data","確認方法")}</a> · <a href="{url("/sources/")}">{T("Sources","情報源")}</a></p><p><a class="btn secondary" href="{url("/suggest-edit/")}">{T("Suggest an edit","修正・追加を提案")}</a></p></div></div></section>'''
     page("/", T(f'{CFG["site_name"]} — Karate Dojo, BJJ & Gyms', f'{CFG["site_name_ja"]} — 道場・ジム・クラブを探す'),
@@ -266,7 +266,7 @@ def build_art(d):
 <div>{tilemap(mc, caption=T("places","件")) if mc else ""}</div></div>
 {('<h2 class="region">'+T("Styles listed","掲載されている流派・スタイル")+'</h2><table class="data"><thead><tr><th>'+T("Style / affiliation","流派・スタイル")+'</th><th>'+T("Places","件数")+'</th></tr></thead><tbody>'+top_styles+'</tbody></table>') if len(styles)>1 else ""}
 {grouped_cards(places)}{orgs_html}</div>'''
-    page(f"/arts/{s}/", T(f'{d["en"]} in Okinawa — {len(places)} places to train', f'沖縄の{d["ja"]} — 稽古場所{len(places)}か所'),
+    page(f"/arts/{s}/", T(f'{d["en"]} in Okinawa — {len(places)} places to train', f'沖縄の{d["ja"]}｜道場・教室一覧（{len(places)}か所）'),
          trim(T(f'{dtext(s,0)} {len(places)} places to train across {len(mc)} municipalities, with addresses, phone numbers and English-support notes.', f'{dtext(s,0)} 稽古場所{len(places)}か所・{len(mc)}市町村。住所・電話・英語対応の情報つき。')), body, cur="arts",
          jsonld=itemlist(places, nm), crumbs=[(T("Home","ホーム"), "/"), (T("Arts","種目"), "/arts/"), (nm, None)])
 
@@ -654,7 +654,7 @@ def build_static():
 ARTS_WITH = [d for d in DISC if n_places(d)]
 
 def sitemap():
-    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES]
+    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES] + [f"/near/{k}/" for k in NEAR]
     pages += [f"/arts/{d}/" for d in DISC if by_disc[d]] + [f"/areas/{s}/" for s in {r["municipality"] for r in ROWS if r["municipality"]}]
     pages += [f"/areas/{m}/{d}/" for m, d in LAND]
     pages += [f'/l/{r["id"]}/' for r in ROWS if not (r["verification"] == "C" and not CFG["index_roster_pages"])]
@@ -753,7 +753,7 @@ def build_landing(m, d):
 <div class="prose"><h2 class="region">{T("Before you go", "お出かけ前に")}</h2><h3>{q_trial}</h3><p>{a_trial}</p><h3>{q_eng}</h3><p>{a_eng}</p>
 <h3>{T("How current is this?", "情報はどれくらい新しいですか？")}</h3><p>{T("Cards marked “Checked Oct 2026” were compared with the operator's or federation's own page; the others come from third-party listings and may be out of date. Class times change with school terms and holidays, so call or message first. See ", "「2026年10月確認済み」の表示は運営者・連盟の公式ページと照合した情報です。それ以外は第三者の掲載情報に基づき、古い可能性があります。稽古時間は学期や祝日で変わるため、事前に電話かメッセージで確認してください。")}<a href="{url("/about-data/")}">{T("how we check", "確認方法")}</a>.</p></div>
 {more}<p style="margin-top:22px"><a class="btn" href="{url("/find/?area=" + m + "&art=" + d)}" rel="nofollow">{T("Search & filter these", "検索・絞り込み")}</a> <a class="btn secondary" href="{url("/map/?art=" + d)}">{T("See on map", "地図で見る")}</a> <a class="btn secondary" href="{url("/areas/" + m + "/")}">{T("All of " + area, area + "のすべて")}</a></p></div>'''
-    title = T(f"{cap(nn)} in {area}, Okinawa — {n} listed", f"{area}の{nn}｜沖縄 — {n}件掲載")
+    title = T(f"{cap(nn)} in {area}, Okinawa — {n} listed", f"{area}の{nn}一覧（{n}件）｜沖縄")
     desc = trim(T(f"{n} {nn} in {area} ({ja}), Okinawa, with addresses, phone numbers, trial-lesson and English-support notes. {chk} checked Oct 2026.",
                   f"{area}の{nn}{n}件。住所・電話番号・体験・英語対応の情報つき。うち{chk}件は2026年10月確認済み。"))
     page(f"/areas/{m}/{d}/", title, desc, body, cur="areas", jsonld=itemlist(pub, title),
@@ -824,7 +824,7 @@ def build_military():
               ("Uruma and the north (Camp Courtney, Hansen, Schwab)", "うるま・北部（キャンプ・コートニー、ハンセン、シュワブ周辺）", ("uruma", "kin", "ginoza", "onna", "nago")),
               ("Naha, Urasoe and the south (Camp Kinser)", "那覇・浦添・南部（キャンプ・キンザー周辺）", ("naha", "urasoe", "tomigusuku", "itoman", "haebaru", "yaese", "nanjo"))]
     off = [r for r in allr if r["eng_level"] and r["id"] not in ids]
-    secs = ""
+    secs = f'<h2 class="region">{T("By base","基地別")}</h2><div class="pill-row" style="margin:10px 0 18px">{near_chips()}</div>'
     if onbase:
         secs += f'<h2 class="region">{T("On-base programmes","基地内のプログラム")} <small style="font-weight:400;color:var(--muted)">· {len(onbase)}</small></h2><p class="sub">{T("Installation access is required. Rules change — check with the programme or your installation.","入場には基地への入場許可が必要です。規則は変わることがありますので、各プログラムや基地にご確認ください。")}</p><div class="cards">{"".join(card(r, vis_extra(r)) for r in onbase)}</div>'
     seen = set(ids)
@@ -897,6 +897,89 @@ def build_style(x):
          trim(T(f"{n} {en} dojo in Okinawa with addresses, phone numbers, trial-class and English notes. Most are in {top}.", f"沖縄の{ja}の道場{n}件。住所・電話・体験や英語対応の情報つき。{top}など。")),
          body, jsonld=itemlist(rs, nm), crumbs=[(T("Home","ホーム"), "/"), (dname("karate"), "/arts/karate/"), (T(en, ja), None)])
 
+# ---------------------------------------------------------------- near-base pages (distance from each US installation)
+BASES = [
+ ("kadena-air-base", "Kadena Air Base", "嘉手納基地", 26.3558, 127.7675,
+  "Kadena Air Base is the US Air Force's main base on Okinawa, spread across Kadena Town, Okinawa City and Chatan.",
+  "嘉手納基地は沖縄の米空軍の主要な基地で、嘉手納町・沖縄市・北谷町にまたがっています。"),
+ ("camp-foster", "Camp Foster", "キャンプ・フォスター（瑞慶覧）", 26.2930, 127.7760,
+  "Camp Foster (Camp Zukeran) is a large Marine Corps base in central Okinawa, spanning parts of Ginowan, Chatan, Kitanakagusuku and Okinawa City.",
+  "キャンプ・フォスター（キャンプ瑞慶覧）は沖縄本島中部の大きな海兵隊の基地で、宜野湾市・北谷町・北中城村・沖縄市にまたがっています。"),
+ ("mcas-futenma", "MCAS Futenma", "普天間飛行場", 26.2742, 127.7558,
+  "Marine Corps Air Station Futenma sits in the middle of Ginowan, a short drive from Camp Foster.",
+  "普天間飛行場は宜野湾市の中央にあり、キャンプ・フォスターから車ですぐの距離です。"),
+ ("camp-kinser", "Camp Kinser", "キャンプ・キンザー（牧港補給地区）", 26.2560, 127.7030,
+  "Camp Kinser is on the coast of Urasoe, just north of Naha, so the capital's many dojo are within easy reach.",
+  "キャンプ・キンザーは那覇市のすぐ北、浦添市の海沿いにあり、那覇の多くの道場にも通いやすい位置です。"),
+ ("camp-courtney", "Camp Courtney", "キャンプ・コートニー", 26.3920, 127.8560,
+  "Camp Courtney is on the east coast in Uruma.",
+  "キャンプ・コートニーは東海岸のうるま市にあります。"),
+ ("camp-hansen", "Camp Hansen", "キャンプ・ハンセン", 26.4560, 127.9140,
+  "Camp Hansen is in Kin, in the north-central part of the main island, where options are fewer and farther apart.",
+  "キャンプ・ハンセンは本島中北部の金武町にあり、周辺の選択肢は少なく、距離も離れています。"),
+]
+def _km(a, b, c, d):
+    p = math.radians
+    return 2 * 6371 * math.asin(math.sqrt(math.sin(p(c - a) / 2) ** 2 + math.cos(p(a)) * math.cos(p(c)) * math.sin(p(d - b) / 2) ** 2))
+def base_places(b):
+    rs = [r for r in PLACES if r["verification"] != "C" and r["lat"] and r["lon"]]
+    ds = sorted(((_km(b[3], b[4], float(r["lat"]), float(r["lon"])), r) for r in rs), key=lambda x: (x[0], x[1]["name_en"].lower()))
+    for rad in (5, 8, 12, 15):
+        sel = [(d, r) for d, r in ds if d <= rad]
+        if len(sel) >= 12: return rad, sel
+    return rad, sel
+NEAR = {b[0]: base_places(b) for b in BASES}
+NEAR = {k: v for k, v in NEAR.items() if len(v[1]) >= 5}
+
+def near_chips():
+    return " ".join(f'<a class="chip" href="{url("/near/" + b[0] + "/")}">{esc(T("Near " + b[1], b[2] + "周辺"))} · {len(NEAR[b[0]][1])}</a>' for b in BASES if b[0] in NEAR)
+
+def build_near(b):
+    slug, en, ja, la, lo, d_en, d_ja = b
+    rad, sel = NEAR[slug]
+    nm = T(en, ja)
+    engl = [(d, r) for d, r in sel if r["eng_level"]]
+    gyms = [(d, r) for d, r in sel if set(r["disc"]) & {"bjj", "mma", "boxing", "kickboxing", "krav-maga"}]
+    arts = Counter(dd for _, r in sel for dd in r["disc"] if dd in DISC)
+    top = T(", ", "、").join(f"{dname(k)} ({v})" for k, v in arts.most_common(5))
+    def ex(d, r):
+        return f'<p class="sub" style="margin:8px 0 0;font-size:.86rem">🚗 {T(f"About {d:.1f} km from {en} (straight line)", f"{ja}から直線で約{d:.1f} km")}</p>' + vis_extra(r, "english", "🗣", 150)
+    p1 = T(f"{len(sel)} dojo, gyms and clubs are within about {rad} km of {en} (straight-line distance from the middle of the base; the drive from your gate will differ). Arts: {top}.",
+           f"{ja}から約{rad} km以内（基地の中心からの直線距離。実際のゲートからの道のりとは異なります）に、道場・ジム・クラブが{len(sel)}件あります。種目：{top}。")
+    p2 = T(f"{len(engl)} of them are marked English-friendly or likely English-friendly, and {len(gyms)} are BJJ, MMA, boxing, kickboxing or Krav Maga gyms, which are often the easiest to join.",
+           f"そのうち英語対応（または可能性あり）は{len(engl)}件、ブラジリアン柔術・総合格闘技・ボクシング・キックボクシング・クラヴ・マガのジムは{len(gyms)}件です。")
+    secs = ""
+    if engl:
+        secs += f'<h2 class="region">{T("English-friendly, nearest first", "英語対応（近い順）")} <small style="font-weight:400;color:var(--muted)">· {len(engl)}</small></h2><div class="cards">{"".join(card(r, ex(d, r)) for d, r in engl)}</div>'
+    rest = [(d, r) for d, r in sel if not r["eng_level"]]
+    if rest:
+        secs += f'<h2 class="region">{T("Everything else, nearest first", "そのほか（近い順）")} <small style="font-weight:400;color:var(--muted)">· {len(rest)}</small></h2><p class="sub">{T("English support is not stated for these. Many traditional dojo still welcome newcomers who ask politely; see the", "英語対応の記載はありません。礼儀正しく尋ねれば受け入れてくれる伝統道場も多くあります。")} <a href="{url("/guides/dojo-etiquette/")}">{T("dojo etiquette guide", "道場での礼儀作法")}</a>.</p><div class="cards">{"".join(card(r, ex(d, r)) for d, r in rest)}</div>'
+    others = " ".join(f'<a class="chip" href="{url("/near/" + x[0] + "/")}">{esc(T("Near " + x[1], x[2] + "周辺"))} · {len(NEAR[x[0]][1])}</a>' for x in BASES if x[0] in NEAR and x[0] != slug)
+    body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/military-families/")}">{T("Near US bases","基地周辺")}</a> › {esc(nm)}</div>
+<h1>{esc(T("Martial arts near " + en, ja + "周辺の武道・格闘技"))}</h1>
+<div class="prose" style="margin:8px 0 18px"><p>{esc(d_ja if LANG == "ja" else d_en)}</p><p>{esc(p1)}</p><p>{esc(p2)}</p>
+<div class="callout info"><b>{T("Base access:", "基地への入場：")}</b> {T("on-base programmes need installation access, and rules change. Off-base gyms need no access and are open to everyone. This guide is independent and not affiliated with any installation, MWR or MCCS.", "基地内のプログラムには入場許可が必要で、規則は変わることがあります。基地外のジムは入場許可なしで誰でも利用できます。このガイドは独立したもので、基地・MWR・MCCSとは関係ありません。")}</div></div>
+{secs}
+<h2 class="region">{T("Other bases", "ほかの基地周辺")}</h2><div class="pill-row" style="margin:10px 0 18px">{others} <a class="chip" href="{url("/military-families/")}">{T("All on-base programmes and English-friendly gyms", "基地内プログラムと英語対応の一覧")}</a></div></div>'''
+    page(f"/near/{slug}/", T(f"Martial arts near {en} — {len(sel)} dojo & gyms within {rad} km", f"{ja}周辺の武道・格闘技｜{rad} km圏内の道場・ジム{len(sel)}件"),
+         trim(T(f"{len(sel)} dojo and gyms within {rad} km of {en}, nearest first: {top}. {len(engl)} English-friendly. Addresses, phones and trial info.", f"{ja}から{rad} km圏内の道場・ジム{len(sel)}件を近い順に掲載。{top}。英語対応{len(engl)}件。")),
+         body, jsonld=itemlist([r for _, r in sel], T("Martial arts near " + en, ja + "周辺の武道・格闘技")),
+         crumbs=[(T("Home","ホーム"), "/"), (T("Near US bases","基地周辺"), "/military-families/"), (nm, None)])
+
+def guide_events(g):
+    out = []
+    for e in g.get("events", []):
+        if e["end"][:10] < TODAY: continue
+        out.append({"@context": "https://schema.org", "@type": "Event", "name": T(e["name_en"], e["name_ja"]),
+                    "startDate": e["start"], "endDate": e["end"], "eventStatus": "https://schema.org/EventScheduled",
+                    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode", "isAccessibleForFree": True,
+                    "location": {"@type": "Place", "name": T(e["place_en"], e["place_ja"]),
+                                 "address": {"@type": "PostalAddress", "streetAddress": e["street"], "addressLocality": e["locality"], "addressRegion": "Okinawa", "addressCountry": "JP"}},
+                    "image": [CFG["base_url"] + "/assets/og.png"], "url": e["url"],
+                    "organizer": {"@type": "Organization", "name": "Okinawa Karate Event Secretariat", "url": "https://karate-event.jp/"},
+                    "description": T(g["en"]["desc"], g["ja"]["desc"])})
+    return out
+
 def build_guides():
     def res(h): return re.sub(r"@@(/[^@]*)@@", lambda m: url(m.group(1)), h)
     li = LANG
@@ -917,12 +1000,14 @@ def build_guides():
         ld = {"@context": "https://schema.org", "@type": "Article", "headline": c["h1"], "description": c["desc"], "inLanguage": li,
               "datePublished": g["date"], "dateModified": g["updated"], "mainEntityOfPage": CFG["base_url"] + ("/ja" if li == "ja" else "") + "/guides/" + g["slug"] + "/",
               "author": {"@type": "Organization", "name": CFG["site_name"], "url": CFG["base_url"] + "/"}, "publisher": {"@type": "Organization", "name": CFG["site_name"], "url": CFG["base_url"] + "/"}}
-        page("/guides/" + g["slug"] + "/", c["title"], c["desc"], body, jsonld=ld, og_type="article",
+        page("/guides/" + g["slug"] + "/", c["title"], c["desc"], body, jsonld=[ld] + guide_events(g), og_type="article",
              crumbs=[(T("Home","ホーム"), "/"), (T("Guides","ガイド"), "/guides/"), (c["h1"], None)])
 
 def build_language():
     build_home(); build_arts_index(); build_areas(); build_find(); build_map(); build_start(); build_about(); build_sources(); build_suggest(); build_dojos(); build_privacy(); build_english(); build_visitors(); build_military(); build_guides()
     for x in STYLES: build_style(x)
+    for b in BASES:
+        if b[0] in NEAR: build_near(b)
     for d in DISC.values():
         if by_disc[d["slug"]]: build_art(d)
     for s in {r["municipality"] for r in ROWS if r["municipality"]}: build_area(s)
