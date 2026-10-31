@@ -659,6 +659,11 @@ def sitemap():
     pages += [f"/areas/{m}/{d}/" for m, d in LAND]
     pages += [f'/l/{r["id"]}/' for r in ROWS if not (r["verification"] == "C" and not CFG["index_roster_pages"])]
     lm = {f'/l/{r["id"]}/': r["last_verified"] for r in ROWS if re.match(r"^\d{4}-\d{2}-\d{2}$", r["last_verified"] or "")}
+    # pages whose content changed after the last data update: keeps lastmod honest and lets IndexNow pick them up
+    lm.update({"/": "2026-10-31", "/military-families/": "2026-10-31", "/guides/": "2026-10-18"})
+    lm.update({f"/guides/{g['slug']}/": g["updated"] for g in GUIDES})
+    lm.update({f"/styles/{x[0]}/": "2026-10-23" for x in STYLES})
+    lm.update({f"/near/{k}/": "2026-10-31" for k in NEAR})
     def entry(p, lang):
         loc = CFG["base_url"] + ("/ja" if lang == "ja" else "") + p
         d = lm.get(p, "" if p.startswith("/l/") else LASTMOD)
