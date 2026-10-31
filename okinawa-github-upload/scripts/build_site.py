@@ -359,7 +359,7 @@ def build_listing(r):
 <p>{report_buttons(r)}</p>
 <p style="font-size:.88rem;margin-bottom:0">{T("Run this place?","運営者の方は")} <a href="{esc(claim_mail(r))}">{T("Claim this listing","この掲載を確認する")}</a> · <a href="{url("/for-dojos/")}">{T("How it works","詳しく")}</a>.</p></div>
 {f'<p><a class="btn secondary" href="{esc(gmaps)}" rel="noopener nofollow">{T("Open in Google Maps ↗","Googleマップで開く ↗")}</a> <a class="btn secondary" href="{url("/map/?id="+r["id"])}">{T("Show on our map","このサイトの地図で見る")}</a></p>' if gmaps else ""}
-<p class="sub" style="font-size:.85rem">{T("We don't embed Google Maps or copy map-service data; the link opens a search in your own map app.","Googleマップの埋め込みや地図サービスのデータの複製は行いません。リンクは、お使いの地図アプリで検索を開きます。")}</p></div></div>{related_block(r)}</div>'''
+<p class="sub" style="font-size:.85rem">{T("We don't embed Google Maps or copy map-service data; the link opens a search in your own map app.","Googleマップの埋め込みや地図サービスのデータの複製は行いません。リンクは、お使いの地図アプリで検索を開きます。")}</p></div></div>{style_box(r)}{related_block(r)}</div>'''
     noindex = (r["verification"] == "C" and not CFG["index_roster_pages"])
     where = r["m_en"] if r["municipality"] else "Okinawa"
     tname = r["name_en"]
@@ -389,9 +389,37 @@ def build_listing(r):
     page(f'/l/{r["id"]}/', T(t_en, t_ja), trim(gone[1 if LANG == "ja" else 0] + T(" ".join(bits_en), "".join(bits_ja))), body, cur="", noindex=noindex, jsonld=ld,
          crumbs=[(T("Home","ホーム"), "/")] + ([(dname(first), f"/arts/{first}/")] if first else []) + ([(mname(r["municipality"]).split(" (")[0], f"/areas/{r['municipality']}/")] if r["municipality"] in MUNI_SLUGS else []) + [(primary_name(r), None)])
 
+def style_box(r):
+    hits = [x for x in STYLES if r["style"] and re.search(x[1], r["style"], re.I)][:2]
+    out = ""
+    for x in hits:
+        slug, pat, en, ja, d_en, d_ja = x
+        desc = d_ja if LANG == "ja" else d_en
+        out += f'<div class="callout info" style="margin-top:18px"><b>{esc(T("About " + en, ja + "とは"))}</b><p style="margin:.4em 0">{esc(desc)}</p><p style="margin:0"><a href="{url("/styles/" + slug + "/")}">{esc(T(f"All {len(STYLE_PLACES[slug])} {en} dojo in Okinawa →", f"沖縄の{ja}の道場{len(STYLE_PLACES[slug])}件 →"))}</a> · <a href="{url("/guides/okinawan-karate-styles/")}">{T("Styles explained", "流派ガイド")}</a></p></div>'
+    return out
+
 def related_block(r):
-    pool = sorted([x for x in PLACES if x["id"] != r["id"] and x["verification"] != "C"], key=lambda x: (x["verification"], x["name_en"].lower()))
+    shown = lambda x: x["id"] != r["id"] and (x["verification"] != "C" or CFG["index_roster_pages"])
     mine = set(r["disc"])
+    if r["lat"] and r["lon"] and r.get("geo_precision") == "block":
+        la, lo = float(r["lat"]), float(r["lon"])
+        ds = sorted(((_km(la, lo, float(x["lat"]), float(x["lon"])), x) for x in PLACES if shown(x) and x["lat"] and x["lon"] and x.get("geo_precision") == "block"), key=lambda t: (t[0], t[1]["name_en"].lower()))
+        ds = [t for t in ds if t[0] <= 10]
+        same = [t for t in ds if mine & set(t[1]["disc"])][:4]
+        other = [t for t in ds if t not in same][:6 - len(same)]
+        pick = sorted(same + other, key=lambda t: t[0])
+        if pick:
+            def ex(d):
+                txt = T(f"About {d:.1f} km away (straight line)", f"直線で約{d:.1f} km") if d >= 0.1 else T("Less than 0.1 km away", "0.1 km未満")
+                return f'<p class="sub" style="margin:8px 0 0;font-size:.86rem">📏 {txt}</p>'
+            more = ""
+            first = r["disc"][0] if r["disc"] and r["disc"][0] in DISC else None
+            if first and r["municipality"] and (r["municipality"], first) in LAND:
+                nm_a = MUNI_SLUGS[r["municipality"]][0] if LANG == "ja" else MUNI_SLUGS[r["municipality"]][1].split(" (")[0]
+                more = f'<p><a href="{url("/areas/" + r["municipality"] + "/" + first + "/")}">{esc(T(f"All {cap(noun(first))} in {nm_a} →", f"{nm_a}の{noun(first)}一覧 →"))}</a></p>'
+            note = T("Distances are measured between map positions; positions for roster dojo are rounded to about 100 m.", "距離は地図上の位置どうしの直線距離です。名簿の道場の位置は約100 mに丸めています。")
+            return f'<h2 class="region">{T("Nearby places to train", "近くの稽古場所")}</h2><p class="sub" style="font-size:.85rem">{note}</p><div class="cards">{"".join(card(x, ex(d)) for d, x in pick)}</div>{more}'
+    pool = sorted([x for x in PLACES if shown(x)], key=lambda x: (x["verification"], x["name_en"].lower()))
     same = [x for x in pool if r["municipality"] and x["municipality"] == r["municipality"]]
     a1 = [x for x in same if mine & set(x["disc"])]
     a2 = [x for x in same if x not in a1]
