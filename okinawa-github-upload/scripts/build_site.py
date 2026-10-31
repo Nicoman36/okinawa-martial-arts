@@ -46,7 +46,7 @@ def n_places(d): return sum(1 for r in by_disc[d] if not r["is_org"])
 # ------------------------------------------------------------------ helpers
 LANG = "en"
 def T(en, ja): return ja if LANG == "ja" else en
-LOCAL_PREFIXES = ("/arts", "/areas", "/find", "/start", "/about-data", "/sources", "/suggest-edit", "/for-dojos", "/privacy", "/l/", "/map", "/english-friendly", "/visitors", "/military-families", "/guides", "/styles", "/near")
+LOCAL_PREFIXES = ("/arts", "/areas", "/find", "/start", "/about-data", "/sources", "/suggest-edit", "/for-dojos", "/privacy", "/l/", "/map", "/english-friendly", "/visitors", "/military-families", "/guides", "/styles", "/near", "/kids")
 def url(p):
     if LANG == "ja" and (p == "/" or p.startswith(LOCAL_PREFIXES)): p = "/ja" + (p if p != "/" else "/")
     return f"{BASE}{p}"
@@ -95,12 +95,12 @@ def footer():
     if LANG == "ja":
         return f'''<footer class="site"><div class="wrap"><div class="cols">
 <div><h4>{esc(CFG["site_name_ja"])}</h4><p>沖縄の武道・格闘技を紹介する、独立した有志運営のガイドです。道場・連盟・行政機関とは関係ありません。最終ビルド {TODAY}。※営業時間・備考など掲載詳細の一部は原文（英語）のままです。</p></div>
-<div><h4>探す</h4><ul><li><a href="{url("/find/")}">すべてを検索</a></li><li><a href="{url("/areas/")}">地域から探す</a></li><li><a href="{url("/map/")}">地図</a></li><li><a href="{url("/start/")}">初めての方へ</a></li><li><a href="{url("/english-friendly/")}">英語対応の道場・ジム</a></li><li><a href="{url("/visitors/")}">旅行者向け体験</a></li><li><a href="{url("/military-families/")}">米軍基地周辺</a></li><li><a href="{url("/guides/")}">ガイド</a></li></ul></div>
+<div><h4>探す</h4><ul><li><a href="{url("/find/")}">すべてを検索</a></li><li><a href="{url("/areas/")}">地域から探す</a></li><li><a href="{url("/map/")}">地図</a></li><li><a href="{url("/start/")}">初めての方へ</a></li><li><a href="{url("/english-friendly/")}">英語対応の道場・ジム</a></li><li><a href="{url("/visitors/")}">旅行者向け体験</a></li><li><a href="{url("/military-families/")}">米軍基地周辺</a></li><li><a href="{url("/kids/")}">子ども向け教室</a></li><li><a href="{url("/guides/")}">ガイド</a></li></ul></div>
 <div><h4>信頼性・お問い合わせ</h4><ul><li><a href="{url("/about-data/")}">データについて</a></li><li><a href="{url("/sources/")}">情報源と帰属</a></li><li><a href="{url("/suggest-edit/")}">修正・追加の提案</a></li><li><a href="{url("/for-dojos/")}">道場・ジムの運営者の方へ</a></li><li><a href="{url("/privacy/")}">プライバシーと削除依頼</a></li></ul></div>
 </div></div></footer>'''
     return f'''<footer class="site"><div class="wrap"><div class="cols">
 <div><h4>{esc(CFG["site_name"])}</h4><p>An independent, community-maintained guide to martial arts and combat sports in Okinawa. Not affiliated with any dojo, federation or government body. Last built {TODAY}.</p></div>
-<div><h4>Explore</h4><ul><li><a href="{url("/find/")}">Search all places</a></li><li><a href="{url("/areas/")}">Browse by area</a></li><li><a href="{url("/map/")}">Map</a></li><li><a href="{url("/start/")}">Beginner guide</a></li><li><a href="{url("/arts/")}">All arts</a></li><li><a href="{url("/english-friendly/")}">English-friendly places</a></li><li><a href="{url("/visitors/")}">Trial classes for visitors</a></li><li><a href="{url("/military-families/")}">Near US bases</a></li><li><a href="{url("/guides/")}">Guides</a></li></ul></div>
+<div><h4>Explore</h4><ul><li><a href="{url("/find/")}">Search all places</a></li><li><a href="{url("/areas/")}">Browse by area</a></li><li><a href="{url("/map/")}">Map</a></li><li><a href="{url("/start/")}">Beginner guide</a></li><li><a href="{url("/arts/")}">All arts</a></li><li><a href="{url("/english-friendly/")}">English-friendly places</a></li><li><a href="{url("/visitors/")}">Trial classes for visitors</a></li><li><a href="{url("/military-families/")}">Near US bases</a></li><li><a href="{url("/kids/")}">Kids' classes</a></li><li><a href="{url("/guides/")}">Guides</a></li></ul></div>
 <div><h4>Trust &amp; help</h4><ul><li><a href="{url("/about-data/")}">About this data</a></li><li><a href="{url("/sources/")}">Sources &amp; attribution</a></li><li><a href="{url("/suggest-edit/")}">Suggest an edit</a></li><li><a href="{url("/for-dojos/")}">For dojo &amp; gym owners</a></li><li><a href="{url("/privacy/")}">Privacy &amp; removal</a></li></ul></div>
 </div></div></footer>'''
 
@@ -229,7 +229,7 @@ def build_home():
 <div class="stats"><div><b>{n}</b><span>{T("places listed","掲載件数")}</span></div><div><b>{na}</b><span>{T("arts","種目")}</span></div><div><b>{len(muni_counts)}</b><span>{T("municipalities","市町村")}</span></div><div><b>{verified}</b><span>{T("checked Oct 2026","2026年10月確認")}</span></div></div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by art","種目から探す")} <span class="jp">武道</span></h2><p class="sub">{T("Each art has its own page with an explanation, beginner notes and every listing. Use the “Switch art” menu on any page to hop between them.","各種目に、解説・初心者向けの案内・全掲載をまとめたページがあります。どのページでも「種目を切り替え」から移動できます。")}</p><div class="arts-grid">{arts}</div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by area","地域から探す")} <span class="jp">地域</span></h2><p class="sub">{T("Each tile is a municipality, placed roughly where it sits on the island. Darker means more listings.","各タイルは市町村で、おおよその位置に並べています。色が濃いほど掲載が多い地域です。")} <a href="{url("/map/")}">{T("Open the map →","地図を開く →")}</a></p>{tilemap(muni_counts)}</div></section>
-{(f'<section class="block"><div class="wrap"><div class="callout info"><b>{T("Karate Day 2026:","2026年 空手の日：")}</b> {T("Shuri Castle demonstration on Sat 7 November and the mass demonstration on Kokusai-dori on Sun 8 November, 15:00–16:30.","11月7日（土）首里城で演武会、11月8日（日）15:00〜16:30 国際通りで記念演武祭。")} <a href="{url("/guides/karate-day-2026/")}">{T("Details and how to watch →","詳細と見学のコツ →")}</a></div></div></section>' if TODAY <= "2026-11-08" else "")}<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> {style_chips()}</div></div></section>
+{(f'<section class="block"><div class="wrap"><div class="callout info"><b>{T("Karate Day 2026:","2026年 空手の日：")}</b> {T("Shuri Castle demonstration on Sat 7 November and the mass demonstration on Kokusai-dori on Sun 8 November, 15:00–16:30.","11月7日（土）首里城で演武会、11月8日（日）15:00〜16:30 国際通りで記念演武祭。")} <a href="{url("/guides/karate-day-2026/")}">{T("Details and how to watch →","詳細と見学のコツ →")}</a></div></div></section>' if TODAY <= "2026-11-08" else "")}<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> <a class="chip" href="{url("/kids/")}">{T("Kids' classes","子ども向け教室")}</a> {style_chips()}</div></div></section>
 <section class="block"><div class="wrap two"><div><h2>{T("New to training here?","初めての方へ")}</h2><p>{T("Visiting for a week or settling in for years — our beginner guide covers how to ask for a trial in Japanese, etiquette, what to bring, and which places are used to English speakers.","数日の滞在でも長期の移住でも。体験の申し込み方、礼儀作法、持ち物、英語対応のある場所などを案内します。")}</p><p><a class="btn" href="{url("/start/")}">{T("Read the guide","ガイドを読む")}</a> <a class="btn secondary" href="{url("/find/?eng=1")}">{T("English-friendly places","英語対応あり")}</a></p></div>
 <div><h2>{T("Know something we don't?","情報をお持ちですか？")}</h2><p>{T("Dojo move, close and change phone numbers. Every listing has a “Report a problem” link, and owners can claim, update or remove their entry.","道場の移転・閉鎖・電話番号の変更はよくあります。各掲載に「誤りを報告」リンクがあり、運営者ご本人は掲載の更新・削除もできます。")} <a href="{url("/about-data/")}">{T("How we check the data","確認方法")}</a> · <a href="{url("/sources/")}">{T("Sources","情報源")}</a></p><p><a class="btn secondary" href="{url("/suggest-edit/")}">{T("Suggest an edit","修正・追加を提案")}</a></p></div></div></section>'''
     page("/", T(f'{CFG["site_name"]} — Karate Dojo, BJJ & Gyms', f'{CFG["site_name_ja"]} — 道場・ジム・クラブを探す'),
@@ -313,6 +313,7 @@ def build_area(slug):
 def row(k, v, raw=False):
     return f"<dt>{esc(k)}</dt><dd>{v if raw else esc(v)}</dd>" if v else ""
 
+DUP_NAMES = Counter((x["name_en"], x["municipality"]) for x in ROWS)
 def build_listing(r):
     chips = "".join(f'<a class="chip" href="{url("/arts/"+d+"/")}">{esc(dname(d))}</a>' for d in r["disc"] if d in DISC)
     web = r["website"] if r["website"].startswith("http") or not r["website"] else "https://" + r["website"]
@@ -361,11 +362,14 @@ def build_listing(r):
 <p class="sub" style="font-size:.85rem">{T("We don't embed Google Maps or copy map-service data; the link opens a search in your own map app.","Googleマップの埋め込みや地図サービスのデータの複製は行いません。リンクは、お使いの地図アプリで検索を開きます。")}</p></div></div>{related_block(r)}</div>'''
     noindex = (r["verification"] == "C" and not CFG["index_roster_pages"])
     where = r["m_en"] if r["municipality"] else "Okinawa"
+    tname = r["name_en"]
+    if DUP_NAMES[(r["name_en"], r["municipality"])] > 1 and r["contact"]:
+        tname = f'{r["name_en"]} ({r["contact"].split(" (")[0].split(",")[0].strip()})'
     art1 = dname(first) if first else ""
-    t_en = f'{r["name_en"]} — {art1} in {where}, Okinawa' if (art1 and r["municipality"]) else f'{r["name_en"]} — {where}, Okinawa'
-    if len(t_en) > 62: t_en = f'{r["name_en"]} — {where}, Okinawa'
-    if len(t_en) > 66 and r["municipality"]: t_en = f'{r["name_en"]} — {where}'
-    if len(t_en) > 66: t_en = r["name_en"]
+    t_en = f'{tname} — {art1} in {where}, Okinawa' if (art1 and r["municipality"]) else f'{tname} — {where}, Okinawa'
+    if len(t_en) > 62: t_en = f'{tname} — {where}, Okinawa'
+    if len(t_en) > 66 and r["municipality"]: t_en = f'{tname} — {where}'
+    if len(t_en) > 66: t_en = tname
     if len(t_en) > 66: t_en = t_en[:63].rsplit(" ", 1)[0] + "…"
     t_ja = f'{primary_name(r)} — {r["m_ja"] or "沖縄"}の{art1}' if (art1 and r["municipality"]) else f'{primary_name(r)} — {r["m_ja"] or "沖縄"}'
     gone = {"closed": ("Closed: ", "閉鎖：", ), "moved": ("Moved: ", "移転：")}.get(r["status"], ("", ""))
@@ -630,10 +634,10 @@ def build_privacy():
     an_ja = "このサイトはCookieを使わないプライバシー配慮型のアクセス解析（ページ閲覧数のみ・個人の特定なし）を使用しています。" if ANALYTICS else "このサイトにはアカウント・広告・追跡用Cookieはありません。"
     if LANG == "ja":
         body = f'''<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">ホーム</a> › プライバシー</div><h1>プライバシーと削除依頼</h1>
-<ul><li>{an_ja}</li><li>「現在地から近い順」「現在地」は、お使いのブラウザ内でのみ位置を使います。位置情報は当サイトのサーバーに送信・保存されません。</li><li>掲載には、公開名簿や運営者のサイトで公表されている事業情報と指導者名が含まれます。</li><li>私的な道場の住所は番地レベルに縮小し、建物名・部屋番号は除いています。名簿のみの道場のページは検索エンジンに表示されません。地図の位置も約100 mに丸めています。</li><li>掲載された方は、いつでも修正・削除を依頼できます（<a href="{url("/for-dojos/")}">運営者の方へ</a>）。</li><li>「誤りを報告」を押すとGitHub（またはメールアプリ）に移動し、そちらのプライバシーポリシーが適用されます。地図はOpenStreetMapのタイルを読み込みます。</li></ul></div>'''
+<ul><li>{an_ja}</li><li>「現在地から近い順」「現在地」は、お使いのブラウザ内でのみ位置を使います。位置情報は当サイトのサーバーに送信・保存されません。</li><li>掲載には、公開名簿や運営者のサイトで公表されている事業情報と指導者名が含まれます。</li><li>私的な道場の住所は番地レベルに縮小し、建物名・部屋番号は除いています。地図の位置も約100 mに丸めています。</li><li>掲載された方は、いつでも修正・削除を依頼できます（<a href="{url("/for-dojos/")}">運営者の方へ</a>）。</li><li>「誤りを報告」を押すとGitHub（またはメールアプリ）に移動し、そちらのプライバシーポリシーが適用されます。地図はOpenStreetMapのタイルを読み込みます。</li></ul></div>'''
         page("/privacy/", "プライバシーと削除依頼", "個人情報の扱いと削除依頼の方法。", body); return
     body = f'''<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">Home</a> › Privacy</div><h1>Privacy &amp; removal</h1>
-<ul><li>{an_en}</li><li>“Nearest to me” and “Near me” use your location only inside your browser; it is never sent to or stored on our servers.</li><li>Listings contain business details and the names of instructors as published in public rosters or on operators' sites.</li><li>For private dojo, addresses are trimmed to block level (no apartment names or room numbers), pages for roster-only dojo are hidden from search engines, and map pins are rounded to about 100 m.</li><li>Anyone named on this site can ask for correction or removal at any time — see <a href="{url("/for-dojos/")}">For dojo owners</a>.</li><li>When you press “Report a problem”, you leave this site for GitHub (or open your email app) and its own privacy policy applies. The map page loads tiles from OpenStreetMap.</li></ul></div>'''
+<ul><li>{an_en}</li><li>“Nearest to me” and “Near me” use your location only inside your browser; it is never sent to or stored on our servers.</li><li>Listings contain business details and the names of instructors as published in public rosters or on operators' sites.</li><li>For private dojo, addresses are trimmed to block level (no apartment names or room numbers), and map pins are rounded to about 100 m.</li><li>Anyone named on this site can ask for correction or removal at any time — see <a href="{url("/for-dojos/")}">For dojo owners</a>.</li><li>When you press “Report a problem”, you leave this site for GitHub (or open your email app) and its own privacy policy applies. The map page loads tiles from OpenStreetMap.</li></ul></div>'''
     page("/privacy/", "Privacy & removal requests", "How personal information is handled and how to request removal.", body)
 
 def build_404():
@@ -654,7 +658,7 @@ def build_static():
 ARTS_WITH = [d for d in DISC if n_places(d)]
 
 def sitemap():
-    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES] + [f"/near/{k}/" for k in NEAR]
+    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES] + [f"/near/{k}/" for k in NEAR] + ["/kids/"]
     pages += [f"/arts/{d}/" for d in DISC if by_disc[d]] + [f"/areas/{s}/" for s in {r["municipality"] for r in ROWS if r["municipality"]}]
     pages += [f"/areas/{m}/{d}/" for m, d in LAND]
     pages += [f'/l/{r["id"]}/' for r in ROWS if not (r["verification"] == "C" and not CFG["index_roster_pages"])]
@@ -664,6 +668,7 @@ def sitemap():
     lm.update({f"/guides/{g['slug']}/": g["updated"] for g in GUIDES})
     lm.update({f"/styles/{x[0]}/": "2026-10-23" for x in STYLES})
     lm.update({f"/near/{k}/": "2026-10-31" for k in NEAR})
+    lm.update({"/kids/": "2026-10-31", "/areas/": "2026-10-31", "/arts/": "2026-10-31"})
     def entry(p, lang):
         loc = CFG["base_url"] + ("/ja" if lang == "ja" else "") + p
         d = lm.get(p, "" if p.startswith("/l/") else LASTMOD)
@@ -685,7 +690,7 @@ def trim(s, n=158):
 # (municipality, art) -> non-roster places; only combinations with at least 3 get their own page
 LAND = {}
 for _r in PLACES:
-    if _r["verification"] == "C" or not _r["municipality"]: continue
+    if (_r["verification"] == "C" and not CFG["index_roster_pages"]) or not _r["municipality"]: continue
     for _d in _r["disc"]:
         if _d in DISC: LAND.setdefault((_r["municipality"], _d), []).append(_r)
 LAND = {k: v for k, v in LAND.items() if len(v) >= 3}
@@ -693,7 +698,7 @@ LASTMOD = max([r["last_verified"] for r in ROWS if r["last_verified"]] or [TODAY
 TOPICAL = ["/english-friendly/", "/visitors/", "/military-families/", "/guides/"] + [f"/guides/{g['slug']}/" for g in GUIDES]
 
 def itemlist(rs, name):
-    rs = [r for r in rs if r["verification"] != "C"][:50]
+    rs = [r for r in rs if (r["verification"] != "C" or CFG["index_roster_pages"])][:50]
     return {"@context": "https://schema.org", "@type": "CollectionPage", "name": name, "inLanguage": LANG,
             "mainEntity": {"@type": "ItemList", "numberOfItems": len(rs), "itemListElement": [
                 {"@type": "ListItem", "position": i + 1, "url": CFG["base_url"] + url("/l/" + r["id"] + "/"), "name": primary_name(r)} for i, r in enumerate(rs)]}}
@@ -865,7 +870,7 @@ STYLES = [
   "Uechi-ryu (上地流) was founded by Uechi Kanbun and is based on a Chinese system he studied in Fuzhou. It is known for firm, close-range technique, body conditioning and a small set of kata.",
   "上地流は、上地完文が福州で学んだ中国の武術をもとに創始した流派です。近い間合いの技と体づくり、少数の型が特徴です。"),
 ]
-STYLE_PLACES = {x[0]: [r for r in PLACES if r["verification"] != "C" and re.search(x[1], r["style"], re.I)] for x in STYLES}
+STYLE_PLACES = {x[0]: [r for r in PLACES if (r["verification"] != "C" or CFG["index_roster_pages"]) and re.search(x[1], r["style"], re.I)] for x in STYLES}
 
 def style_chips():
     return " ".join(f'<a class="chip" href="{url("/styles/" + x[0] + "/")}">{esc(T(x[2] + " in Okinawa", "沖縄の" + x[3]))} · {len(STYLE_PLACES[x[0]])}</a>' for x in STYLES if len(STYLE_PLACES[x[0]]) >= 3)
@@ -927,7 +932,7 @@ def _km(a, b, c, d):
     p = math.radians
     return 2 * 6371 * math.asin(math.sqrt(math.sin(p(c - a) / 2) ** 2 + math.cos(p(a)) * math.cos(p(c)) * math.sin(p(d - b) / 2) ** 2))
 def base_places(b):
-    rs = [r for r in PLACES if r["verification"] != "C" and r["lat"] and r["lon"]]
+    rs = [r for r in PLACES if (r["verification"] != "C" or CFG["index_roster_pages"]) and r["lat"] and r["lon"]]
     ds = sorted(((_km(b[3], b[4], float(r["lat"]), float(r["lon"])), r) for r in rs), key=lambda x: (x[0], x[1]["name_en"].lower()))
     for rad in (5, 8, 12, 15):
         sel = [(d, r) for d, r in ds if d <= rad]
@@ -985,6 +990,42 @@ def guide_events(g):
                     "description": T(g["en"]["desc"], g["ja"]["desc"])})
     return out
 
+# ---------------------------------------------------------------- children's classes
+KIDS_RE = re.compile(r"\bkids?\b|child|youth|junior|少年|子ども|子供|児童|ジュニア|キッズ|小学|中学", re.I)
+def kid_field(r):
+    for f in ("visitors", "hours", "notes", "style", "name_en", "name_ja"):
+        if r.get(f) and KIDS_RE.search(r[f]): return r[f]
+    return ""
+KIDS = sorted([r for r in PLACES if (r["verification"] != "C" or CFG["index_roster_pages"]) and kid_field(r)], key=lambda r: (r["region"], r["verification"], r["name_en"].lower()))
+
+def build_kids():
+    rs = KIDS; n = len(rs)
+    arts = Counter(d for r in rs for d in r["disc"] if d in DISC)
+    top = T(", ", "、").join(f"{dname(k)} ({v})" for k, v in arts.most_common(6))
+    def ex(r):
+        txt = kid_field(r)
+        if txt in (r["name_en"], r["name_ja"]): return ""
+        if LANG == "ja" and not re.search(r"[぀-ヿ一-鿿]", txt): return ""
+        return f'<p class="sub" style="margin:8px 0 0;font-size:.86rem">🧒 {esc(trim(txt, 170))}</p>'
+    secs = []
+    for key, label in REGIONS:
+        sub = [r for r in rs if r.get("region") == key]
+        if sub: secs.append(f'<h2 class="region">{esc(REGIONS_JA[key] if LANG == "ja" else label)} <small style="font-weight:400;color:var(--muted)">· {len(sub)}</small></h2><div class="cards">{"".join(card(r, ex(r)) for r in sub)}</div>')
+    intro = T(f'''<p>Martial arts are one of the most popular after-school activities in Okinawa. This page lists {n} dojo, clubs and gyms whose listing mentions classes for children or youth: {top}.</p>
+<p>Many karate dojo teach children too, even when their listing does not say so, so do not rule out a dojo near you because it is missing here. Browse the <a href="{url("/arts/karate/")}">karate list</a> or <a href="{url("/areas/")}">your area</a> and ask.</p>
+<div class="callout info"><b>Questions to ask before you join</b><ul style="margin:.4em 0 0"><li>From what age do they take children, and is there a separate kids' class?</li><li>Monthly fee (月謝), joining fee, uniform cost and sports insurance (スポーツ保険).</li><li>Whether parents can watch, and whether they need to help with events or tournaments.</li><li>Whether they can explain things in English, if your child does not speak Japanese.</li></ul></div>
+<p>Most kids' classes run on weekday evenings after school, and schedules change in school holidays. A trial visit (見学, <i>kengaku</i>) is the usual first step; see <a href="{url("/guides/dojo-etiquette/")}">dojo etiquette</a> and our <a href="{url("/start/")}">beginner guide</a> for phrases.</p>''',
+              f'''<p>沖縄では、武道は放課後の習い事として特に人気があります。このページでは、子ども・少年向けのクラスがあると記載されている道場・クラブ・ジム{n}件を紹介します（{top}）。</p>
+<p>記載がなくても、子どもを指導している空手道場は多くあります。このページにないからといって候補から外さず、<a href="{url("/arts/karate/")}">空手の一覧</a>や<a href="{url("/areas/")}">お住まいの地域</a>から探して問い合わせてみてください。</p>
+<div class="callout info"><b>入会前に確認したいこと</b><ul style="margin:.4em 0 0"><li>何歳から受け入れているか、子ども向けのクラスがあるか。</li><li>月謝・入会金・道着代・スポーツ保険。</li><li>保護者の見学や、大会・行事の手伝いが必要か。</li><li>日本語が得意でないお子さんの場合、英語での説明ができるか。</li></ul></div>
+<p>子ども向けのクラスは平日の放課後〜夕方が多く、学校の長期休みには日程が変わることがあります。まずは見学をお願いするのが一般的です。<a href="{url("/guides/dojo-etiquette/")}">道場での礼儀作法</a>や<a href="{url("/start/")}">初めての方へ</a>もご覧ください。</p>''')
+    body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › {T("Kids' classes","子ども向け教室")}</div>
+<span class="kanji" lang="ja">子ども</span><h1>{esc(T("Kids' martial arts classes in Okinawa", "沖縄の子ども向け武道・格闘技教室"))}</h1><p class="sub">{T(f"{n} dojo and clubs that mention children's or youth classes", f"子ども・少年向けクラスの記載がある道場・クラブ{n}件")}</p>
+<div class="prose">{intro}</div>{"".join(secs)}</div>'''
+    page("/kids/", T(f"Kids' martial arts classes in Okinawa — {n} dojo & clubs", f"沖縄の子ども向け武道教室｜空手・剣道・柔道など{n}件"),
+         trim(T(f"{n} dojo and clubs in Okinawa with children's or youth classes: {top}. What to ask before joining, fees and schedules.", f"子ども向け・少年クラスのある沖縄の道場・クラブ{n}件（{top}）。入会前に確認したいこと、月謝、日程の目安も。")),
+         body, jsonld=itemlist(rs, T("Kids' martial arts classes in Okinawa", "沖縄の子ども向け武道教室")), crumbs=[(T("Home","ホーム"), "/"), (T("Kids' classes","子ども向け教室"), None)])
+
 def build_guides():
     def res(h): return re.sub(r"@@(/[^@]*)@@", lambda m: url(m.group(1)), h)
     li = LANG
@@ -1011,6 +1052,7 @@ def build_guides():
 def build_language():
     build_home(); build_arts_index(); build_areas(); build_find(); build_map(); build_start(); build_about(); build_sources(); build_suggest(); build_dojos(); build_privacy(); build_english(); build_visitors(); build_military(); build_guides()
     for x in STYLES: build_style(x)
+    build_kids()
     for b in BASES:
         if b[0] in NEAR: build_near(b)
     for d in DISC.values():
