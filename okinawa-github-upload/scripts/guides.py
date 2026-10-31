@@ -223,4 +223,112 @@ GUIDES = [
 <p><a href="@@/visitors/@@">旅行者向け体験</a> · <a href="@@/english-friendly/@@">英語対応の道場・ジム</a> · <a href="@@/military-families/@@">米軍基地周辺</a> · <a href="@@/guides/okinawan-karate-styles/@@">流派ガイド</a> · <a href="@@/guides/karate-day-2026/@@">2026年 空手の日</a></p>""",
  },
 },
+{
+ "slug": "training-costs", "date": "2026-10-31", "updated": "2026-10-31",
+ "en": {
+  "title": "How much does martial arts training cost in Okinawa? (2026)",
+  "desc": "Monthly fees, joining fees, kids' rates and visitor prices for BJJ, kickboxing and karate gyms in Okinawa, from the gyms' own published prices, checked Oct 2026.",
+  "h1": "What martial arts training costs in Okinawa",
+  "sub": "Monthly fees, joining fees, kids' and visitor rates — from published prices, checked 31 October 2026.",
+  "body": """<p>This guide is built only from fees that gyms publish on their own websites, plus one gym that gave us its prices directly. Every number links back to the listing it came from, so you can check it. We give ranges and the number of gyms behind each range rather than averages, because the samples are small.</p>
+<div class="callout info"><b>Read this first.</b> Prices change and many gyms run joining-fee or free-month campaigns. Two gyms quote prices before tax (marked +tax). Always confirm with the gym before you join.</div>
+<h2>Brazilian jiu-jitsu (8 gyms)</h2>
+<div style="overflow-x:auto"><table class="data"><thead><tr><th>Gym</th><th>Adult monthly</th><th>Kids monthly</th><th>Joining fee</th></tr></thead><tbody>
+<tr><td><a href="@@/l/axross-jiujitsu/@@">Axross Jiu-Jitsu</a> (Okinawa City)</td><td>¥8,800</td><td>¥4,400–¥6,600</td><td>¥11,000</td></tr>
+<tr><td><a href="@@/l/carpediem-okinawa/@@">Carpe Diem Okinawa</a> (Chatan)</td><td>¥8,000 (beginner) – ¥15,000</td><td>¥9,000</td><td>¥10,000</td></tr>
+<tr><td><a href="@@/l/blackbelt-japan-naha/@@">The Blackbelt Japan</a> (Naha &amp; Koza)</td><td>¥9,500 +tax</td><td>¥5,000 +tax</td><td>¥10,000 +tax (kids ¥5,000)</td></tr>
+<tr><td><a href="@@/l/impacto-okinawa-chatan/@@">Impacto BJJ</a> (Chatan &amp; Ginowan)*</td><td>¥10,000</td><td>¥8,000</td><td>not stated</td></tr>
+<tr><td><a href="@@/l/coa-jiujitsu-naha/@@">COA Jiu-Jitsu Academy</a> (Naha)</td><td>¥11,000</td><td>¥4,400–¥6,600</td><td>¥10,000</td></tr>
+<tr><td><a href="@@/l/waka-jiujitsu/@@">Carpe Diem Naha</a> (Shuri)</td><td>¥12,000 (women ¥8,000)</td><td>¥8,000</td><td>¥10,000</td></tr>
+<tr><td><a href="@@/l/pacific-grappler-mihara/@@">Pacific Grappler</a> (Okinawa City)</td><td>¥15,000</td><td>¥9,000</td><td>¥5,000</td></tr>
+<tr><td><a href="@@/l/kurohata-bjj/@@">Kuro Hata BJJ</a> (Uruma)</td><td>¥15,000</td><td>¥10,000</td><td>¥5,000</td></tr>
+</tbody></table></div>
+<p class="sub">*Impacto's fees were reported to us by the gym and are not on its website. Many gyms also offer cheaper women's, student, daytime or limited-class plans; see each listing.</p>
+<p><b>In short:</b> adult BJJ runs about ¥8,000–¥15,000 a month at these gyms, kids' classes about ¥4,400–¥10,000, and joining fees ¥5,000–¥11,000.</p>
+<h2>Kickboxing and Muay Thai (6 gyms)</h2>
+<div style="overflow-x:auto"><table class="data"><thead><tr><th>Gym</th><th>Men monthly</th><th>Women monthly</th><th>Kids monthly</th><th>Joining fee</th></tr></thead><tbody>
+<tr><td><a href="@@/l/itoman-gym/@@">Maki Gym Itoman</a></td><td>¥8,800</td><td>¥6,600</td><td>¥6,600</td><td>¥11,000 (women/juniors ¥5,500)</td></tr>
+<tr><td><a href="@@/l/nago-muaythai/@@">Nago Muay Thai School</a></td><td>¥8,800</td><td>¥5,000–¥6,000</td><td>¥6,000</td><td>¥10,000 (women/kids ¥5,000)</td></tr>
+<tr><td><a href="@@/l/drop-kickboxing/@@">DROP</a> (Ginowan)</td><td>¥9,900</td><td>¥7,700</td><td>¥7,700</td><td>¥10,000 (kids ¥5,000)</td></tr>
+<tr><td><a href="@@/l/tomigusuku-gym/@@">Y'ZD Tomigusuku Gym</a></td><td>¥11,000</td><td>¥7,700</td><td>¥5,500</td><td>¥11,000</td></tr>
+<tr><td><a href="@@/l/polidia/@@">PoliDia</a> (Naha)</td><td>¥10,780 (5×/month) – ¥12,980</td><td>same</td><td>¥8,580–¥10,780</td><td>¥10,000 + ¥1,100</td></tr>
+<tr><td><a href="@@/l/refinas-naha/@@">Refinas Naha</a> (fitness chain)</td><td>¥11,800 (4×/month) – ¥16,800 +tax</td><td>¥9,800–¥14,800 +tax</td><td>—</td><td>¥15,000 + ¥2,000 +tax</td></tr>
+</tbody></table></div>
+<p><b>In short:</b> men pay about ¥8,800–¥12,980 a month at the dedicated kickboxing gyms, with the Refinas fitness chain higher. Women's rates at most of these gyms are ¥5,000–¥7,700, and kids' classes ¥5,500–¥10,780. Joining fees are ¥10,000–¥15,000, often reduced for women and children.</p>
+<h2>Full-contact karate</h2>
+<p><a href="@@/l/shinkyokushin-aja/@@">Shinkyokushin Yoshida Dojo</a> publishes one fee schedule for its seven Okinawa branches: ¥9,900 a month for adult men and ¥8,800 for children (from age 3), women and junior/senior high students, plus a ¥5,000 joining fee (campaign rate), an ¥11,000 yearly federation fee and a ¥14,300 gi. The Kyokushinkaikan and Sekai Sokyokushin groups do not publish fees.</p>
+<h2>Traditional karate, kobudo and aikido</h2>
+<p>Most traditional dojo do not publish fees; they are usually explained when you visit. The few published examples are not enough to call typical, but they give a sense of scale:</p>
+<ul><li><a href="@@/l/asato-dojo/@@">Asato Dojo</a> (Naha, teaches in English): ¥7,500 a month per style for adults or kids; visitors ¥3,000 a class.</li>
+<li><a href="@@/l/aikido-yoshinkan/@@">Yoshinkan Okinawa Aikido Association</a>: ¥3,000 a month.</li>
+<li><a href="@@/l/mccs-martial-arts/@@">MCCS Martial Arts</a> (on base, installation access needed): $50 a month for Isshin-ryu, Kenpo or kobudo; BJJ $100 for adults.</li></ul>
+<p>Community-hall clubs (kendo, judo, many karate groups) are often much cheaper, but you will usually need to ask.</p>
+<h2>Visitors, drop-ins and trials</h2>
+<ul><li><b>Drop-in or visitor fees</b> at gyms that publish them: ¥1,500 (<a href="@@/l/coa-jiujitsu-naha/@@">COA</a>), ¥2,000 (<a href="@@/l/pacific-grappler-mihara/@@">Pacific Grappler</a>), ¥3,000 (<a href="@@/l/carpediem-okinawa/@@">Carpe Diem Okinawa</a>, <a href="@@/l/waka-jiujitsu/@@">Carpe Diem Naha</a>, <a href="@@/l/asato-dojo/@@">Asato Dojo</a>), ¥3,300 (<a href="@@/l/itoman-gym/@@">Maki Gym</a>) and ¥5,000 (<a href="@@/l/kurohata-bjj/@@">Kuro Hata</a>).</li>
+<li><b>Free trials</b> are common at BJJ and kickboxing gyms — from one class to a week, and Axross currently advertises a free month.</li>
+<li>Some gyms take visitors <b>by appointment only</b> (Carpe Diem Naha refuses unannounced visits), and <a href="@@/l/tomigusuku-gym/@@">Y'ZD Tomigusuku</a> does not take visitors at all.</li></ul>
+<p>See all <a href="@@/visitors/@@">trial classes for visitors</a>.</p>
+<h2>Costs people forget</h2>
+<ul><li><b>Two months up front.</b> Many gyms collect the joining fee plus two months' fees on day one, then switch to bank transfer from a Japanese account.</li>
+<li><b>Sports insurance</b> (スポーツ保険) is often required — roughly ¥800–¥2,000 a year at the clubs that list it.</li>
+<li><b>Uniform and gear:</b> a gi or dogi, gloves, shin guards. Several gyms rent or lend gear for trials.</li>
+<li><b>Yearly or federation fees</b> at some dojo, for example ¥11,000 at Shinkyokushin.</li>
+<li><b>Tax:</b> most prices include tax; Blackbelt Japan and Refinas quote before tax.</li></ul>
+<h2>Asking about fees</h2>
+<p>It is normal to ask. Useful phrases: <i>Gessha wa ikura desu ka?</i> (月謝はいくらですか？ — how much is the monthly fee?) and <i>Nyūkaikin wa arimasu ka?</i> (入会金はありますか？ — is there a joining fee?). See also <a href="@@/guides/dojo-etiquette/@@">dojo etiquette</a>, the <a href="@@/kids/@@">kids' classes page</a> and our <a href="@@/start/@@">beginner guide</a>.</p>""",
+  "sources": [],
+ },
+ "ja": {
+  "title": "沖縄の格闘技・武道の月謝・料金の目安（2026年）",
+  "desc": "沖縄のブラジリアン柔術・キックボクシング・空手の月謝、入会金、キッズ料金、ビジター料金を、各ジムの公式サイトなどの公表料金から整理（2026年10月確認）。",
+  "h1": "沖縄の格闘技・武道の月謝と料金の目安",
+  "sub": "月謝・入会金・キッズ／ビジター料金。公表されている料金をもとに、2026年10月31日に確認。",
+  "body": """<p>このガイドは、各ジムが自らの公式サイトで公表している料金と、ジムから直接お知らせいただいた1件の料金だけをもとにしています。すべての金額は元の掲載ページにリンクしているので、確認できます。件数が少ないため、平均ではなく、範囲と件数で示しています。</p>
+<div class="callout info"><b>はじめに。</b>料金は変わることがあり、入会金無料や1か月無料などのキャンペーンを行っているジムも多くあります。税抜表示のジムが2件あります（「税抜」と表記）。入会前に必ずジムに確認してください。</div>
+<h2>ブラジリアン柔術（8か所）</h2>
+<div style="overflow-x:auto"><table class="data"><thead><tr><th>ジム</th><th>一般 月謝</th><th>キッズ 月謝</th><th>入会金</th></tr></thead><tbody>
+<tr><td><a href="@@/l/axross-jiujitsu/@@">アクロス柔術</a>（沖縄市）</td><td>8,800円</td><td>4,400〜6,600円</td><td>11,000円</td></tr>
+<tr><td><a href="@@/l/carpediem-okinawa/@@">カルペディエム沖縄</a>（北谷）</td><td>8,000円（初心者）〜15,000円</td><td>9,000円</td><td>10,000円</td></tr>
+<tr><td><a href="@@/l/blackbelt-japan-naha/@@">THE BLACKBELT JAPAN</a>（那覇・コザ）</td><td>9,500円（税抜）</td><td>5,000円（税抜）</td><td>10,000円（税抜、キッズ5,000円）</td></tr>
+<tr><td><a href="@@/l/impacto-okinawa-chatan/@@">IMPACTO BJJ</a>（北谷・宜野湾）*</td><td>10,000円</td><td>8,000円</td><td>記載なし</td></tr>
+<tr><td><a href="@@/l/coa-jiujitsu-naha/@@">COA柔術アカデミー</a>（那覇）</td><td>11,000円</td><td>4,400〜6,600円</td><td>10,000円</td></tr>
+<tr><td><a href="@@/l/waka-jiujitsu/@@">カルペディエム那覇</a>（首里）</td><td>12,000円（女性8,000円）</td><td>8,000円</td><td>10,000円</td></tr>
+<tr><td><a href="@@/l/pacific-grappler-mihara/@@">パシフィック・グラップラー</a>（沖縄市）</td><td>15,000円</td><td>9,000円</td><td>5,000円</td></tr>
+<tr><td><a href="@@/l/kurohata-bjj/@@">黒旗BJJ</a>（うるま）</td><td>15,000円</td><td>10,000円</td><td>5,000円</td></tr>
+</tbody></table></div>
+<p class="sub">*IMPACTOの料金はジムから当サイトへのお知らせによるもので、ジムのサイトには掲載されていません。女性・学生・昼間・回数限定などの割安なプランを用意しているジムも多くあります。各掲載ページをご覧ください。</p>
+<p><b>まとめ：</b>大人の柔術は月およそ8,000〜15,000円、キッズは4,400〜10,000円、入会金は5,000〜11,000円です。</p>
+<h2>キックボクシング・ムエタイ（6か所）</h2>
+<div style="overflow-x:auto"><table class="data"><thead><tr><th>ジム</th><th>男性 月謝</th><th>女性 月謝</th><th>キッズ 月謝</th><th>入会金</th></tr></thead><tbody>
+<tr><td><a href="@@/l/itoman-gym/@@">真樹ジム糸満</a></td><td>8,800円</td><td>6,600円</td><td>6,600円</td><td>11,000円（女性・ジュニア5,500円）</td></tr>
+<tr><td><a href="@@/l/nago-muaythai/@@">名護ムエタイスクール</a></td><td>8,800円</td><td>5,000〜6,000円</td><td>6,000円</td><td>10,000円（女性・中学生以下5,000円）</td></tr>
+<tr><td><a href="@@/l/drop-kickboxing/@@">DROP</a>（宜野湾）</td><td>9,900円</td><td>7,700円</td><td>7,700円</td><td>10,000円（キッズ5,000円）</td></tr>
+<tr><td><a href="@@/l/tomigusuku-gym/@@">Y'ZD豊見城ジム</a></td><td>11,000円</td><td>7,700円</td><td>5,500円</td><td>11,000円</td></tr>
+<tr><td><a href="@@/l/polidia/@@">PoliDia</a>（那覇）</td><td>10,780円（月5回）〜12,980円</td><td>同じ</td><td>8,580〜10,780円</td><td>10,000円＋1,100円</td></tr>
+<tr><td><a href="@@/l/refinas-naha/@@">リフィナス那覇</a>（フィットネス系）</td><td>11,800円（月4回）〜16,800円（税抜）</td><td>9,800〜14,800円（税抜）</td><td>—</td><td>15,000円＋2,000円（税抜）</td></tr>
+</tbody></table></div>
+<p><b>まとめ：</b>キックボクシング専門のジムでは男性が月およそ8,800〜12,980円で、フィットネス系のリフィナスはそれより高めです。女性はほとんどのジムで5,000〜7,700円、キッズは5,500〜10,780円で、入会金は10,000〜15,000円（女性・子どもは減額のことが多い）です。</p>
+<h2>フルコンタクト空手</h2>
+<p><a href="@@/l/shinkyokushin-aja/@@">新極真会 吉田道場</a>は県内7道場共通の料金を公表しています。月謝は一般男性9,900円、子ども（3歳から）・女性・中高生8,800円で、入会金5,000円（キャンペーン価格）、年会費11,000円、道着14,300円がかかります。極真会館と世界総極真は料金を公表していません。</p>
+<h2>伝統空手・古武道・合気道</h2>
+<p>伝統道場の多くは料金を公表しておらず、見学時に説明されるのが一般的です。公表例は少なく「相場」とは言えませんが、目安として：</p>
+<ul><li><a href="@@/l/asato-dojo/@@">安里道場</a>（那覇・英語でも指導）：大人・子どもとも1流派あたり月7,500円、ビジター1回3,000円。</li>
+<li><a href="@@/l/aikido-yoshinkan/@@">養神館沖縄合気道会</a>：月3,000円。</li>
+<li><a href="@@/l/mccs-martial-arts/@@">MCCS武道プログラム</a>（基地内・入場許可が必要）：一心流・拳法・古武道は月50ドル、柔術は大人100ドル。</li></ul>
+<p>公民館などで活動するクラブ（剣道・柔道・多くの空手）はさらに安いことが多いですが、問い合わせが必要です。</p>
+<h2>ビジター・出稽古・体験</h2>
+<ul><li><b>ビジター料金</b>（公表しているジム）：1,500円（<a href="@@/l/coa-jiujitsu-naha/@@">COA</a>）、2,000円（<a href="@@/l/pacific-grappler-mihara/@@">パシフィック・グラップラー</a>）、3,000円（<a href="@@/l/carpediem-okinawa/@@">カルペディエム沖縄</a>・<a href="@@/l/waka-jiujitsu/@@">カルペディエム那覇</a>・<a href="@@/l/asato-dojo/@@">安里道場</a>）、3,300円（<a href="@@/l/itoman-gym/@@">真樹ジム</a>）、5,000円（<a href="@@/l/kurohata-bjj/@@">黒旗BJJ</a>）。</li>
+<li><b>無料体験</b>は柔術・キックボクシングのジムで一般的です（1回〜1週間。アクロス柔術は現在1か月無料を案内）。</li>
+<li><b>予約制</b>のところもあり（カルペディエム那覇は予約なしの出稽古不可）、<a href="@@/l/tomigusuku-gym/@@">Y'ZD豊見城ジム</a>はビジター利用を行っていません。</li></ul>
+<p><a href="@@/visitors/@@">旅行者向け体験</a>の一覧もご覧ください。</p>
+<h2>見落としがちな費用</h2>
+<ul><li><b>2か月分の前払い。</b>入会時に入会金と2か月分の月謝を支払い、その後は口座振替になるジムが多くあります。</li>
+<li><b>スポーツ保険</b>への加入が必要なことが多く、記載のあるクラブでは年およそ800〜2,000円です。</li>
+<li><b>道着・用具：</b>道着、グローブ、すねサポーターなど。体験時は貸し出しのあるジムもあります。</li>
+<li><b>年会費・連盟費</b>がかかる道場もあります（例：新極真会 11,000円）。</li>
+<li><b>税：</b>多くは税込表示ですが、THE BLACKBELT JAPANとリフィナスは税抜表示です。</li></ul>
+<h2>料金の尋ね方</h2>
+<p>料金を尋ねるのは失礼ではありません。「月謝はいくらですか？」「入会金はありますか？」と聞いてみましょう。<a href="@@/guides/dojo-etiquette/@@">道場での礼儀作法</a>、<a href="@@/kids/@@">子ども向け教室</a>、<a href="@@/start/@@">初めての方へ</a>もご覧ください。</p>""",
+ },
+},
 ]
