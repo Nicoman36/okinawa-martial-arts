@@ -56,7 +56,7 @@ DISCIPLINES = [
 DISC = {d[0]: dict(slug=d[0], en=d[1], ja=d[2], group=d[3], blurb=d[4], about=d[5], beginner=d[6]) for d in DISCIPLINES}
 GROUPS = ["Karate & weapons","Grappling","Striking","Japanese budo","Other arts"]
 VERIF = {
- "A": ("Checked Oct 2026","Details confirmed against the operator's or federation's own current page."),
+ "A": ("Checked Oct–Nov 2026","Details confirmed against the operator's or federation's own current page."),
  "B": ("Listed — not independently confirmed","Found on a third-party listing or an older page; not yet confirmed with the operator."),
  "C": ("2019 roster — not re-verified","Appears in the 2019 prefectural dojo roster. Address and instructor have not been re-checked since."),
  "D": ("Lead — location unconfirmed","A group we know exists, but we could not confirm where or whether it is operating."),
@@ -67,7 +67,7 @@ STATUS = {"active":"Active","unverified":"Unverified","needs_check":"Needs check
 GROUPS_JA = {"Karate & weapons":"空手・古武道","Grappling":"組技","Striking":"打撃系","Japanese budo":"日本の武道","Other arts":"その他"}
 REGIONS_JA = {"south":"南部（那覇・以南）","central":"中部（宜野湾〜うるま）","north":"北部（やんばる）","islands":"離島","":"所在地未掲載"}
 VERIF_JA = {
- "A":("2026年10月確認済み","運営者または連盟の最新の公式ページで内容を確認しています。"),
+ "A":("2026年10〜11月確認済み","運営者または連盟の最新の公式ページで内容を確認しています。"),
  "B":("掲載あり・未確認","第三者の掲載情報や古いページに基づく情報で、運営者への確認はまだです。"),
  "C":("2019年名簿より・未再確認","2019年の県内道場名簿に掲載されている道場です。住所・指導者は再確認していません。"),
  "D":("情報のみ・所在未確認","存在は把握していますが、所在地や営業状況を確認できていません。"),
