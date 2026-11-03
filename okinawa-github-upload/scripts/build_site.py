@@ -226,7 +226,7 @@ def build_home():
 <div><label for="h-art">{T("Art","種目")}</label><select id="h-art" name="art"><option value="">{T("Any art","すべて")}</option>{art_opts}</select></div>
 <div><label for="h-area">{T("Area","地域")}</label><select id="h-area" name="area"><option value="">{T("Anywhere in Okinawa","沖縄全域")}</option>{area_opts}</select></div>
 <button type="submit">{T("Search","検索")}</button></form>
-<div class="stats"><div><b>{n}</b><span>{T("places listed","掲載件数")}</span></div><div><b>{na}</b><span>{T("arts","種目")}</span></div><div><b>{len(muni_counts)}</b><span>{T("municipalities","市町村")}</span></div><div><b>{verified}</b><span>{T("checked Oct 2026","2026年10月確認")}</span></div></div></div></section>
+<div class="stats"><div><b>{n}</b><span>{T("places listed","掲載件数")}</span></div><div><b>{na}</b><span>{T("arts","種目")}</span></div><div><b>{len(muni_counts)}</b><span>{T("municipalities","市町村")}</span></div><div><b>{verified}</b><span>{T("checked Oct–Nov 2026","2026年10〜11月確認")}</span></div></div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by art","種目から探す")} <span class="jp">武道</span></h2><p class="sub">{T("Each art has its own page with an explanation, beginner notes and every listing. Use the “Switch art” menu on any page to hop between them.","各種目に、解説・初心者向けの案内・全掲載をまとめたページがあります。どのページでも「種目を切り替え」から移動できます。")}</p><div class="arts-grid">{arts}</div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by area","地域から探す")} <span class="jp">地域</span></h2><p class="sub">{T("Each tile is a municipality, placed roughly where it sits on the island. Darker means more listings.","各タイルは市町村で、おおよその位置に並べています。色が濃いほど掲載が多い地域です。")} <a href="{url("/map/")}">{T("Open the map →","地図を開く →")}</a></p>{tilemap(muni_counts)}</div></section>
 {(f'<section class="block"><div class="wrap"><div class="callout info"><b>{T("Karate Day 2026:","2026年 空手の日：")}</b> {T("Shuri Castle demonstration on Sat 7 November and the mass demonstration on Kokusai-dori on Sun 8 November, 15:00–16:30.","11月7日（土）首里城で演武会、11月8日（日）15:00〜16:30 国際通りで記念演武祭。")} <a href="{url("/guides/karate-day-2026/")}">{T("Details and how to watch →","詳細と見学のコツ →")}</a></div></div></section>' if TODAY <= "2026-11-08" else "")}<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> <a class="chip" href="{url("/kids/")}">{T("Kids' classes","子ども向け教室")}</a> {style_chips()}</div></div></section>
@@ -257,7 +257,7 @@ def build_art(d):
     orgs_html = f'<h2 class="region">{T("Governing bodies & contacts","統括団体・連絡先")}</h2><div class="cards">{"".join(card(r) for r in orgs)}</div>' if orgs else ""
     nm = dname(s)
     land_links = landing_links(d=s, limit=14)
-    sub = T(f'{len(places)} place{"s" if len(places)!=1 else ""} to train · {len(mc)} municipalit{"ies" if len(mc)!=1 else "y"} · {chk["A"]} checked Oct 2026', f'稽古場所 {len(places)}か所 · {len(mc)}市町村 · 2026年10月確認 {chk["A"]}件')
+    sub = T(f'{len(places)} place{"s" if len(places)!=1 else ""} to train · {len(mc)} municipalit{"ies" if len(mc)!=1 else "y"} · {chk["A"]} checked Oct–Nov 2026', f'稽古場所 {len(places)}か所 · {len(mc)}市町村 · 2026年10〜11月確認 {chk["A"]}件')
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/arts/")}">{T("Arts","種目")}</a> › {esc(nm)}</div>
 <span class="kanji" lang="ja">{esc(d["ja"])}</span><h1>{esc(T(d["en"]+" in Okinawa", "沖縄の"+d["ja"]))}</h1><p class="sub">{sub}</p>{switcher(s)}{art_extra(s)}
 {('<h2 class="region">'+T("Browse by area","地域別に見る")+'</h2><div class="pill-row">'+land_links+'</div>') if land_links else ""}
@@ -299,8 +299,8 @@ def build_area(slug):
     note = AREA_NOTES.get(slug, ("", ""))[1 if LANG == "ja" else 0]
     chk = sum(1 for r in places if r["verification"] == "A")
     engn = sum(1 for r in places if r["eng_level"])
-    facts = T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed across {len(dc)} art{"s" if len(dc)!=1 else ""}; {chk} checked against the operator\'s own page in October 2026' + (f', {engn} English-friendly or likely' if engn else '') + '.',
-              f'{len(places)}か所・{len(dc)}種目を掲載。うち{chk}件は2026年10月に運営者の公式ページで確認済み' + (f'、英語対応（または可能性あり）{engn}件' if engn else '') + '。')
+    facts = T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed across {len(dc)} art{"s" if len(dc)!=1 else ""}; {chk} checked against the operator\'s own page in October–November 2026' + (f', {engn} English-friendly or likely' if engn else '') + '.',
+              f'{len(places)}か所・{len(dc)}種目を掲載。うち{chk}件は2026年10〜11月に運営者の公式ページで確認済み' + (f'、英語対応（または可能性あり）{engn}件' if engn else '') + '。')
     intro = f'<div class="prose" style="margin:6px 0 14px">{"<p>"+esc(note)+"</p>" if note else ""}<p>{esc(facts)}</p>{guide_line()}</div>'
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/areas/")}">{T("Areas","地域")}</a> › {esc(nm)}</div>
 <span class="kanji" lang="ja">{esc(ja)}</span><h1>{esc(T("Martial arts in "+en, ja+"の武道・格闘技"))}</h1><p class="sub">{T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed · {len(dc)} art{"s" if len(dc)!=1 else ""}', f'{len(places)}か所掲載 · {len(dc)}種目')}</p>{intro}
@@ -526,7 +526,7 @@ def build_about():
     if LANG == "ja":
         body = f'''<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">ホーム</a> › データについて</div><h1>データについて</h1>
 <p class="sub">何が載っているか、どう集めたか、どれくらい確かか、どう最新に保つか。</p>
-<div class="callout"><b>最初にお読みください。</b>これは最善を尽くした案内であり、公式の登録簿ではありません。{tot}か所のうち{vc["C"]}か所は2019年の県内道場名簿に基づき、再確認していません。{vc["A"]}か所は2026年10月に最新の公式ページで確認しました。お出かけ前に必ず電話かメッセージで確認してください。</div>
+<div class="callout"><b>最初にお読みください。</b>これは最善を尽くした案内であり、公式の登録簿ではありません。{tot}か所のうち{vc["C"]}か所は2019年の県内道場名簿に基づき、再確認していません。{vc["A"]}か所は2026年10〜11月に最新の公式ページで確認しました。お出かけ前に必ず電話かメッセージで確認してください。</div>
 <h2>確認ラベル</h2><table class="data"><thead><tr><th>ラベル</th><th>意味</th><th>件数</th></tr></thead><tbody>{rowsv}</tbody></table>
 <h2>私たちが行っていること</h2><ol class="steps"><li><b>収集。</b>公式名簿・連盟の一覧から始め、運営者の公式サイト、ディレクトリ（手がかりとしてのみ）、利用者からの情報で追加します。</li>
 <li><b>確認。</b>運営者または連盟の最新ページと照合し、可能なら電話等で確認し、日付を記録します。</li>
@@ -541,7 +541,7 @@ def build_about():
         page("/about-data/", "データについて — 方法と確認", "沖縄の武道・格闘技ディレクトリの作成・確認・更新の方法。", body, cur="about"); return
     body = f'''<div class="wrap pagehead prose"><div class="crumbs"><a href="{url("/")}">Home</a> › About this data</div><h1>About this data</h1>
 <p class="sub">What is here, how it was gathered, how confident we are, and how it stays current.</p>
-<div class="callout"><b>Read this first.</b> This is a best-effort directory, not an official register. {vc["C"]} of {tot} places come from a 2019 prefectural roster and have not been re-checked; {vc["A"]} were checked against a current official page in October 2026. Always confirm by phone or message before travelling.</div>
+<div class="callout"><b>Read this first.</b> This is a best-effort directory, not an official register. {vc["C"]} of {tot} places come from a 2019 prefectural roster and have not been re-checked; {vc["A"]} were checked against a current official page in October–November 2026. Always confirm by phone or message before travelling.</div>
 <h2>How we rate every listing</h2><table class="data"><thead><tr><th>Label</th><th>Meaning</th><th>Places now</th></tr></thead><tbody>{rowsv}</tbody></table>
 <h2>What we do</h2><ol class="steps"><li><b>Collect.</b> Start from official rosters and federation lists, then add gyms and clubs found through operators' own websites, directories (as leads only) and community reports.</li>
 <li><b>Verify.</b> Compare each listing with the operator's or federation's own current page. Where possible, confirm with a call or message. Record the date.</li>
@@ -755,8 +755,8 @@ def build_landing(m, d):
     sty = ""
     if len(styles) > 1:
         sty = T("Styles and affiliations listed: ", "掲載されている流派・スタイル：") + T(", ", "、").join(f"{k} ({v})" for k, v in styles.most_common(8)) + T(".", "。")
-    p1 = T(f"{n} {nn} in {area} are listed on this page" + (f", {chk} of them checked against the operator's own page in October 2026" if chk else "") + ".",
-           f"{area}の{nn}を{n}件掲載しています" + (f"（うち{chk}件は2026年10月に運営者の公式ページで確認済み）" if chk else "") + "。")
+    p1 = T(f"{n} {nn} in {area} are listed on this page" + (f", {chk} of them checked against the operator's own page in October–November 2026" if chk else "") + ".",
+           f"{area}の{nn}を{n}件掲載しています" + (f"（うち{chk}件は2026年10〜11月に運営者の公式ページで確認済み）" if chk else "") + "。")
     p_roster = ""
     if roster_n:
         p_roster = T(f"A further {roster_n} traditional dojo in {area} come only from the 2019 prefectural roster. We have not been able to re-check them, so they are not shown here; you can find them on the ",
@@ -789,11 +789,11 @@ def build_landing(m, d):
 <div class="prose" style="margin:8px 0 18px"><p>{p1}</p>{"<p>" + esc(note) + "</p>" if note else ""}{"<p>" + esc(sty) + "</p>" if sty else ""}<p>{esc(dtext(d, 0))} <a href="{url("/arts/" + d + "/")}">{T("About " + DISC[d]["en"].lower() + " in Okinawa →", "沖縄の" + DISC[d]["ja"] + "について →")}</a></p>{"<p>" + p_roster + "</p>" if p_roster else ""}</div>
 <div class="cards">{cards}</div>
 <div class="prose"><h2 class="region">{T("Before you go", "お出かけ前に")}</h2><h3>{q_trial}</h3><p>{a_trial}</p><h3>{q_eng}</h3><p>{a_eng}</p>
-<h3>{T("How current is this?", "情報はどれくらい新しいですか？")}</h3><p>{T("Cards marked “Checked Oct 2026” were compared with the operator's or federation's own page; the others come from third-party listings and may be out of date. Class times change with school terms and holidays, so call or message first. See ", "「2026年10月確認済み」の表示は運営者・連盟の公式ページと照合した情報です。それ以外は第三者の掲載情報に基づき、古い可能性があります。稽古時間は学期や祝日で変わるため、事前に電話かメッセージで確認してください。")}<a href="{url("/about-data/")}">{T("how we check", "確認方法")}</a>.</p></div>
+<h3>{T("How current is this?", "情報はどれくらい新しいですか？")}</h3><p>{T("Cards marked “Checked Oct–Nov 2026” were compared with the operator's or federation's own page; the others come from third-party listings and may be out of date. Class times change with school terms and holidays, so call or message first. See ", "「2026年10〜11月確認済み」の表示は運営者・連盟の公式ページと照合した情報です。それ以外は第三者の掲載情報に基づき、古い可能性があります。稽古時間は学期や祝日で変わるため、事前に電話かメッセージで確認してください。")}<a href="{url("/about-data/")}">{T("how we check", "確認方法")}</a>.</p></div>
 {more}<p style="margin-top:22px"><a class="btn" href="{url("/find/?area=" + m + "&art=" + d)}" rel="nofollow">{T("Search & filter these", "検索・絞り込み")}</a> <a class="btn secondary" href="{url("/map/?art=" + d)}">{T("See on map", "地図で見る")}</a> <a class="btn secondary" href="{url("/areas/" + m + "/")}">{T("All of " + area, area + "のすべて")}</a></p></div>'''
     title = T(f"{cap(nn)} in {area}, Okinawa — {n} listed", f"{area}の{nn}一覧（{n}件）｜沖縄")
-    desc = trim(T(f"{n} {nn} in {area} ({ja}), Okinawa, with addresses, phone numbers, trial-lesson and English-support notes. {chk} checked Oct 2026.",
-                  f"{area}の{nn}{n}件。住所・電話番号・体験・英語対応の情報つき。うち{chk}件は2026年10月確認済み。"))
+    desc = trim(T(f"{n} {nn} in {area} ({ja}), Okinawa, with addresses, phone numbers, trial-lesson and English-support notes. {chk} checked Oct–Nov 2026.",
+                  f"{area}の{nn}{n}件。住所・電話番号・体験・英語対応の情報つき。うち{chk}件は2026年10〜11月確認済み。"))
     page(f"/areas/{m}/{d}/", title, desc, body, cur="areas", jsonld=itemlist(pub, title),
          crumbs=[(T("Home", "ホーム"), "/"), (T("Areas", "地域"), "/areas/"), (area, f"/areas/{m}/"), (dname(d), None)])
 
@@ -922,8 +922,8 @@ def build_style(x):
         parts = [(T(a, b), sum(1 for r in rs if re.search(c, r["style"], re.I))) for a, b, c in bs]
         parts = [(a, k) for a, k in parts if k]
         if parts: branch = "<p>" + T("Branches named in the listings: ", "掲載で流派名が分かる分派：") + T(", ", "、").join(f"{esc(a)} ({k})" for a, k in parts) + T(". Many listings give only “Shorin-ryu”.", "。「少林流」とだけ記載のものも多くあります。") + "</p>"
-    p1 = T(f"{n} {en} dojo in Okinawa are listed on this page" + (f", {chk} of them checked against the operator's own page in October 2026" if chk else "") + ".",
-           f"沖縄の{ja}の道場を{n}件掲載しています" + (f"（うち{chk}件は2026年10月に運営者の公式ページで確認済み）" if chk else "") + "。")
+    p1 = T(f"{n} {en} dojo in Okinawa are listed on this page" + (f", {chk} of them checked against the operator's own page in October–November 2026" if chk else "") + ".",
+           f"沖縄の{ja}の道場を{n}件掲載しています" + (f"（うち{chk}件は2026年10〜11月に運営者の公式ページで確認済み）" if chk else "") + "。")
     note = T("Lineages and histories differ between schools and are sometimes disputed; treat this as orientation, not a ruling. See", "系統や歴史は流派により異なり、諸説あります。目安としてご覧ください。")
     intro = f'<div class="prose" style="margin:8px 0 18px"><p>{esc(d_ja if LANG == "ja" else d_en)}</p>{branch}<p>{esc(p1)}</p><p class="sub">{note} <a href="{url("/guides/okinawan-karate-styles/")}">{T("Okinawan karate styles explained", "沖縄の空手・古武道の流派ガイド")}</a>{T(" and", "・")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train", "稽古の始め方")}</a>.</p></div>'
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/arts/karate/")}">{esc(dname("karate"))}</a> › {esc(nm)}</div>
