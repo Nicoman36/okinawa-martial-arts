@@ -6,23 +6,23 @@ GUIDES = [
   {"name_en": "Shuri Castle Main Hall completion commemorative karate and kobudo demonstration", "name_ja": "首里城正殿完成記念 空手・古武道演武会", "start": "2026-11-07T14:30:00+09:00", "end": "2026-11-07T17:40:00+09:00", "place_en": "Shuri Castle Park (free area)", "place_ja": "首里城公園（無料区域）", "street": "1-2 Shurikinjocho", "locality": "Naha", "url": "https://karate-event.jp/shurijo/"},
   {"name_en": "Karate Day commemorative demonstration 2026 (Kokusai-dori)", "name_ja": "令和8年 空手の日 記念演武祭（国際通り）", "start": "2026-11-08T15:00:00+09:00", "end": "2026-11-08T16:30:00+09:00", "place_en": "Kokusai-dori (Palette Kumoji to Tenbusu Naha)", "place_ja": "那覇市国際通り（パレット久茂地前〜てんぶす那覇前）", "street": "3-2-10 Makishi", "locality": "Naha", "url": "https://karate-event.jp/memorial-demonstration/"}
  ],
- "slug": "karate-day-2026", "date": "2026-10-18", "updated": "2026-10-31",
+ "slug": "karate-day-2026", "date": "2026-10-18", "updated": "2026-11-09",
  "en": {
-  "title": "Karate Day 2026 in Okinawa: what's on and how to watch",
-  "desc": "Karate Day 2026 in Okinawa: the Kokusai-dori mass demonstration on Sunday 8 November (15:00–16:30), the Shuri Castle demonstration on 7 November, and what the day commemorates.",
+  "title": "Karate Day 2026 in Okinawa: the events and how they went",
+  "desc": "Karate Day 2026 in Okinawa: about 2,600 karateka on Kokusai-dori on 8 November, the Shuri Castle demonstration on 7 November, the 25 October dedication, and what the day commemorates.",
   "h1": "Karate Day 2026 in Okinawa",
-  "sub": "What it is, what is still to come this year, and how to see it. Updated 31 October 2026.",
+  "sub": "What the day is, what happened this year, and tips for next year. Updated 9 November 2026.",
   "body": """<p>Every year on 25 October, Okinawa celebrates <b>Karate Day</b> (空手の日, <i>karate no hi</i>). In 2026 it falls on a Sunday, and a week of demonstrations, exhibitions and street events surrounds it. Karate was born here, so this is the best time of year to see it performed by the people who keep the traditions alive.</p>
 <h2>Why 25 October?</h2>
 <p>The Okinawa Prefectural Assembly resolved in March 2005 to make 25 October Karate Day. According to the prefecture, the date marks 25 October 1936, when the written form 空手 (“empty hand”) was formally adopted for the art.</p>
-<h2>What is on in 2026</h2>
+<h2>What happened in 2026</h2>
 <h3>Sunday 25 October — dedication demonstration (held)</h3>
 <p>The year's inaugural dedication demonstration (奉納演武) took place on Karate Day itself at the <b>Special Dojo of the <a href="@@/l/okinawa-karate-kaikan/@@">Okinawa Karate Kaikan</a></b> in Tomigusuku, performed by holders of the prefecture's designated intangible cultural property title for Okinawan karate and kobudo. It was closed to the general public and live-streamed on the official YouTube channel.</p>
-<h3>Saturday 7 November, 14:30–17:40 — Shuri Castle Park</h3>
-<p>A karate and kobudo demonstration marking the completion of the Shuri Castle main hall is held in the park's free-entry area. Part 1 (14:30–15:30, lawn in front of Shurimori-kan) is the 50th Shuri Castle Reconstruction Memorial Karate and Kobudo Demonstration, with a tile-breaking experience. Part 2 (16:00–17:40, Shimo-no-unan) is an Okinawa–France karate and cultural exchange, including children's karate, Ryukyu performing arts and a special demonstration by designated cultural-property holders. A free shuttle bus runs between the Yui Rail stations at Tedako-Uranishi and Shuri and the park about every 15 minutes. The event may change or be cancelled, so check the organisers' page first.</p>
-<h3>Sunday 8 November, 15:00–16:30 — Kokusai-dori commemorative demonstration</h3>
-<p>The 2026 Karate Day commemorative demonstration (記念演武祭) fills <b>Kokusai-dori in Naha between Palette Kumoji and Tenbusu Naha</b>, plus the plaza in front of Tenbusu. The programme is an opening ceremony, a mass performance of the kata Fukyugata I–III, group demonstrations, and a closing prayer for world peace with 50 straight punches. Participant applications closed on 25 September. The organisers publish no spectator arrangements, but it takes place on a public street and is live-streamed on the official YouTube channel. If rain is forecast, a cancellation is announced on the official site at 17:00 on 7 November or 08:00 on 8 November. The Gori Okinawa Fest runs on 7–8 November at the Palette Kumoji plaza, with a karate stage show planned around 14:00 on the 8th. For scale: more than 2,000 practitioners took part on 27 October 2024 and about 3,100 on 26 October 2025.</p>
-<h2>Tips for watching</h2>
+<h3>Saturday 7 November — Shuri Castle Park demonstration</h3>
+<p>A karate and kobudo demonstration celebrating the completion of the Shuri Castle main hall was scheduled for 14:30–17:40 in the park's free-entry area. The first part was the 50th Shuri Castle Reconstruction Memorial Karate and Kobudo Demonstration, a cross-style event held every month since the month after the 2019 fire. The second was an Okinawa–France karate and cultural exchange, which grew out of contacts between the firefighters who fought the Shuri Castle fire and the French firefighters who fought the Notre-Dame fire the same year. As of 9 November we have not found a published report on how the day went.</p>
+<h3>Sunday 8 November — about 2,600 karateka on Kokusai-dori</h3>
+<p>About 2,600 karate practitioners, across nationalities and styles, filled Naha's Kokusai-dori for the commemorative demonstration (記念演武祭), watched by residents and by visitors from Japan and abroad, Ryukyu Shimpo reported. People of all ages performed kata such as Fukyugata I together; group demonstrations followed, including a solo kata by a 13-year-old girl; and the event closed with about 50 synchronized straight punches for world peace, with the prefectural governor joining in. For comparison, more than 2,000 took part in 2024 and about 3,100 in 2025.</p>
+<h2>Tips for watching next year</h2>
 <ul><li>Follow the organisers' site (karate-event.jp) for the latest times; schedules and weather decisions change late.</li>
 <li>Outdoor events are formal in spirit even when crowded. Stay quiet during demonstrations and ask before photographing individuals.</li>
 <li>Naha is the easiest base: the Yui Rail monorail reaches Shuri and the Kokusai-dori area.</li></ul>
@@ -30,26 +30,28 @@ GUIDES = [
 <p>Karate Day week is a good moment to try a class. See <a href="@@/visitors/@@">trial classes for visitors</a>, <a href="@@/areas/naha/karate/@@">karate dojo in Naha</a>, <a href="@@/english-friendly/@@">English-friendly places</a> and our <a href="@@/start/@@">beginner guide</a> for phrases and etiquette.</p>""",
   "sources": [("Okinawa Prefecture — Karate Day (空手の日)", "https://www.pref.okinawa.jp/bunkakoryu/bunkageijutsu/1009556/1009629/1018652/1009632.html"),
               ("Karate Day official site — 2026 dedication demonstration", "https://karate-event.jp/demonstrations/"),
-              ("Karate Day official site — Shuri Castle demonstration 2026", "https://karate-event.jp/shurijo/"),
+              ("Karate Day official site — Shuri Castle demonstration 2026", "https://karate-event.jp/shurijo-karate-2026/"),
               ("Karate Day official site — 2026 commemorative demonstration (記念演武祭)", "https://karate-event.jp/memorial-demonstration/"),
-              ("Ryukyu Shimpo — about 3,100 karate practitioners on Kokusai-dori (2025)", "https://ryukyushimpo.jp/news/sports/entry-4723324.html")],
+              ("Ryukyu Shimpo — about 3,100 karate practitioners on Kokusai-dori (2025)", "https://ryukyushimpo.jp/news/sports/entry-4723324.html"),
+              ("Ryukyu Shimpo — preview of the 7 and 8 November events (3 Nov 2026)", "https://ryukyushimpo.jp/national/entry-5587025.html"),
+              ("Ryukyu Shimpo — about 2,600 karate practitioners on Kokusai-dori (9 Nov 2026)", "https://ryukyushimpo.jp/national/entry-5594236.html")],
  },
  "ja": {
-  "title": "2026年 空手の日（沖縄）— 開催イベントと見どころ",
-  "desc": "2026年の沖縄「空手の日」。11月8日（日）15:00〜16:30の国際通りでの記念演武祭、11月7日の首里城での演武会、空手の日の由来をまとめました。",
+  "title": "2026年 空手の日（沖縄）— 催しの内容と結果",
+  "desc": "2026年の沖縄「空手の日」。11月8日に国際通りで約2,600人が演武、11月7日の首里城での演武会、10月25日の奉納演武、空手の日の由来をまとめました。",
   "h1": "2026年 沖縄の空手の日",
-  "sub": "由来、これからの催し、見学のコツ。2026年10月31日更新。",
+  "sub": "由来、今年の催し、来年の見学のコツ。2026年11月9日更新。",
   "body": """<p>毎年10月25日は、沖縄県が定める<b>「空手の日」</b>です。2026年は日曜日にあたり、前後に演武や展示、街なかのイベントが行われます。空手発祥の地で、伝統を守る方々の演武を見られる、一年で最も良い機会です。</p>
 <h2>なぜ10月25日？</h2>
 <p>2005年3月、沖縄県議会が10月25日を「空手の日」とすることを決議しました。県によると、この日は1936年10月25日に、「空手」という表記が正式に用いられるようになったことにちなんでいます。</p>
-<h2>2026年の催し</h2>
+<h2>2026年の催し（終了）</h2>
 <h3>10月25日（日） — 奉納演武（終了）</h3>
 <p>空手の日当日、豊見城市の<b><a href="@@/l/okinawa-karate-kaikan/@@">沖縄空手会館</a>の特別道場</b>で、沖縄県指定無形文化財（沖縄の空手・古武道）の保持者による今年最初の奉納演武が行われました。一般の入場はなく、公式YouTubeチャンネルで生配信されました。</p>
-<h3>11月7日（土）14:30〜17:40 — 首里城公園</h3>
-<p>首里城正殿の完成を記念した空手・古武道の演武会が、公園の無料区域で開かれます。第1部（14:30〜15:30、首里杜館前の芝生広場）は「第50回首里城復興祈念空手古武道演武会」で、瓦割り体験もあります。第2部（16:00〜17:40、下之御庭）は沖縄・フランス空手文化交流の夕べで、子どもの空手、琉球芸能、県指定無形文化財保持者による特別演武などが予定されています。てだこ浦西駅・首里駅と公園の間を結ぶ無料シャトルバスが約15分間隔で運行されます。内容は変更・中止となる場合があるため、事前に公式ページをご確認ください。</p>
-<h3>11月8日（日）15:00〜16:30 — 国際通りの記念演武祭</h3>
-<p>2026年の「空手の日 記念演武祭」は、<b>那覇市国際通り（パレット久茂地前〜てんぶす那覇前）とてんぶす前広場</b>で行われます。内容は開会式、普及型Ⅰ・Ⅱ・Ⅲの一斉演武、団体演武、閉会式と世界平和を願う正拳突き50本です。参加申し込みは9月25日で締め切られました。観覧についての案内は公式には出ていませんが、公道での開催で、公式YouTubeチャンネルでも生配信されます。雨天が予想される場合は、11月7日17:00または8日8:00に公式サイトで中止が発表されます。11月7〜8日にはパレット久茂地前広場で「ゴーリーおきなわフェス」も開かれ、8日14:00ごろに空手のステージが予定されています。参考までに、2024年10月27日は2,000人以上、2025年10月26日は約3,100人が参加しました。</p>
-<h2>見学のコツ</h2>
+<h3>11月7日（土） — 首里城公園での演武会</h3>
+<p>首里城正殿の完成を記念した空手・古武道の演武会が、14:30〜17:40に公園の無料区域で予定されていました。第1部は、2019年の火災の翌月から流派を超えて毎月行われてきた「第50回首里城復興祈念空手古武道演武会」、第2部は沖縄・フランス空手文化交流で、首里城の消火にあたった消防士と、同じ年にノートルダム大聖堂の火災に対応したフランスの消防士との交流から生まれた企画です。11月9日時点で、当日の様子を伝える報道は確認できていません。</p>
+<h3>11月8日（日） — 国際通りで約2,600人が演武</h3>
+<p>琉球新報によると、国籍や流会派の垣根を越えて約2,600人の空手家が那覇市の国際通りに集まり、県民や国内外の観光客が見守る中で記念演武祭が行われました。幅広い年代の参加者が普及型Ⅰなどを一斉に演武し、13歳の女子による型などの団体演武が続き、最後は知事も加わって世界平和を願う正拳突き50本で締めくくりました。参考までに、2024年は2,000人以上、2025年は約3,100人が参加しています。</p>
+<h2>来年の見学のコツ</h2>
 <ul><li>最新の時間や天候による判断は直前に変わります。公式サイト（karate-event.jp）をご確認ください。</li>
 <li>屋外でも演武は礼を重んじる場です。演武中は静かに見守り、個人を撮影する際は声をかけましょう。</li>
 <li>拠点は那覇が便利です。ゆいレールで首里や国際通り周辺へ行けます。</li></ul>
