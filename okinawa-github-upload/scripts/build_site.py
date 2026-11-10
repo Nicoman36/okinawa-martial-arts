@@ -332,7 +332,7 @@ def build_area(slug):
 <span class="kanji" lang="ja">{esc(ja)}</span><h1>{esc(T("Martial arts in "+en, ja+"の武道・格闘技"))}</h1><p class="sub">{T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed · {len(dc)} art{"s" if len(dc)!=1 else ""}', f'{len(places)}か所掲載 · {len(dc)}種目')}</p>{intro}
 <h2 class="region">{T("Browse by art","種目から探す")}</h2><div class="pill-row" style="margin:10px 0 18px">{pills}</div><h2 class="region">{T("All listings","すべての掲載")}</h2><div class="cards">{"".join(card(r) for r in ordered)}</div>{nearby_areas_block(slug, len(places))}</div>'''
     top = ", ".join(f"{dname(d)} ({n})" for d, n in dc.most_common(4) if d in DISC)
-    page(f"/areas/{slug}/", T(f"Martial arts in {en.split(' (')[0]}, Okinawa — {len(places)} dojo & gyms", f"{ja}の武道・格闘技｜道場・ジム・クラブ一覧（{len(places)}件）"),
+    page(f"/areas/{slug}/", T(f"Martial arts in {en.split(' (')[0]}, Okinawa — " + (f"{len(places)} dojo & gyms" if len(places) != 1 else "1 place to train"), f"{ja}の武道・格闘技｜道場・ジム・クラブ一覧（{len(places)}件）"),
          trim(T(f"{len(places)} dojo, gyms and clubs in {en.split(' (')[0]} ({ja}), Okinawa: {top}. Addresses, phone numbers and English-support notes.", f"{ja}の道場・ジム・クラブ{len(places)}件：{top}。住所・電話番号・英語対応の情報つき。")),
          body, cur="areas", jsonld=itemlist(ordered, nm), crumbs=[(T("Home","ホーム"), "/"), (T("Areas","地域"), "/areas/"), (nm, None)])
 
