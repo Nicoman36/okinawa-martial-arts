@@ -285,6 +285,32 @@ def build_areas():
 {"".join(lists)}{f'<p class="sub" style="margin-top:20px">{unk_t}</p>' if unk else ""}</div>'''
     page("/areas/", T("Martial arts in Okinawa by area","沖縄の武道・格闘技（地域別）"), T("Browse dojo, gyms and clubs by municipality across Okinawa.","市町村ごとに道場・ジム・クラブを探せます。"), body, cur="areas")
 
+def _muni_centres():
+    acc = defaultdict(list)
+    for x in PLACES:
+        if x["municipality"] and x["lat"] and x["lon"]: acc[x["municipality"]].append((float(x["lat"]), float(x["lon"])))
+    return {m: (sum(a for a, _ in v) / len(v), sum(b for _, b in v) / len(v)) for m, v in acc.items()}
+def nearby_areas_block(slug, n_here):
+    cen = _muni_centres()
+    cnt = Counter(x["municipality"] for x in PLACES if x["municipality"] and x["status"] != "closed" and not x["is_org"])
+    nm = lambda m: MUNI_SLUGS[m][0] if LANG == "ja" else MUNI_SLUGS[m][1].split(" (")[0]
+    if slug not in cen:
+        same = [m for m in cnt if m != slug and m in MUNI_SLUGS and MUNI_SLUGS[m][2] == MUNI_SLUGS[slug][2]]
+        chips = " ".join(f'<a class="chip" href="{url("/areas/" + m + "/")}">{esc(nm(m))} · {cnt[m]}</a>' for m in sorted(same, key=lambda m: -cnt[m]))
+        return f'<h2 class="region">{T("Other areas in the region", "同じ地方のほかの地域")}</h2><div class="pill-row" style="margin:10px 0 18px">{chips}</div>' if chips else ""
+    la, lo = cen[slug]
+    near = sorted(((_km(la, lo, *cen[m]), m) for m in cen if m != slug and m in MUNI_SLUGS), key=lambda t: t[0])[:5]
+    chips = " ".join(f'<a class="chip" href="{url("/areas/" + m + "/")}">{esc(nm(m))} · {cnt[m]}</a>' for d, m in ([t for t in near if t[0] <= 40] or near[:3]))
+    out = f'<h2 class="region">{T("Nearby areas", "近くの地域")}</h2><div class="pill-row" style="margin:10px 0 18px">{chips}</div>' if chips else ""
+    if n_here < 6:
+        shown = lambda x: x["municipality"] != slug and x["status"] != "closed" and not x["is_org"] and (x["verification"] != "C" or CFG["index_roster_pages"]) and x["lat"] and x["lon"]
+        ds = sorted(((_km(la, lo, float(x["lat"]), float(x["lon"])), x) for x in PLACES if shown(x)), key=lambda t: (t[0], t[1]["name_en"].lower()))
+        ds = [t for t in ds if t[0] <= 25][:6]
+        if ds:
+            ex = lambda d, x: f'<p class="sub" style="margin:8px 0 0;font-size:.86rem">📏 {T(f"About {d:.0f} km away, in {nm(x['municipality'])}", f"約{d:.0f} km・{nm(x['municipality'])}")}</p>'
+            out += f'<h2 class="region">{T("More places within reach", "近隣の稽古場所")}</h2><p class="sub" style="font-size:.85rem">{T("Straight-line distance from the middle of the area.", "地域の中心からの直線距離です。")}</p><div class="cards">{"".join(card(x, ex(d, x)) for d, x in ds)}</div>'
+    return out
+
 def build_area(slug):
     ja, en, region = MUNI_SLUGS[slug]
     rs = [r for r in ROWS if r["municipality"] == slug and r["status"] != "closed"]
@@ -304,7 +330,7 @@ def build_area(slug):
     intro = f'<div class="prose" style="margin:6px 0 14px">{"<p>"+esc(note)+"</p>" if note else ""}<p>{esc(facts)}</p>{guide_line()}</div>'
     body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/areas/")}">{T("Areas","地域")}</a> › {esc(nm)}</div>
 <span class="kanji" lang="ja">{esc(ja)}</span><h1>{esc(T("Martial arts in "+en, ja+"の武道・格闘技"))}</h1><p class="sub">{T(f'{len(places)} place{"s" if len(places)!=1 else ""} listed · {len(dc)} art{"s" if len(dc)!=1 else ""}', f'{len(places)}か所掲載 · {len(dc)}種目')}</p>{intro}
-<h2 class="region">{T("Browse by art","種目から探す")}</h2><div class="pill-row" style="margin:10px 0 18px">{pills}</div><h2 class="region">{T("All listings","すべての掲載")}</h2><div class="cards">{"".join(card(r) for r in ordered)}</div></div>'''
+<h2 class="region">{T("Browse by art","種目から探す")}</h2><div class="pill-row" style="margin:10px 0 18px">{pills}</div><h2 class="region">{T("All listings","すべての掲載")}</h2><div class="cards">{"".join(card(r) for r in ordered)}</div>{nearby_areas_block(slug, len(places))}</div>'''
     top = ", ".join(f"{dname(d)} ({n})" for d, n in dc.most_common(4) if d in DISC)
     page(f"/areas/{slug}/", T(f"Martial arts in {en.split(' (')[0]}, Okinawa — {len(places)} dojo & gyms", f"{ja}の武道・格闘技｜道場・ジム・クラブ一覧（{len(places)}件）"),
          trim(T(f"{len(places)} dojo, gyms and clubs in {en.split(' (')[0]} ({ja}), Okinawa: {top}. Addresses, phone numbers and English-support notes.", f"{ja}の道場・ジム・クラブ{len(places)}件：{top}。住所・電話番号・英語対応の情報つき。")),
@@ -314,6 +340,7 @@ def row(k, v, raw=False):
     return f"<dt>{esc(k)}</dt><dd>{v if raw else esc(v)}</dd>" if v else ""
 
 DUP_NAMES = Counter((x["name_en"], x["municipality"]) for x in ROWS)
+DUP_CONTACT = Counter((x["name_en"], x["municipality"], x["contact"]) for x in ROWS)
 def build_listing(r):
     chips = "".join(f'<a class="chip" href="{url("/arts/"+d+"/")}">{esc(dname(d))}</a>' for d in r["disc"] if d in DISC)
     web = r["website"] if r["website"].startswith("http") or not r["website"] else "https://" + r["website"]
@@ -362,38 +389,85 @@ def build_listing(r):
 <p class="sub" style="font-size:.85rem">{T("We don't embed Google Maps or copy map-service data; the link opens a search in your own map app.","Googleマップの埋め込みや地図サービスのデータの複製は行いません。リンクは、お使いの地図アプリで検索を開きます。")}</p></div></div>{style_box(r)}{related_block(r)}</div>'''
     noindex = (r["verification"] == "C" and not CFG["index_roster_pages"])
     where = r["m_en"] if r["municipality"] else "Okinawa"
-    tname = r["name_en"]
-    if DUP_NAMES[(r["name_en"], r["municipality"])] > 1 and r["contact"]:
-        tname = f'{r["name_en"]} ({r["contact"].split(" (")[0].split(",")[0].strip()})'
     art1 = dname(first) if first else ""
-    t_en = f'{tname} — {art1} in {where}, Okinawa' if (art1 and r["municipality"]) else f'{tname} — {where}, Okinawa'
-    if len(t_en) > 62: t_en = f'{tname} — {where}, Okinawa'
-    if len(t_en) > 66 and r["municipality"]: t_en = f'{tname} — {where}'
-    if len(t_en) > 66: t_en = tname
+    core_en = r["name_en"].split(" — ")[0] if (r["style"] and " — " in r["name_en"] and r["style"].split(" (")[0].lower() in r["name_en"].split(" — ", 1)[1].lower()) else r["name_en"]
+    tname = core_en
+    if DUP_NAMES[(r["name_en"], r["municipality"])] > 1:
+        c_en = instructor(r)[0]
+        if c_en and DUP_CONTACT[(r["name_en"], r["municipality"], r["contact"])] == 1:
+            sur = c_en.split()[-1]
+            tname = core_en.replace(f"({sur} Sensei)", f"({c_en})") if f"({sur} Sensei)" in core_en else f"{core_en} ({c_en})"
+        else:
+            tname = f'{core_en} ({r["name_ja"].split(" ", 1)[-1]})'
+    sty_short = r["style"].split(" (")[0] if (r["style"] and not r["style"].startswith(("Karate (", "Karate / ")) and len(r["style"]) <= 34) else ""
+    label = (sty_short + (" karate" if first == "karate" and "karate" not in sty_short.lower() and sty_short.lower() not in ("kyokushin",) else "")) if sty_short else art1
+    cands = [f'{tname} — {label} in {where}, Okinawa', f'{tname} — {label}, {where}', f'{tname} — {art1}, {where}', f'{tname} — {where}, Okinawa', f'{tname} — {where}', tname] if r["municipality"] else [f'{tname} — {label}, Okinawa', f'{tname} — Okinawa', tname]
+    t_en = next((c for c in cands if len(c) <= 64 and " — ," not in c and not c.startswith(" ")), tname)
     if len(t_en) > 66: t_en = t_en[:63].rsplit(" ", 1)[0] + "…"
-    t_ja = f'{primary_name(r)} — {r["m_ja"] or "沖縄"}の{art1}' if (art1 and r["municipality"]) else f'{primary_name(r)} — {r["m_ja"] or "沖縄"}'
+    pn = primary_name(r)
+    def tja(nm):
+        return [f'{nm} — {r["m_ja"]}の{art1}', f'{nm}（{r["m_ja"]}）', nm] if (art1 and r["municipality"]) else [f'{nm} — {r["m_ja"] or "沖縄"}', nm]
+    short_pn = pn.split(" ", 1)[1] if (LANG == "ja" and " " in pn and len(pn) > 18) else pn
+    t_ja = next((c for c in tja(pn) + tja(short_pn) if len(c) <= 34), tja(short_pn)[-1])
     gone = {"closed": ("Closed: ", "閉鎖：", ), "moved": ("Moved: ", "移転：")}.get(r["status"], ("", ""))
-    sty_en = r["style"] if (r["style"] and len(r["style"]) <= 32 and "(" not in r["style"] and r["style"].lower() not in r["name_en"].lower()) else ""
-    bits_en = [f'{r["name_en"]} ({sty_en}) in {where}, Okinawa.' if sty_en else f'{r["name_en"]} in {where}, Okinawa.']
+    teach_en, teach_ja = instructor(r)
+    kids = any(r.get(f) and KIDS_RE.search(r[f]) for f in ("visitors", "hours", "notes"))
+    fees = bool(re.search(r"¥\s?\d|\d円|月謝|monthly fee|fees? per", " ".join(r[f] or "" for f in ("notes", "hours", "visitors")), re.I))
+    sty_en = r["style"] if (r["style"] and len(r["style"]) <= 34 and not r["style"].startswith(("Karate (", "Karate / ")) and r["style"].split(" (")[0].lower() not in core_en.lower()) else ""
+    kind_en = {"dojo": "dojo", "gym": "gym", "club": "club", "program": "programme"}.get(r["kind"], "")
+    if sty_en: what_en = sty_en + (" karate" if first == "karate" and "karate" not in sty_en.lower() else "") + (" " + kind_en if kind_en else "")
+    else: what_en = (art1 + " " + kind_en).strip() if art1 else kind_en
+    bits_en = [f'{core_en}: {what_en} in {where}, Okinawa.' if what_en else f'{core_en} in {where}, Okinawa.']
+    if teach_en: bits_en.append(f"Instructor: {teach_en}.")
+    have = [x for x, ok in (("class times", bool(r["hours"])), ("fees", fees), ("visitor info", bool(r["visitors"]))) if ok]
+    if have: bits_en.append(cap(", ".join(have)) + " listed.")
+    if kids: bits_en.append("Kids' classes.")
     if r["eng_level"] == 1: bits_en.append("English spoken.")
     elif r["eng_level"] == 2: bits_en.append("English likely.")
-    bits_en.append(VERIF[r["verification"]][0] + ".")
-    if r["address_en"] and r["municipality"]: bits_en.append(trim(r["address_en"], 60) + ".")
-    sty_ja = style_txt(r) if (r["style"] and len(style_txt(r)) <= 24 and "（" not in style_txt(r) and "(" not in style_txt(r) and style_txt(r) not in primary_name(r) and re.search(r"[぀-ヿ一-鿿]", style_txt(r))) else ""
-    bits_ja = [f'{primary_name(r)}（{sty_ja}）。' if sty_ja else f'{primary_name(r)}。']
+    if r["address_en"] and r["municipality"]: bits_en.append(trim(r["address_en"], 50) + ".")
+    has_rel = bool(related_block(r))
+    if has_rel and len(" ".join(bits_en)) < 110: bits_en.append("Map and nearby places to train.")
+    bits_en.append(DESC_VERIF[r["verification"]][0])
+    sty_ja = style_txt(r) if (r["style"] and not r["style"].startswith(("Karate (", "Karate / ")) and style_txt(r).split("（")[0] not in primary_name(r) and re.search(r"[぀-ヿ一-鿿]", style_txt(r))) else ""
+    sty_ja = sty_ja.split("（")[0]
+    kind_ja = KIND_JA.get(r["kind"], "") if r["kind"] != "organization" else ""
+    head_ja = f'{r["m_ja"]}の' if r["m_ja"] else "沖縄の"
+    if sty_ja: head_ja += sty_ja + "の" + (kind_ja or "")
+    elif art1: head_ja += art1 + (kind_ja if kind_ja == "道場" else ("の" + kind_ja if kind_ja else ""))
+    else: head_ja += kind_ja
+    head_ja = head_ja.rstrip("の")
+    bits_ja = [f'{head_ja}「{primary_name(r)}」。']
+    if teach_ja: bits_ja.append(f"指導：{teach_ja}。")
+    have_ja = [x for x, ok in (("稽古日時", bool(r["hours"])), ("月謝", fees), ("見学・体験", bool(r["visitors"]))) if ok]
+    if have_ja: bits_ja.append("・".join(have_ja) + "の情報あり。")
+    if kids: bits_ja.append("子ども向けクラスあり。")
     if r["eng_level"] == 1: bits_ja.append("英語対応あり。")
     elif r["eng_level"] == 2: bits_ja.append("英語対応の可能性あり。")
-    if art1 and r["m_ja"]: bits_ja.insert(0, f'{r["m_ja"]}の{art1}。')
-    bits_ja.append(VERIF_JA[r["verification"]][0] + "。")
-    if r["address_ja"] or r["m_ja"]: bits_ja.append((r["address_ja"] or r["m_ja"]) + "。")
-    page(f'/l/{r["id"]}/', T(t_en, t_ja), trim(gone[1 if LANG == "ja" else 0] + T(" ".join(bits_en), "".join(bits_ja))), body, cur="", noindex=noindex, jsonld=ld,
+    if r["address_ja"]: bits_ja.append(r["address_ja"] + "。")
+    if has_rel and len("".join(bits_ja)) < 60: bits_ja.append("地図と周辺の道場・ジムも掲載。")
+    bits_ja.append(DESC_VERIF[r["verification"]][1])
+    page(f'/l/{r["id"]}/', T(t_en, t_ja), trim(gone[1 if LANG == "ja" else 0] + T(" ".join(bits_en), "".join(bits_ja)), 158 if LANG == "en" else 120), body, cur="", noindex=noindex, jsonld=ld,
          crumbs=[(T("Home","ホーム"), "/")] + ([(dname(first), f"/arts/{first}/")] if first else []) + ([(mname(r["municipality"]).split(" (")[0], f"/areas/{r['municipality']}/")] if r["municipality"] in MUNI_SLUGS else []) + [(primary_name(r), None)])
 
+DESC_VERIF = {"A": ("Checked Oct–Nov 2026.", "2026年10〜11月確認済み。"), "B": ("Not yet confirmed with the operator.", "運営者への確認前の情報です。"),
+              "C": ("From the 2019 prefectural dojo roster.", "2019年の県道場名簿より。"), "D": ("Older report; may have changed.", "古い情報のため変更の可能性あり。")}
+def instructor(r):
+    c = (r["contact"] or "").strip()
+    if not c or "/" in c or re.search(r"\d|@|chief|instructor|owner|staff|tel", c, re.I): return "", ""
+    m = re.match(r"^([A-Za-z][A-Za-z .'-]+?) \(([^\x00-\x7f][^)]*)\)$", c)
+    if m: return m.group(1), m.group(2).replace(" ", "")
+    m = re.match(r"^([^\x00-\x7f][^(]*?) \(([A-Za-z][^)]*)\)$", c)
+    if m: return m.group(2), m.group(1).replace(" ", "")
+    if re.fullmatch(r"[^\x00-\x7f\s]+(?: [^\x00-\x7f\s]+)?", c): return "", c.replace(" ", "")
+    if re.fullmatch(r"[A-Za-z][A-Za-z .'-]+", c) and len(c) < 30: return c, ""
+    return "", ""
+
 def style_box(r):
-    hits = [x for x in STYLES if r["style"] and re.search(x[1], r["style"], re.I)][:2]
+    hits = [x for x in STYLES if r["style"] and re.search(x[1], r["style"], re.I) and len(STYLE_PLACES[x[0]]) >= STYLE_MIN]
+    hits = sorted(hits, key=lambda x: x[0] in STYLE_PARENT.values())[:2]
     out = ""
     for x in hits:
-        slug, pat, en, ja, d_en, d_ja = x
+        slug, pat, en, ja, d_en, d_ja = x[:6]
         desc = d_ja if LANG == "ja" else d_en
         out += f'<div class="callout info" style="margin-top:18px"><b>{esc(T("About " + en, ja + "とは"))}</b><p style="margin:.4em 0">{esc(desc)}</p><p style="margin:0"><a href="{url("/styles/" + slug + "/")}">{esc(T(f"All {len(STYLE_PLACES[slug])} {en} dojo in Okinawa →", f"沖縄の{ja}の道場{len(STYLE_PLACES[slug])}件 →"))}</a> · <a href="{url("/guides/okinawan-karate-styles/")}">{T("Styles explained", "流派ガイド")}</a></p></div>'
     return out
@@ -686,17 +760,20 @@ def build_static():
 ARTS_WITH = [d for d in DISC if n_places(d)]
 
 def sitemap():
-    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES] + [f"/near/{k}/" for k in NEAR] + ["/kids/"]
+    pages = ["/", "/arts/", "/areas/", "/find/", "/map/", "/start/", "/about-data/", "/sources/", "/suggest-edit/", "/for-dojos/", "/privacy/"] + TOPICAL + [f"/styles/{x[0]}/" for x in STYLES if len(STYLE_PLACES[x[0]]) >= STYLE_MIN] + [f"/near/{k}/" for k in NEAR] + ["/kids/"]
     pages += [f"/arts/{d}/" for d in DISC if by_disc[d]] + [f"/areas/{s}/" for s in {r["municipality"] for r in ROWS if r["municipality"]}]
     pages += [f"/areas/{m}/{d}/" for m, d in LAND]
     pages += [f'/l/{r["id"]}/' for r in ROWS if not (r["verification"] == "C" and not CFG["index_roster_pages"])]
     lm = {f'/l/{r["id"]}/': r["last_verified"] for r in ROWS if re.match(r"^\d{4}-\d{2}-\d{2}$", r["last_verified"] or "")}
+    # listings never re-verified: date of the last substantive page revision (dojo names romanised, styles corrected, descriptions rewritten)
+    lm.update({f'/l/{r["id"]}/': "2026-11-10" for r in ROWS if f'/l/{r["id"]}/' not in lm})
     # pages whose content changed after the last data update: keeps lastmod honest and lets IndexNow pick them up
     lm.update({"/": "2026-10-31", "/military-families/": "2026-10-31", "/guides/": "2026-10-18"})
     lm.update({f"/guides/{g['slug']}/": g["updated"] for g in GUIDES})
-    lm.update({f"/styles/{x[0]}/": "2026-10-23" for x in STYLES})
+    lm.update({f"/styles/{x[0]}/": "2026-11-10" for x in STYLES})
     lm.update({f"/near/{k}/": "2026-10-31" for k in NEAR})
-    lm.update({"/kids/": "2026-10-31", "/areas/": "2026-10-31", "/arts/": "2026-10-31"})
+    lm.update({"/kids/": "2026-11-10", "/areas/": "2026-10-31", "/arts/": "2026-10-31"})
+    lm.update({f"/near/{k}/": "2026-11-10" for k in NEAR})
     def entry(p, lang):
         loc = CFG["base_url"] + ("/ja" if lang == "ja" else "") + p
         d = lm.get(p, "" if p.startswith("/l/") else LASTMOD)
@@ -888,7 +965,7 @@ def build_military():
 
 # ---------------------------------------------------------------- style pages (Shorin-ryu, Goju-ryu, Uechi-ryu)
 STYLES = [
- ("shorin-ryu", r"sh[oō]rin|kobayashi|matsubayashi|shobayashi", "Shorin-ryu", "少林流",
+ ("shorin-ryu", r"sh[oō]rin(?!ji)|kobayashi|matsubayashi|shobayashi", "Shorin-ryu", "少林流",
   "Shorin-ryu (少林流) is the large family of Okinawan karate that descends from the Shuri and Tomari traditions. It has several branches, each with its own organisation, including Kobayashi-ryu, Matsubayashi-ryu and Shobayashi-ryu. Stances are generally natural and upright, with an emphasis on speed and straight-line technique.",
   "少林流は、首里手・泊手の流れをくむ沖縄空手の大きな系統です。小林流、松林流、少林流（昭林流）など、団体ごとに分かれています。立ち方は自然で姿勢が高く、速さと直線的な動きが特徴とされます。"),
  ("goju-ryu", r"goj[uū]", "Goju-ryu", "剛柔流",
@@ -897,11 +974,34 @@ STYLES = [
  ("uechi-ryu", r"uechi", "Uechi-ryu", "上地流",
   "Uechi-ryu (上地流) was founded by Uechi Kanbun and is based on a Chinese system he studied in Fuzhou. It is known for firm, close-range technique, body conditioning and a small set of kata.",
   "上地流は、上地完文が福州で学んだ中国の武術をもとに創始した流派です。近い間合いの技と体づくり、少数の型が特徴です。"),
+ ("kobayashi-ryu", r"kobayashi", "Kobayashi-ryu", "小林流",
+  "Kobayashi-ryu (小林流) is the branch of Shorin-ryu handed down from Chibana Chōshin (1885–1969), who learned Shuri-te from Itosu Ankō. Chibana's students went on to lead several large associations that are still active, among them Shorinkan, Shidokan and Kyudokan, so a dojo often gives both the style and its association name. Training centres on Shuri-te kata such as Naihanchi, Pinan, Passai and Kusanku.",
+  "小林流は、首里手を糸洲安恒に学んだ知花朝信（1885〜1969）の流れをくむ少林流の一派です。知花の弟子たちが小林舘・志道館・究道館など、今も活動する大きな団体を率いるようになったため、道場は流派名と団体名を併せて名乗ることがよくあります。ナイハンチ、ピンアン、パッサイ、クーサンクーなど首里手の型が稽古の中心です。", "shorin-ryu"),
+ ("matsubayashi-ryu", r"matsubayashi", "Matsubayashi-ryu", "松林流",
+  "Matsubayashi-ryu (松林流) was founded in 1947 by Nagamine Shōshin (1907–1997). He named it after two 19th-century masters, Matsumura Sōkon of Shuri and Matsumora Kōsaku of Tomari, whose names share the character 松 (matsu, “pine”). It draws on both Shuri-te and Tomari-te and has a large following outside Japan.",
+  "松林流は、長嶺将真（1907〜1997）が1947年に創始した流派です。首里の松村宗棍と泊の松茂良興作という19世紀の二人の名人にちなみ、両者の名に共通する「松」の字から名付けられました。首里手と泊手の両方の流れをくみ、海外にも多くの愛好者がいます。", "shorin-ryu"),
+ ("shorinji-ryu", r"shorinji-ryu", "Shorinji-ryu", "少林寺流",
+  "Okinawan Shorinji-ryu (少林寺流) is the line of Nakazato Jōen (1922–2010) of Chinen, which carries on the karate of Kyan Chōtoku; its organisation is known as Kyudokan (求道館) and is now led by the second sōke. Despite the similar name it is a karate style, unrelated to Shorinji Kempo, which is listed separately on this site.",
+  "沖縄の少林寺流は、知念の仲里常延（1922〜2010）の流れで、喜屋武朝徳の空手を伝える流派です。団体は求道館として知られ、現在は二代目宗家が率いています。名前は似ていますが空手の流派で、このサイトで別に掲載している少林寺拳法とは関係ありません。", "shorin-ryu"),
+ ("isshin-ryu", r"isshin", "Isshin-ryu", "一心流",
+  "Isshin-ryu (一心流, “one heart”) was founded by Shimabuku Tatsuo (1908–1975), who drew on his Shorin-ryu and Goju-ryu teachers, and was named in 1956. It is known for its vertical-fist punch. Many American servicemen trained with Shimabuku in Okinawa in the 1950s and 60s, which is why the style has so many dojo in the United States. Its Okinawan headquarters is in Uruma.",
+  "一心流は、島袋龍夫（1908〜1975）が少林流・剛柔流の師に学んだうえで創始し、1956年に名付けた流派です。縦拳の突きが特徴です。1950〜60年代に沖縄で島袋に学んだ多くの米兵によって広まり、アメリカに道場が多いことで知られます。沖縄の総本部はうるま市にあります。"),
+ ("ryuei-ryu", r"ry[uū]ei", "Ryuei-ryu", "劉衛流",
+  "Ryuei-ryu (劉衛流) traces back to Nakaima Norisato, who trained for several years in Fuzhou, China, in the 1800s. It was passed down privately within the Nakaima family and taught openly only from 1971, when Nakaima Kenkō began teaching outside the family and the name Ryuei-ryu came into use. It is known for its distinctive kata, including Anan, now often seen in competition, and for teaching weapons (kobudo) alongside empty-hand karate.",
+  "劉衛流は、19世紀に中国・福州で数年間修行した仲井間憲里に始まる流派です。長く仲井間家の中だけで伝えられ、1971年に仲井間憲孝が一般に指導を始めた際に「劉衛流」の名が使われるようになりました。競技でもよく見られるアーナンなど独特の型と、空手と併せて古武道（武器術）を稽古することで知られています。"),
+ ("okinawa-kenpo", r"okinawa kenpo", "Okinawa Kenpo", "沖縄拳法",
+  "Okinawa Kenpo (沖縄拳法) is the line of Nakamura Shigeru (1891–1969) of Nago, who learned from Kuniyoshi Shinkichi among others and is credited with starting bogu kumite, sparring in protective armour, in post-war Okinawa. The style is still associated with armoured sparring alongside kata, and several dojo also teach kobudo.",
+  "沖縄拳法は、名護の中村茂（1891〜1969）の流れをくむ流派です。国吉真吉らに学び、戦後の沖縄で防具を着けて行う組手（防具付き組手）を始めた人物とされています。今も防具組手と結びつけて語られることが多く、型に加えて古武道を稽古する道場もあります。"),
+ ("motobu-udundi", r"udun", "Motobu Udun-di", "本部御殿手",
+  "Motobu Udun-di (本部御殿手) is the martial art handed down in the Motobu Udun, a noble household of the Ryukyu Kingdom. Uehara Seikichi (1904–2004) learned it from Motobu Chōyū, named his school Motobu-ryu in 1961 and opened the art to the public in 1970. It combines strikes and kicks with tuite (joint locks and throws) and a range of weapons.",
+  "本部御殿手は、琉球王国の名家・本部御殿に伝わった武術です。上原清吉（1904〜2004）が本部朝勇から受け継ぎ、1961年に本部流と名付け、1970年に一般に公開しました。突き蹴りに加え、取手（関節技・投げ）と多様な武器術を含みます。"),
 ]
+STYLE_PARENT = {x[0]: x[6] for x in STYLES if len(x) > 6}
+STYLE_MIN = 3
 STYLE_PLACES = {x[0]: [r for r in PLACES if (r["verification"] != "C" or CFG["index_roster_pages"]) and re.search(x[1], r["style"], re.I)] for x in STYLES}
 
 def style_chips():
-    return " ".join(f'<a class="chip" href="{url("/styles/" + x[0] + "/")}">{esc(T(x[2] + " in Okinawa", "沖縄の" + x[3]))} · {len(STYLE_PLACES[x[0]])}</a>' for x in STYLES if len(STYLE_PLACES[x[0]]) >= 3)
+    return " ".join(f'<a class="chip" href="{url("/styles/" + x[0] + "/")}">{esc(T(x[2] + " in Okinawa", "沖縄の" + x[3]))} · {len(STYLE_PLACES[x[0]])}</a>' for x in STYLES if len(STYLE_PLACES[x[0]]) >= STYLE_MIN)
 def guide_line():
     return f'<p class="sub" style="font-size:.92rem">{T("Planning a visit? See", "訪れる前に：")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train karate in Okinawa", "沖縄で空手を稽古するには")}</a> {T("and", "と")} <a href="{url("/guides/dojo-etiquette/")}">{T("dojo etiquette", "道場での礼儀作法")}</a> · <a href="{url("/guides/training-costs/")}">{T("what training costs", "月謝・料金の目安")}</a>.</p>'
 def art_extra(s):
@@ -910,7 +1010,8 @@ def art_extra(s):
     return (f'<h2 class="region">{T("Karate styles", "流派から探す")}</h2><div class="pill-row" style="margin:10px 0 6px">{sc} <a class="chip" href="{url("/guides/okinawan-karate-styles/")}">{T("Styles explained", "流派ガイド")}</a></div>' if sc else "") + guide_line()
 
 def build_style(x):
-    slug, pat, en, ja, d_en, d_ja = x
+    slug, pat, en, ja, d_en, d_ja = x[:6]
+    parent = next((y for y in STYLES if y[0] == STYLE_PARENT.get(slug)), None)
     rs = sorted(STYLE_PLACES[slug], key=lambda r: ({"A": 0, "B": 1, "D": 2}.get(r["verification"], 3), r["name_en"].lower()))
     n = len(rs); nm = ja if LANG == "ja" else en
     chk = sum(1 for r in rs if r["verification"] == "A")
@@ -919,21 +1020,22 @@ def build_style(x):
     branch = ""
     if slug == "shorin-ryu":
         bs = [("Kobayashi", "小林流", r"kobayashi"), ("Matsubayashi", "松林流", r"matsubayashi"), ("Shobayashi", "昭林流・少林流", r"shobayashi")]
-        parts = [(T(a, b), sum(1 for r in rs if re.search(c, r["style"], re.I))) for a, b, c in bs]
-        parts = [(a, k) for a, k in parts if k]
-        if parts: branch = "<p>" + T("Branches named in the listings: ", "掲載で流派名が分かる分派：") + T(", ", "、").join(f"{esc(a)} ({k})" for a, k in parts) + T(". Many listings give only “Shorin-ryu”.", "。「少林流」とだけ記載のものも多くあります。") + "</p>"
+        parts = [(T(a, b), sum(1 for r in rs if re.search(c, r["style"], re.I)), a.lower() + "-ryu") for a, b, c in bs]
+        parts = [(a, k, sl) for a, k, sl in parts if k]
+        lk = lambda a, sl: f'<a href="{url("/styles/" + sl + "/")}">{esc(a)}</a>' if sl in STYLE_PLACES else esc(a)
+        if parts: branch = "<p>" + T("Branches named in the listings: ", "掲載で流派名が分かる分派：") + T(", ", "、").join(f"{lk(a, sl)} ({k})" for a, k, sl in parts) + T(". Many listings give only “Shorin-ryu”.", "。「少林流」とだけ記載のものも多くあります。") + "</p>"
     p1 = T(f"{n} {en} dojo in Okinawa are listed on this page" + (f", {chk} of them checked against the operator's own page in October–November 2026" if chk else "") + ".",
            f"沖縄の{ja}の道場を{n}件掲載しています" + (f"（うち{chk}件は2026年10〜11月に運営者の公式ページで確認済み）" if chk else "") + "。")
     note = T("Lineages and histories differ between schools and are sometimes disputed; treat this as orientation, not a ruling. See", "系統や歴史は流派により異なり、諸説あります。目安としてご覧ください。")
     intro = f'<div class="prose" style="margin:8px 0 18px"><p>{esc(d_ja if LANG == "ja" else d_en)}</p>{branch}<p>{esc(p1)}</p><p class="sub">{note} <a href="{url("/guides/okinawan-karate-styles/")}">{T("Okinawan karate styles explained", "沖縄の空手・古武道の流派ガイド")}</a>{T(" and", "・")} <a href="{url("/guides/where-to-train-karate/")}">{T("where to train", "稽古の始め方")}</a>.</p></div>'
-    body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/arts/karate/")}">{esc(dname("karate"))}</a> › {esc(nm)}</div>
+    body = f'''<div class="wrap pagehead"><div class="crumbs"><a href="{url("/")}">{T("Home","ホーム")}</a> › <a href="{url("/arts/karate/")}">{esc(dname("karate"))}</a> › {f'<a href="{url("/styles/" + parent[0] + "/")}">{esc(T(parent[2], parent[3]))}</a> › ' if parent else ""}{esc(nm)}</div>
 <span class="kanji" lang="ja">{esc(ja)}</span><h1>{esc(T(en + " karate in Okinawa", "沖縄の" + ja + "の道場"))}</h1>{intro}
 <h2 class="region">{T("By area","地域別")}</h2><div class="pill-row" style="margin:10px 0 18px">{area_chips}</div>
 <h2 class="region">{T("All listings","すべての掲載")}</h2><div class="cards">{"".join(card(r, vis_extra(r)) for r in rs)}</div></div>'''
     top = T(", ", "、").join(esc(MUNI_SLUGS[m][0] if LANG == "ja" else MUNI_SLUGS[m][1].split(" (")[0]) for m, c in mc.most_common(3))
     page(f"/styles/{slug}/", T(f"{en} karate in Okinawa — {n} dojo to train", f"沖縄の{ja}｜道場{n}か所"),
          trim(T(f"{n} {en} dojo in Okinawa with addresses, phone numbers, trial-class and English notes. Most are in {top}.", f"沖縄の{ja}の道場{n}件。住所・電話・体験や英語対応の情報つき。{top}など。")),
-         body, jsonld=itemlist(rs, nm), crumbs=[(T("Home","ホーム"), "/"), (dname("karate"), "/arts/karate/"), (T(en, ja), None)])
+         body, jsonld=itemlist(rs, nm), crumbs=[(T("Home","ホーム"), "/"), (dname("karate"), "/arts/karate/")] + ([(T(parent[2], parent[3]), "/styles/" + parent[0] + "/")] if parent else []) + [(T(en, ja), None)])
 
 # ---------------------------------------------------------------- near-base pages (distance from each US installation)
 BASES = [
@@ -999,7 +1101,7 @@ def build_near(b):
 <div class="callout info"><b>{T("Base access:", "基地への入場：")}</b> {T("on-base programmes need installation access, and rules change. Off-base gyms need no access and are open to everyone. This guide is independent and not affiliated with any installation, MWR or MCCS.", "基地内のプログラムには入場許可が必要で、規則は変わることがあります。基地外のジムは入場許可なしで誰でも利用できます。このガイドは独立したもので、基地・MWR・MCCSとは関係ありません。")}</div></div>
 {secs}
 <h2 class="region">{T("Other bases", "ほかの基地周辺")}</h2><div class="pill-row" style="margin:10px 0 18px">{others} <a class="chip" href="{url("/military-families/")}">{T("All on-base programmes and English-friendly gyms", "基地内プログラムと英語対応の一覧")}</a></div></div>'''
-    page(f"/near/{slug}/", T(f"Martial arts near {en} — {len(sel)} dojo & gyms within {rad} km", f"{ja}周辺の武道・格闘技｜{rad} km圏内の道場・ジム{len(sel)}件"),
+    page(f"/near/{slug}/", T(f"Martial arts near {en} — {len(sel)} dojo & gyms within {rad} km", f"{ja.split('（')[0]}周辺の武道・格闘技｜{rad}km圏内の道場・ジム{len(sel)}件"),
          trim(T(f"{len(sel)} dojo and gyms within {rad} km of {en}, nearest first: {top}. {len(engl)} English-friendly. Addresses, phones and trial info.", f"{ja}から{rad} km圏内の道場・ジム{len(sel)}件を近い順に掲載。{top}。英語対応{len(engl)}件。")),
          body, jsonld=itemlist([r for _, r in sel], T("Martial arts near " + en, ja + "周辺の武道・格闘技")),
          crumbs=[(T("Home","ホーム"), "/"), (T("Near US bases","基地周辺"), "/military-families/"), (nm, None)])
@@ -1053,7 +1155,7 @@ def build_kids():
 <span class="kanji" lang="ja">子ども</span><h1>{esc(T("Kids' martial arts classes in Okinawa", "沖縄の子ども向け武道・格闘技教室"))}</h1><p class="sub">{T(f"{n} dojo and clubs that mention children's or youth classes", f"子ども・少年向けクラスの記載がある道場・クラブ{n}件")}</p>
 <div class="prose">{intro}</div>{"".join(secs)}</div>'''
     page("/kids/", T(f"Kids' martial arts classes in Okinawa — {n} dojo & clubs", f"沖縄の子ども向け武道教室｜空手・剣道・柔道など{n}件"),
-         trim(T(f"{n} dojo and clubs in Okinawa with children's or youth classes: {top}. What to ask before joining, fees and schedules.", f"子ども向け・少年クラスのある沖縄の道場・クラブ{n}件（{top}）。入会前に確認したいこと、月謝、日程の目安も。")),
+         trim(T(f"{n} dojo and clubs in Okinawa with children's or youth classes: {top}. What to ask before joining, fees and schedules.", f"子ども向け・少年クラスのある沖縄の道場・クラブ{n}件。入会前に確認したいことや月謝の目安も。")),
          body, jsonld=itemlist(rs, T("Kids' martial arts classes in Okinawa", "沖縄の子ども向け武道教室")), crumbs=[(T("Home","ホーム"), "/"), (T("Kids' classes","子ども向け教室"), None)])
 
 def build_guides():
@@ -1081,7 +1183,8 @@ def build_guides():
 
 def build_language():
     build_home(); build_arts_index(); build_areas(); build_find(); build_map(); build_start(); build_about(); build_sources(); build_suggest(); build_dojos(); build_privacy(); build_english(); build_visitors(); build_military(); build_guides()
-    for x in STYLES: build_style(x)
+    for x in STYLES:
+        if len(STYLE_PLACES[x[0]]) >= STYLE_MIN: build_style(x)
     build_kids()
     for b in BASES:
         if b[0] in NEAR: build_near(b)

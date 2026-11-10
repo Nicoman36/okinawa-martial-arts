@@ -73,7 +73,7 @@ VERIF_JA = {
  "D":("情報のみ・所在未確認","存在は把握していますが、所在地や営業状況を確認できていません。"),
 }
 KIND_JA = {"dojo":"道場","gym":"ジム","club":"クラブ","program":"プログラム","organization":"団体"}
-STYLE_JA = {"Goju-ryu":"剛柔流","Uechi-ryu":"上地流","Ryuei-ryu":"劉衛流","Shorin-ryu (Kobayashi)":"小林流（少林流系）","Shorin-ryu (Shobayashi)":"少林流",
+STYLE_JA = {"Goju-ryu":"剛柔流","Uechi-ryu":"上地流","Ryuei-ryu":"劉衛流","Shorin-ryu (Kobayashi)":"小林流（少林流系）","Shorin-ryu (Shobayashi)":"少林流","Shorinji-ryu":"少林寺流","Isshin-ryu":"一心流",
  "Matsubayashi-ryu (Shorin-ryu)":"松林流","Okinawa Kenpo":"沖縄拳法","Motobu Udun-di":"本部御殿手","Shuri-te / Shorin-ryu":"首里手・少林流","Tomari-te":"泊手",
  "Shotokan (JKA)":"松濤館（日本空手協会）","Shito-ryu":"糸東流","Wado-ryu":"和道流","Kyokushin":"極真","Karate / kobudo (style not stated)":"空手・古武道（流派不明）",
  "Karate (style not stated in roster)":"空手（名簿に流派の記載なし）"}

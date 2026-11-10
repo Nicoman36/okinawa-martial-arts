@@ -9,7 +9,7 @@ GUIDES = [
  "slug": "karate-day-2026", "date": "2026-10-18", "updated": "2026-11-09",
  "en": {
   "title": "Karate Day 2026 in Okinawa: the events and how they went",
-  "desc": "Karate Day 2026 in Okinawa: about 2,600 karateka on Kokusai-dori on 8 November, the Shuri Castle demonstration on 7 November, the 25 October dedication, and what the day commemorates.",
+  "desc": "How Karate Day 2026 went in Okinawa: about 2,600 karateka on Kokusai-dori on 8 November, the Shuri Castle demonstration, and what the day marks.",
   "h1": "Karate Day 2026 in Okinawa",
   "sub": "What the day is, what happened this year, and tips for next year. Updated 9 November 2026.",
   "body": """<p>Every year on 25 October, Okinawa celebrates <b>Karate Day</b> (空手の日, <i>karate no hi</i>). In 2026 it falls on a Sunday, and a week of demonstrations, exhibitions and street events surrounds it. Karate was born here, so this is the best time of year to see it performed by the people who keep the traditions alive.</p>
@@ -118,21 +118,29 @@ GUIDES = [
  },
 },
 {
- "slug": "okinawan-karate-styles", "date": "2026-10-18", "updated": "2026-10-18",
+ "slug": "okinawan-karate-styles", "date": "2026-10-18", "updated": "2026-11-10",
  "en": {
-  "title": "Okinawan karate styles explained: Shorin, Goju, Uechi",
-  "desc": "A plain-English guide to the main Okinawan karate styles — Shorin-ryu, Goju-ryu, Uechi-ryu — plus kobudo, and how to choose a dojo that suits you.",
+  "title": "Okinawan karate styles explained: Shorin, Goju, Uechi, Isshin-ryu",
+  "desc": "A plain-English guide to Okinawan karate styles: Shorin-ryu and its branches, Goju-ryu, Uechi-ryu, Isshin-ryu, Ryuei-ryu and more, with dojo for each.",
   "h1": "Okinawan karate and kobudo styles, explained",
   "sub": "What the style names mean, how they differ in feel, and how to choose.",
   "body": """<p>Karate grew out of Okinawan fighting arts known as <i>ti</i> (手, “hand”) combined with Chinese martial arts over several centuries. Early lineages are traditionally grouped by the towns where they developed — <b>Shuri-te, Naha-te and Tomari-te</b> — and today's style names grow out of them. Lineages and histories are discussed and sometimes disputed, so treat this as a guide to what you will hear at the door, not a final word.</p>
 <h2>Shorin-ryu (少林流)</h2>
-<p>The big family descended from the Shuri and Tomari traditions. You will see several branches, each with its own organisation: <b>Kobayashi-ryu</b>, <b>Matsubayashi-ryu</b>, <b>Shobayashi-ryu</b> and others. Stances are usually natural and upright, with an emphasis on speed and straight lines. It is the most common family among the dojo we list.</p>
+<p>The big family descended from the Shuri and Tomari traditions. You will see several branches, each with its own organisation: <b>Kobayashi-ryu</b>, <b>Matsubayashi-ryu</b>, <b>Shobayashi-ryu</b> and others. Stances are usually natural and upright, with an emphasis on speed and straight lines. It is the most common family among the dojo we list: see <a href="@@/styles/shorin-ryu/@@">all Shorin-ryu dojo</a>.</p>
+<ul><li><b>Kobayashi-ryu (小林流)</b> comes down from Chibana Chōshin, a student of Itosu Ankō. Large associations such as Shorinkan, Shidokan and Kyudokan belong to it. <a href="@@/styles/kobayashi-ryu/@@">Kobayashi-ryu dojo</a>.</li>
+<li><b>Matsubayashi-ryu (松林流)</b> was founded by Nagamine Shōshin in 1947 and named after Matsumura Sōkon and Matsumora Kōsaku. <a href="@@/styles/matsubayashi-ryu/@@">Matsubayashi-ryu dojo</a>.</li>
+<li><b>Shorinji-ryu (少林寺流)</b>, the line of Nakazato Jōen carrying on Kyan Chōtoku's karate, is easy to confuse by name with Shorinji Kempo, which is unrelated. <a href="@@/styles/shorinji-ryu/@@">Shorinji-ryu dojo</a>.</li></ul>
 <h2>Goju-ryu (剛柔流)</h2>
-<p>A style from the Naha tradition. The name means “hard–soft”: close-range work, strong stances and deliberate breathing with circular and linear techniques. Many dojo keep a strong conditioning (<i>kitae</i>) element.</p>
+<p>A style from the Naha tradition. The name means “hard–soft”: close-range work, strong stances and deliberate breathing with circular and linear techniques. Many dojo keep a strong conditioning (<i>kitae</i>) element. See <a href="@@/styles/goju-ryu/@@">Goju-ryu dojo</a>.</p>
 <h2>Uechi-ryu (上地流)</h2>
-<p>Founded by Uechi Kanbun and derived from a Chinese system he studied in Fuzhou. Known for firm, close-range technique and body conditioning, and for a small set of kata.</p>
+<p>Founded by Uechi Kanbun and derived from a Chinese system he studied in Fuzhou. Known for firm, close-range technique and body conditioning, and for a small set of kata. See <a href="@@/styles/uechi-ryu/@@">Uechi-ryu dojo</a>.</p>
+<h2>Isshin-ryu (一心流)</h2>
+<p>Founded by Shimabuku Tatsuo, who drew on Shorin-ryu and Goju-ryu teachers, and named in 1956. It is known for its vertical-fist punch, and it spread to the United States largely through American servicemen who trained with Shimabuku in Okinawa. Its Okinawan headquarters is in Uruma, and the on-base programme of <a href="@@/l/mccs-martial-arts/@@">MCCS Martial Arts</a> teaches it. See <a href="@@/styles/isshin-ryu/@@">Isshin-ryu dojo</a>.</p>
+<h2>Ryuei-ryu (劉衛流)</h2>
+<p>A family style from the Nakaima family, whose founder Nakaima Norisato trained in Fuzhou in the 1800s; it was taught openly only from 1971. It is known for kata such as Anan and teaches kobudo alongside karate. See <a href="@@/styles/ryuei-ryu/@@">Ryuei-ryu dojo</a>.</p>
 <h2>Others you may meet</h2>
-<ul><li><b>Motobu-ryu</b>, <b>Isshin-ryu</b> and other family and independent styles — Isshin-ryu in particular has long been popular with Americans in Okinawa, and the on-base programme of <a href="@@/l/mccs-martial-arts/@@">MCCS Martial Arts</a> includes it.</li>
+<ul><li><b>Okinawa Kenpo (沖縄拳法)</b>, the line of Nakamura Shigeru, who pioneered sparring in protective armour (<i>bogu kumite</i>). See <a href="@@/styles/okinawa-kenpo/@@">Okinawa Kenpo dojo</a>.</li>
+<li><b>Motobu Udun-di (本部御殿手)</b>, the art of the Motobu noble household, opened to the public by Uehara Seikichi in 1970, with joint locks (<i>tuite</i>) and weapons. See <a href="@@/styles/motobu-udundi/@@">Motobu Udun-di dojo</a>.</li>
 <li><b>Kyokushin and full-contact karate</b> — popular and widely practised in Okinawa but founded elsewhere; see <a href="@@/arts/kyokushin/@@">Kyokushin and full-contact dojo</a>.</li>
 <li><b>Shotokan and Shito-ryu</b> — styles developed on the Japanese mainland by Okinawan-born or Okinawan-trained masters.</li></ul>
 <h2>Kobudo (古武道)</h2>
@@ -145,19 +153,27 @@ GUIDES = [
   "sources": [],
  },
  "ja": {
-  "title": "沖縄の空手・古武道の流派ガイド — 少林流・剛柔流・上地流ほか",
-  "desc": "少林流・剛柔流・上地流など沖縄の主な空手の流派と古武道を、やさしく解説。自分に合う道場の選び方も紹介します。",
+  "title": "沖縄の空手の流派ガイド — 少林流・剛柔流・上地流・一心流ほか",
+  "desc": "少林流（小林流・松林流）・剛柔流・上地流・一心流・劉衛流など、沖縄の空手の流派と古武道をやさしく解説。流派ごとの道場一覧と選び方も紹介します。",
   "h1": "沖縄の空手・古武道の流派ガイド",
   "sub": "流派名の意味、特徴の違い、選び方。",
   "body": """<p>空手は、沖縄の武術「ティ（手）」が、数百年にわたり中国武術と交わって生まれたものです。初期の系統は、発展した土地にちなんで<b>首里手・那覇手・泊手</b>と呼ばれ、今日の流派名もここから分かれています。系統や歴史には諸説あり、意見が分かれる部分もありますので、道場で耳にする名称の目安として読んでください。</p>
 <h2>少林流</h2>
-<p>首里手・泊手の流れをくむ大きな系統です。<b>小林流</b>、<b>松林流</b>、<b>少林流（昭林流）</b>など、団体ごとに分かれています。立ち方は自然で姿勢が高く、速さと直線的な動きが特徴とされます。掲載している道場では最も多い系統です。</p>
+<p>首里手・泊手の流れをくむ大きな系統です。<b>小林流</b>、<b>松林流</b>、<b>少林流（昭林流）</b>など、団体ごとに分かれています。立ち方は自然で姿勢が高く、速さと直線的な動きが特徴とされます。掲載している道場では最も多い系統です（<a href="@@/styles/shorin-ryu/@@">少林流の道場一覧</a>）。</p>
+<ul><li><b>小林流</b>：糸洲安恒に学んだ知花朝信の流れ。小林舘・志道館・究道館などの大きな団体があります。<a href="@@/styles/kobayashi-ryu/@@">小林流の道場</a></li>
+<li><b>松林流</b>：長嶺将真が1947年に創始。松村宗棍と松茂良興作にちなむ名称です。<a href="@@/styles/matsubayashi-ryu/@@">松林流の道場</a></li>
+<li><b>少林寺流</b>：仲里常延の流れで、喜屋武朝徳の空手を伝えます。名前は似ていますが少林寺拳法とは別物です。<a href="@@/styles/shorinji-ryu/@@">少林寺流の道場</a></li></ul>
 <h2>剛柔流</h2>
-<p>那覇手の系統の流派です。名称は「剛と柔」の意味で、近い間合い、しっかりした立ち方、呼吸法、円と直線の技が特徴です。体を鍛える「鍛え」を重視する道場も多くあります。</p>
+<p>那覇手の系統の流派です。名称は「剛と柔」の意味で、近い間合い、しっかりした立ち方、呼吸法、円と直線の技が特徴です。体を鍛える「鍛え」を重視する道場も多くあります（<a href="@@/styles/goju-ryu/@@">剛柔流の道場一覧</a>）。</p>
 <h2>上地流</h2>
-<p>上地完文が、福州で学んだ中国の武術をもとに創始しました。近い間合いの技と体づくり、少数の型が特徴です。</p>
+<p>上地完文が、福州で学んだ中国の武術をもとに創始しました。近い間合いの技と体づくり、少数の型が特徴です（<a href="@@/styles/uechi-ryu/@@">上地流の道場一覧</a>）。</p>
+<h2>一心流</h2>
+<p>島袋龍夫が少林流・剛柔流の師に学んで創始し、1956年に名付けた流派です。縦拳の突きが特徴で、沖縄で島袋に学んだ米兵を通じてアメリカに広まりました。総本部はうるま市にあり、基地内の<a href="@@/l/mccs-martial-arts/@@">MCCS武道プログラム</a>でも教えられています（<a href="@@/styles/isshin-ryu/@@">一心流の道場</a>）。</p>
+<h2>劉衛流</h2>
+<p>19世紀に福州で修行した仲井間憲里に始まる仲井間家の流派で、1971年から一般に指導されるようになりました。アーナンなどの型で知られ、古武道も併せて稽古します（<a href="@@/styles/ryuei-ryu/@@">劉衛流の道場</a>）。</p>
 <h2>そのほかの流派</h2>
-<ul><li><b>本部流</b>、<b>一心流</b>など。一心流は米国人にも長く親しまれており、基地内の<a href="@@/l/mccs-martial-arts/@@">MCCS武道プログラム</a>にも含まれています。</li>
+<ul><li><b>沖縄拳法</b>：防具付き組手を始めた中村茂の流れ（<a href="@@/styles/okinawa-kenpo/@@">沖縄拳法の道場</a>）。</li>
+<li><b>本部御殿手</b>：本部御殿に伝わり、1970年に上原清吉が公開した武術。取手（関節技）や武器術を含みます（<a href="@@/styles/motobu-udundi/@@">本部御殿手の道場</a>）。</li>
 <li><b>極真・フルコンタクト空手</b> — 沖縄でも盛んですが、発祥は沖縄ではありません。<a href="@@/arts/kyokushin/@@">極真・フルコンタクト空手の道場</a>をご覧ください。</li>
 <li><b>松濤館・糸東流</b> — 沖縄出身、または沖縄で学んだ空手家が本土で発展させた流派です。</li></ul>
 <h2>古武道</h2>
