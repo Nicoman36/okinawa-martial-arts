@@ -8,6 +8,7 @@ from catalog import DISC, DISCIPLINES, GROUPS, VERIF, STATUS, GROUPS_JA, REGIONS
 from geo import MUNI_SLUGS, REGIONS
 from seo_content import AREA_NOTES, NOUN_EN, NOUN_JA
 from guides import GUIDES
+from trials import TRIALS, AGESHIO
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = Path(os.environ.get("DIST_DIR", ROOT / "dist"))
@@ -37,6 +38,7 @@ def load():
 
 ROWS, SRC = load()
 PLACES = [r for r in ROWS if not r["is_org"] and r["status"] != "closed"]
+ROWS_BY_ID_INIT = {r["id"]: r for r in ROWS}
 by_disc = defaultdict(list)
 for r in ROWS:
     if r["status"] == "closed": continue
@@ -95,16 +97,36 @@ def footer():
     if LANG == "ja":
         return f'''<footer class="site"><div class="wrap"><div class="cols">
 <div><h4>{esc(CFG["site_name_ja"])}</h4><p>沖縄の武道・格闘技を紹介する、独立した有志運営のガイドです。道場・連盟・行政機関とは関係ありません。最終ビルド {TODAY}。※営業時間・備考など掲載詳細の一部は原文（英語）のままです。</p></div>
-<div><h4>探す</h4><ul><li><a href="{url("/find/")}">すべてを検索</a></li><li><a href="{url("/areas/")}">地域から探す</a></li><li><a href="{url("/map/")}">地図</a></li><li><a href="{url("/start/")}">初めての方へ</a></li><li><a href="{url("/english-friendly/")}">英語対応の道場・ジム</a></li><li><a href="{url("/visitors/")}">旅行者向け体験</a></li><li><a href="{url("/military-families/")}">米軍基地周辺</a></li><li><a href="{url("/kids/")}">子ども向け教室</a></li><li><a href="{url("/guides/")}">ガイド</a></li></ul></div>
+<div><h4>探す</h4><ul><li><a href="{url("/find/")}">すべてを検索</a></li><li><a href="{url("/areas/")}">地域から探す</a></li><li><a href="{url("/map/")}">地図</a></li><li><a href="{url("/start/")}">初めての方へ</a></li><li><a href="{url("/english-friendly/")}">英語対応の道場・ジム</a></li><li><a href="{url("/visitors/")}">体験レッスンと料金</a></li><li><a href="{url("/military-families/")}">米軍基地周辺</a></li><li><a href="{url("/kids/")}">子ども向け教室</a></li><li><a href="{url("/guides/")}">ガイド</a></li></ul></div>
 <div><h4>信頼性・お問い合わせ</h4><ul><li><a href="{url("/about-data/")}">データについて</a></li><li><a href="{url("/sources/")}">情報源と帰属</a></li><li><a href="{url("/suggest-edit/")}">修正・追加の提案</a></li><li><a href="{url("/for-dojos/")}">道場・ジムの運営者の方へ</a></li><li><a href="{url("/privacy/")}">プライバシーと削除依頼</a></li></ul></div>
 </div></div></footer>'''
     return f'''<footer class="site"><div class="wrap"><div class="cols">
 <div><h4>{esc(CFG["site_name"])}</h4><p>An independent, community-maintained guide to martial arts and combat sports in Okinawa. Not affiliated with any dojo, federation or government body. Last built {TODAY}.</p></div>
-<div><h4>Explore</h4><ul><li><a href="{url("/find/")}">Search all places</a></li><li><a href="{url("/areas/")}">Browse by area</a></li><li><a href="{url("/map/")}">Map</a></li><li><a href="{url("/start/")}">Beginner guide</a></li><li><a href="{url("/arts/")}">All arts</a></li><li><a href="{url("/english-friendly/")}">English-friendly places</a></li><li><a href="{url("/visitors/")}">Trial classes for visitors</a></li><li><a href="{url("/military-families/")}">Near US bases</a></li><li><a href="{url("/kids/")}">Kids' classes</a></li><li><a href="{url("/guides/")}">Guides</a></li></ul></div>
+<div><h4>Explore</h4><ul><li><a href="{url("/find/")}">Search all places</a></li><li><a href="{url("/areas/")}">Browse by area</a></li><li><a href="{url("/map/")}">Map</a></li><li><a href="{url("/start/")}">Beginner guide</a></li><li><a href="{url("/arts/")}">All arts</a></li><li><a href="{url("/english-friendly/")}">English-friendly places</a></li><li><a href="{url("/visitors/")}">Trial lessons & prices</a></li><li><a href="{url("/military-families/")}">Near US bases</a></li><li><a href="{url("/kids/")}">Kids' classes</a></li><li><a href="{url("/guides/")}">Guides</a></li></ul></div>
 <div><h4>Trust &amp; help</h4><ul><li><a href="{url("/about-data/")}">About this data</a></li><li><a href="{url("/sources/")}">Sources &amp; attribution</a></li><li><a href="{url("/suggest-edit/")}">Suggest an edit</a></li><li><a href="{url("/for-dojos/")}">For dojo &amp; gym owners</a></li><li><a href="{url("/privacy/")}">Privacy &amp; removal</a></li></ul></div>
 </div></div></footer>'''
 
 OG_ON = False
+
+OG_DIR = ROOT / "templates" / "assets" / "og"
+OG_HAVE = {f.stem for f in OG_DIR.glob("*.jpg")} if OG_DIR.exists() else set()
+ROWS_BY_ID = ROWS_BY_ID_INIT
+def og_image(path):
+    """Share image for a page path (images made by scripts/make_og.js)."""
+    parts = [x for x in path.split("/") if x]
+    key = "default"
+    if parts[:1] == ["arts"] and len(parts) > 1: key = "art-" + parts[1]
+    elif parts[:1] == ["areas"] and len(parts) > 2: key = "art-" + parts[2]
+    elif parts[:1] == ["styles"] and len(parts) > 1: key = "style-" + parts[1]
+    elif parts[:1] == ["guides"] and len(parts) > 1: key = "guide-" + parts[1]
+    elif parts[:1] == ["l"] and len(parts) > 1:
+        r = ROWS_BY_ID.get(parts[1]); key = "art-" + r["disc"][0] if r and r.get("disc") else "default"
+    elif parts[:1] == ["visitors"]: key = "visitors"
+    elif parts[:1] == ["kids"]: key = "kids"
+    elif parts[:1] == ["english-friendly"]: key = "english"
+    elif parts[:1] == ["military-families"] or parts[:1] == ["near"]: key = "military"
+    return key if key in OG_HAVE else ("default" if "default" in OG_HAVE else "")
+
 def page(path, title, desc, body, cur="", noindex=False, jsonld=None, extra_head="", scripts="", crumbs=None, og_type="website"):
     pf = "/ja" if LANG == "ja" else ""
     full_path = pf + path
@@ -118,7 +140,9 @@ def page(path, title, desc, body, cur="", noindex=False, jsonld=None, extra_head
             dict({"@type": "ListItem", "position": i + 1, "name": n}, **({"item": CFG["base_url"] + pf + p} if p else {})) for i, (n, p) in enumerate(crumbs)]}]
     ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False).replace("</", "<" + chr(92) + "/")}</script>' for x in lds)
     og = f'<meta property="og:url" content="{esc(canon)}"><meta property="og:site_name" content="{esc(T(CFG["site_name"], CFG["site_name_ja"]))}">'
-    if OG_ON: og += f'<meta property="og:image" content="{CFG["base_url"]}/assets/og.png"><meta property="og:image:width" content="600"><meta property="og:image:height" content="315"><meta property="og:image:alt" content="{esc(CFG["site_name"])}"><meta name="twitter:card" content="summary_large_image">'
+    oi = og_image(path)
+    if oi: og += f'<meta property="og:image" content="{CFG["base_url"]}/assets/og/{oi}.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{esc(title)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{CFG["base_url"]}/assets/og/{oi}.jpg">'
+    elif OG_ON: og += f'<meta property="og:image" content="{CFG["base_url"]}/assets/og.png"><meta property="og:image:width" content="600"><meta property="og:image:height" content="315"><meta property="og:image:alt" content="{esc(CFG["site_name"])}"><meta name="twitter:card" content="summary_large_image">'
     else: og += '<meta name="twitter:card" content="summary">'
     robots = '<meta name="robots" content="noindex,follow">' if noindex else ""
     full = f'''<!doctype html><html lang="{LANG}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -229,7 +253,7 @@ def build_home():
 <div class="stats"><div><b>{n}</b><span>{T("places listed","掲載件数")}</span></div><div><b>{na}</b><span>{T("arts","種目")}</span></div><div><b>{len(muni_counts)}</b><span>{T("municipalities","市町村")}</span></div><div><b>{verified}</b><span>{T("checked Oct–Nov 2026","2026年10〜11月確認")}</span></div></div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by art","種目から探す")} <span class="jp">武道</span></h2><p class="sub">{T("Each art has its own page with an explanation, beginner notes and every listing. Use the “Switch art” menu on any page to hop between them.","各種目に、解説・初心者向けの案内・全掲載をまとめたページがあります。どのページでも「種目を切り替え」から移動できます。")}</p><div class="arts-grid">{arts}</div></div></section>
 <section class="block"><div class="wrap"><h2>{T("Browse by area","地域から探す")} <span class="jp">地域</span></h2><p class="sub">{T("Each tile is a municipality, placed roughly where it sits on the island. Darker means more listings.","各タイルは市町村で、おおよその位置に並べています。色が濃いほど掲載が多い地域です。")} <a href="{url("/map/")}">{T("Open the map →","地図を開く →")}</a></p>{tilemap(muni_counts)}</div></section>
-{(f'<section class="block"><div class="wrap"><div class="callout info"><b>{T("Karate Day 2026:","2026年 空手の日：")}</b> {T("Shuri Castle demonstration on Sat 7 November and the mass demonstration on Kokusai-dori on Sun 8 November, 15:00–16:30.","11月7日（土）首里城で演武会、11月8日（日）15:00〜16:30 国際通りで記念演武祭。")} <a href="{url("/guides/karate-day-2026/")}">{T("Details and how to watch →","詳細と見学のコツ →")}</a></div></div></section>' if TODAY <= "2026-11-08" else "")}<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial classes for visitors","旅行者向け体験")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> <a class="chip" href="{url("/kids/")}">{T("Kids' classes","子ども向け教室")}</a> {style_chips()}</div></div></section>
+{(f'<section class="block"><div class="wrap"><div class="callout info"><b>{T("Karate Day 2026:","2026年 空手の日：")}</b> {T("Shuri Castle demonstration on Sat 7 November and the mass demonstration on Kokusai-dori on Sun 8 November, 15:00–16:30.","11月7日（土）首里城で演武会、11月8日（日）15:00〜16:30 国際通りで記念演武祭。")} <a href="{url("/guides/karate-day-2026/")}">{T("Details and how to watch →","詳細と見学のコツ →")}</a></div></div></section>' if TODAY <= "2026-11-08" else "")}<section class="block"><div class="wrap"><h2>{T("Popular searches","よく探されている条件")}</h2><p class="sub">{T("Straight to the places people look for most.","よく探されている場所へ直接移動できます。")}</p><div class="pill-row">{landing_links(limit=10)} <a class="chip" href="{url("/english-friendly/")}">{T("English-friendly martial arts","英語対応の武道・格闘技")}</a> <a class="chip" href="{url("/visitors/")}">{T("Trial lessons & prices","体験レッスンと料金")}</a> <a class="chip" href="{url("/military-families/")}">{T("Near the US bases","米軍基地周辺")}</a> <a class="chip" href="{url("/kids/")}">{T("Kids' classes","子ども向け教室")}</a> {style_chips()}</div></div></section>
 <section class="block"><div class="wrap two"><div><h2>{T("New to training here?","初めての方へ")}</h2><p>{T("Visiting for a week or settling in for years — our beginner guide covers how to ask for a trial in Japanese, etiquette, what to bring, and which places are used to English speakers.","数日の滞在でも長期の移住でも。体験の申し込み方、礼儀作法、持ち物、英語対応のある場所などを案内します。")}</p><p><a class="btn" href="{url("/start/")}">{T("Read the guide","ガイドを読む")}</a> <a class="btn secondary" href="{url("/find/?eng=1")}">{T("English-friendly places","英語対応あり")}</a></p></div>
 <div><h2>{T("Know something we don't?","情報をお持ちですか？")}</h2><p>{T("Dojo move, close and change phone numbers. Every listing has a “Report a problem” link, and owners can claim, update or remove their entry.","道場の移転・閉鎖・電話番号の変更はよくあります。各掲載に「誤りを報告」リンクがあり、運営者ご本人は掲載の更新・削除もできます。")} <a href="{url("/about-data/")}">{T("How we check the data","確認方法")}</a> · <a href="{url("/sources/")}">{T("Sources","情報源")}</a></p><p><a class="btn secondary" href="{url("/suggest-edit/")}">{T("Suggest an edit","修正・追加を提案")}</a></p></div></div></section>'''
     page("/", T(f'{CFG["site_name"]} — Karate Dojo, BJJ & Gyms', f'{CFG["site_name_ja"]} — 道場・ジム・クラブを探す'),
@@ -738,7 +762,7 @@ def build_dojos():
 <h2>確認すると何が良くなるか</h2>
 <ul><li><b>正しい情報が載ります。</b>電話番号、稽古日時、住所、料金の目安、体験や見学の可否を、運営者ご自身の情報で更新します。</li>
 <li><b>確認済みの表示。</b>運営者への確認が取れた掲載は、確認日とともに「確認済み」として表示されます。</li>
-<li><b>英語対応・体験の案内が伝わります。</b>英語での指導や、旅行者・初心者の受け入れを教えていただくと、<a href="{url("/english-friendly/")}">英語対応</a>や<a href="{url("/visitors/")}">旅行者向け体験</a>のページにも載ります。</li>
+<li><b>英語対応・体験の案内が伝わります。</b>英語での指導や、旅行者・初心者の受け入れを教えていただくと、<a href="{url("/english-friendly/")}">英語対応</a>や<a href="{url("/visitors/")}">体験レッスンと料金</a>のページにも載ります。</li>
 <li><b>写真（任意）。</b>ご自身が撮影した、または撮影された方の同意がある写真があれば、出典を明記して掲載できます。生徒さんの写真は同意が確認できるものだけです。</li></ul>
 <h2>お知らせいただきたいこと</h2>
 <ol><li>掲載ページのリンク（<a href="{url("/find/")}">検索</a>で見つかります）。</li>
@@ -815,7 +839,7 @@ def sitemap():
     # listings never re-verified: date of the last substantive page revision (dojo names romanised, styles corrected, descriptions rewritten)
     lm.update({f'/l/{r["id"]}/': "2026-11-10" for r in ROWS if f'/l/{r["id"]}/' not in lm})
     # pages whose content changed after the last data update: keeps lastmod honest and lets IndexNow pick them up
-    lm.update({"/": "2026-10-31", "/military-families/": "2026-10-31", "/guides/": "2026-10-18"})
+    lm.update({"/": "2026-11-11", "/military-families/": "2026-10-31", "/guides/": "2026-11-11"})
     lm.update({f"/guides/{g['slug']}/": g["updated"] for g in GUIDES})
     lm.update({f"/styles/{x[0]}/": "2026-11-10" for x in STYLES})
     lm.update({f"/near/{k}/": "2026-10-31" for k in NEAR})
@@ -963,23 +987,44 @@ def build_english():
                  T("English-friendly martial arts in Okinawa","英語対応の武道・格闘技（沖縄）"), T("Dojo, gyms and clubs where English is spoken — or likely","英語が通じる、または通じる可能性が高い道場・ジム・クラブ"), intro, secs, T("English-friendly","英語対応"), sure + likely)
 
 def build_visitors():
-    rs = sorted([r for r in PLACES if r["verification"] != "C" and r["visitors"] and r["visitors"] != "unknown" and not re.search(r"on-base: access|requires a U\.S\. military ID", r["visitors"])], key=lambda r: r["name_en"].lower())
-    trial = sum(1 for r in rs if re.search(r"trial", r["visitors"], re.I))
-    intro = T(f'''<p>Short on time in Okinawa and want to train? These {len(rs)} listings say something about visitors, beginners or trial lessons — {trial} of them mention a trial lesson. The line under each name is what the operator publishes, as of our last check.</p>
-<h2>Booking a trial class</h2><ul><li><b>Message first.</b> Most gyms take trial bookings on their website, by LINE or Instagram message. Some accept web reservations only.</li>
+    rs = sorted([r for r in PLACES if r["status"] != "closed" and r["visitors"] and r["visitors"] != "unknown" and not re.search(r"on-base: access|requires a U\.S\. military ID", r["visitors"])], key=lambda r: r["name_en"].lower())
+    byid = {r["id"]: r for r in PLACES}
+    tr = {k: v for k, v in TRIALS.items() if k in byid and byid[k]["status"] != "closed"}
+    def row(i, price):
+        r = byid[i]
+        art = style_txt(r) if (r["style"] and not r["style"].startswith(("Karate (", "Karate / ")) and len(r["style"]) <= 34) else dname(r["disc"][0]) if r["disc"] else ""
+        eng = T("Yes", "あり") if r["eng_level"] == 1 else (T("Likely", "可能性あり") if r["eng_level"] == 2 else "—")
+        return f'<tr><td><a href="{url("/l/" + i + "/")}">{esc(primary_name(r))}</a></td><td>{esc(art)}</td><td>{esc(r["m_ja"] if LANG == "ja" else r["m_en"].split(" (")[0])}</td><td>{esc(price)}</td><td>{eng}</td></tr>'
+    head = f'<thead><tr><th>{T("Place","名称")}</th><th>{T("Art / style","種目・流派")}</th><th>{T("Area","地域")}</th><th>{T("Trial or visitor price","体験・ビジター料金")}</th><th>{T("English","英語")}</th></tr></thead>'
+    tbl = lambda ids: f'<div><table class="data">{head}<tbody>{"".join(row(i, T(tr[i][2], tr[i][3])) for i in ids)}</tbody></table></div>'
+    free = sorted([i for i, v in tr.items() if v[0] == "free"], key=lambda i: primary_name(byid[i]).lower())
+    paid = sorted([i for i, v in tr.items() if v[0] == "paid"], key=lambda i: (tr[i][1], primary_name(byid[i]).lower()))
+    ag = [i for i in AGESHIO if i in byid]
+    lo = min(tr[i][1] for i in paid) if paid else 0; hi = max(tr[i][1] for i in paid) if paid else 0
+    ag_rows = "".join(row(i, T("Group ¥8,000 / private ¥20,000 + tax", "グループ8,000円・個人20,000円（税別）")) for i in sorted(ag, key=lambda i: primary_name(byid[i]).lower()))
+    prices = f'''<h2 class="region" id="prices">{T("Trial prices at a glance","体験料金の一覧")}</h2>
+<div class="callout info glance">{T(f"<b>At a glance:</b> {len(free)} gyms and dojo offer a free trial — mostly BJJ, kickboxing and MMA gyms. {len(paid)} more publish a paid trial, drop-in or dojo experience, from ¥{lo:,} to ¥{hi:,}. Traditional karate dojo usually charge for a one-off session (¥3,000–¥5,000 is common), and {len(ag)} well-known karate dojo also take visitors through the travel agency Ageshio Japan. Prices are as published when we checked (Oct–Nov 2026); confirm when you book.",
+f"<b>概要：</b>無料体験があるのは{len(free)}か所（主にBJJ・キックボクシング・総合格闘技のジム）。有料の体験・ドロップイン・道場体験を公開しているのは{len(paid)}か所で、{lo:,}円〜{hi:,}円です。伝統空手の道場は1回の体験が有料のことが多く（3,000〜5,000円が目安）、著名な空手道場{len(ag)}か所は旅行会社「Ageshio Japan」経由でも受け入れています。料金は確認時点（2026年10〜11月）の公表額です。予約時にご確認ください。")}</div>
+<h3>{T("Free trials","無料体験")} <small style="font-weight:400;color:var(--muted)">· {len(free)}</small></h3>{tbl(free)}
+<h3>{T("Paid trials, drop-ins and dojo experiences","有料の体験・ドロップイン・道場体験")} <small style="font-weight:400;color:var(--muted)">· {len(paid)}</small></h3>{tbl(paid)}
+<h3>{T("Karate dojo bookable through Ageshio Japan","Ageshio Japan経由で予約できる空手道場")} <small style="font-weight:400;color:var(--muted)">· {len(ag)}</small></h3>
+<p class="sub">{T("Ageshio Japan is a Naha travel agency specialising in karate. It arranges single lessons with these teachers at one price; the dojo's own fees for members are different.","Ageshio Japanは那覇の空手専門の旅行会社で、これらの先生の稽古を共通料金で手配しています。会員向けの道場の月謝とは異なります。")} <a href="https://ageshiojapan.com/jp/?p=3104" rel="nofollow noopener" target="_blank">Ageshio Japan ↗</a></p>
+<div><table class="data">{head}<tbody>{ag_rows}</tbody></table></div>'''
+    intro = T(f'''<p>Want to train while you are in Okinawa? Many gyms offer a free trial, and most traditional dojo will take a visitor for a set fee. Below are the published trial and visitor prices for {len(free) + len(paid)} places, then all {len(rs)} listings that say something about visitors, beginners or trials.</p>@@SPLIT@@
+<h2>Booking a trial class</h2><ul><li><b>Message first.</b> Most gyms take trial bookings on their website, by LINE or Instagram message. Some accept web reservations only, and a few refuse unannounced visits.</li>
 <li><b>Confirm the time.</b> Schedules shift around school terms and holidays such as Obon, New Year and Golden Week.</li>
 <li><b>Ask what to bring.</b> A clean T-shirt, shorts and a towel are usually enough for striking and grappling; many gyms lend a gi or gloves for trials.</li>
-<li><b>Traditional dojo.</b> Karate and kobudo dojo often prefer an introduction or a polite request to observe (見学) first. Our <a href="{url("/start/")}">beginner guide</a> has the Japanese phrases and etiquette.</li></ul>
-<p>Karate fans will also want the <a href="{url("/l/okinawa-karate-kaikan/")}">Okinawa Karate Kaikan</a> in Tomigusuku, the prefecture's karate centre, which offers short karate and kobudo experiences for visitors.</p>''',
-              f'''<p>沖縄に短期滞在していて稽古がしたい方へ。体験・初心者・見学についての案内がある掲載{len(rs)}件をまとめました（うち{trial}件に体験レッスンの案内あり）。各名称の下の行は、運営者が公表している内容（最終確認時点）です。</p>
-<h2>体験の申し込み方</h2><ul><li><b>まずメッセージを。</b>多くのジムはウェブサイト・LINE・Instagramで体験を受け付けています。ウェブ予約のみの場合もあります。</li>
+<li><b>Traditional dojo.</b> Karate and kobudo dojo often prefer an introduction or a polite request to observe (見学) first. Our <a href="{url("/start/")}">beginner guide</a> has the Japanese phrases and our <a href="{url("/guides/dojo-etiquette/")}">etiquette guide</a> covers the rest.</li></ul>
+<p>For karate, start with the <a href="{url("/guides/okinawa-karate-kaikan/")}">Okinawa Karate Kaikan</a> in Tomigusuku, the prefecture's karate centre, which also runs short experiences for visitors.</p>''',
+              f'''<p>沖縄滞在中に稽古をしたい方へ。無料体験のあるジムも多く、伝統道場の多くも決まった料金でビジターを受け入れています。体験・ビジター料金を公開している{len(free) + len(paid)}か所の料金一覧と、体験・初心者・見学について案内のある掲載{len(rs)}件をまとめました。</p>@@SPLIT@@
+<h2>体験の申し込み方</h2><ul><li><b>まずメッセージを。</b>多くのジムはウェブサイト・LINE・Instagramで体験を受け付けています。ウェブ予約のみ、予約なしの来訪はお断りという場所もあります。</li>
 <li><b>日時の確認。</b>学期やお盆・年末年始・ゴールデンウィークで稽古日が変わります。</li>
 <li><b>持ち物。</b>打撃・組技系は、清潔なTシャツ・短パン・タオルで足りることが多く、道着やグローブを貸してくれるジムもあります。</li>
-<li><b>伝統道場。</b>空手・古武道の道場は、紹介や、まず見学（けんがく）をお願いする形を好むことがあります。表現例と礼儀は<a href="{url("/start/")}">初めての方へ</a>をご覧ください。</li></ul>
-<p>空手ファンの方は、県の空手の拠点で、見学者向けの空手・古武道の体験もある豊見城市の<a href="{url("/l/okinawa-karate-kaikan/")}">沖縄空手会館</a>もおすすめです。</p>''')
-    topical_page("/visitors/", T("Try a martial arts class in Okinawa — visitor trials","沖縄で武道・格闘技を体験｜旅行者向けの体験・見学"),
-                 trim(T(f"{len(rs)} dojo and gyms in Okinawa that welcome visitors or advertise trial lessons, with prices where published, plus how to book and what to bring.", f"体験・見学を案内している沖縄の道場・ジム{len(rs)}件。料金（公表されているもの）、予約方法、持ち物も紹介。")),
-                 T("Try a martial arts class in Okinawa","沖縄で武道・格闘技を体験する"), T("Trial lessons, drop-ins and visitor-friendly dojo","体験レッスン・ドロップイン・見学歓迎の道場"), intro, region_sections(rs), T("Trial classes for visitors","旅行者向け体験"), rs)
+<li><b>伝統道場。</b>空手・古武道の道場は、紹介や、まず見学（けんがく）をお願いする形を好むことがあります。表現例は<a href="{url("/start/")}">初めての方へ</a>、礼儀は<a href="{url("/guides/dojo-etiquette/")}">道場の礼儀ガイド</a>をご覧ください。</li></ul>
+<p>空手なら、県の空手の拠点で、旅行者向けの体験もある豊見城市の<a href="{url("/guides/okinawa-karate-kaikan/")}">沖縄空手会館</a>から始めるのがおすすめです。</p>''')
+    topical_page("/visitors/", T("Trial lessons in Okinawa: karate, BJJ & more, with prices","沖縄の武道・格闘技の体験レッスン｜料金・無料体験・予約方法"),
+                 trim(T(f"Free and paid trial lessons in Okinawa: {len(free)} free trials and {len(paid)} published prices from ¥{lo:,} — karate dojo, BJJ, kickboxing and MMA gyms — plus how to book.", f"沖縄の武道・格闘技の体験レッスン。無料体験{len(free)}か所と、{lo:,}円からの体験料金{len(paid)}か所（空手道場・BJJ・キックボクシング・総合格闘技）。予約方法も。")),
+                 T("Trial lessons in Okinawa","沖縄で武道・格闘技を体験する"), T("Free trials, visitor prices and dojo experiences","無料体験・ビジター料金・道場体験"), intro.split("@@SPLIT@@")[0], prices + '<div class="prose" style="margin-top:22px">' + intro.split("@@SPLIT@@")[1] + '</div><h2 class="region">' + T("Everything we list for visitors", "見学・体験の案内がある掲載") + '</h2>' + region_sections(rs), T("Trial lessons","体験レッスン"), rs)
 
 ONBASE_RE = re.compile(r"Air Base|Camp [A-Z]|on-base|On-base")
 def build_military():

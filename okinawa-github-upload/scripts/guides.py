@@ -1,18 +1,172 @@
 """Long-form guides (EN + JA). Data only. Internal links are written as @@/path/@@ and resolved at build time."""
 
+KAIKAN_SRC = [
+ ("Okinawa Karate Kaikan — official site", "https://karatekaikan.jp/en"),
+ ("Okinawa Karate Kaikan — facility guide, hours and fees", "https://karatekaikan.jp/en/pages/guide"),
+ ("Okinawa Karate Kaikan — access", "https://karatekaikan.jp/en/pages/access"),
+ ("Okinawa Karate Kaikan — experience programmes", "https://karatekaikan.jp/en/pages/experience-program"),
+ ("Okinawa Karate Tourism — karate experience at the Kaikan (Okinawa Traditional Karate-do Promotion Association)", "https://tourism.odks.jp/program4.html"),
+ ("Okinawa Story (education travel) — Karate Kaikan archive visit", "https://education.okinawastory.jp/experience/9558/"),
+ ("ANA Japan Travel Planner — Okinawa Karate Kaikan", "https://www.ana.co.jp/ja/au/japan-travel-planner/okinawa/0000003.html"),
+ ("Okinawa Karate Navi — about (Okinawa Karate Information Center)", "http://okinawa-karate-navi.com/about/"),
+]
+KAIKAN = {
+ "slug": "okinawa-karate-kaikan", "date": "2026-11-11", "updated": "2026-11-11",
+ "en": {
+  "title": "Okinawa Karate Kaikan guide: hours, fees, access and training",
+  "desc": "Visiting the Okinawa Karate Kaikan in Tomigusuku: hours, the ¥400 exhibition, karate experiences from ¥10,000, getting there from Naha Airport, and dojo nearby.",
+  "h1": "Visiting the Okinawa Karate Kaikan",
+  "sub": "The prefecture's karate centre in Tomigusuku: what is there, what it costs, and how to train. Checked 11 November 2026.",
+  "sources": KAIKAN_SRC,
+  "body": """<p>The <b>Okinawa Karate Kaikan</b> (沖縄空手会館) is Okinawa Prefecture's centre for preserving and promoting karate. It opened in March 2017 on a hill in Tomigusuku, about 15 minutes by car from Naha Airport. It is not a single dojo: it is a complex with an exhibition, large training halls, a café and the prefecture's karate information desk, and it is where many of the island's official karate events take place.</p>
+<div class="callout info"><b>At a glance:</b> exhibition 9:00–18:00 (last entry 17:30), ¥400 for adults; closed Wednesdays and 30 December–3 January. Free parking for 100 cars. Karate experiences start at ¥10,000 per person and must be booked about a month ahead. Address: 854-1 Tomigusuku, Tomigusuku City; phone 098-851-1025.</div>
+<h2>What is there</h2>
+<ul><li><b>Exhibition room.</b> The history of Okinawan karate and the people who took it abroad, with a hands-on karate corner and a video theatre. A reading room with karate books is free; sign in at the entrance.</li>
+<li><b>Special Dojo (Shurei no Yakata).</b> A dojo built in the style of the Ryukyu Kingdom, used for senior grading examinations and ceremonial events such as the Karate Day dedication demonstration. It is not open for general training, but you can see it from the café.</li>
+<li><b>Main karate dojo.</b> 1,278 m² with four competition areas and 380 seats, used for tournaments and seminars. The floor is unpainted red pine and the walls and seats are cypress.</li>
+<li><b>Training room, outdoor training area and seminar room</b>, which groups and dojo can rent.</li>
+<li><b>Karate Café AGARI</b> (lunch, including Okinawa soba; 11:00–15:00) and a shop.</li>
+<li><b>Okinawa Karate Information Center.</b> The prefecture's karate information desk is based here. It runs <a href="http://okinawa-karate-navi.com/dojo/" rel="nofollow noopener" target="_blank">Okinawa Karate Navi</a>, the official dojo guide we use for many of our listings.</li></ul>
+<h2>Opening hours and fees</h2>
+<table class="data"><thead><tr><th>What</th><th>Details</th></tr></thead><tbody>
+<tr><td>Exhibition room</td><td>9:00–18:00, last entry 17:30</td></tr>
+<tr><td>Dojo and training facilities</td><td>9:00–21:00</td></tr>
+<tr><td>Closed</td><td>Every Wednesday (moved to another day when a Wednesday is a public holiday) and 30 December–3 January</td></tr>
+<tr><td>Exhibition admission</td><td>Adults ¥400 · high-school and university students ¥270 · primary and junior-high ¥130 (group rates ¥320 / ¥220 / ¥100 for 20 or more)</td></tr>
+<tr><td>Using the dojo or training room</td><td>¥200 per person (adults), ¥110 for children, students and seniors; 11-visit tickets available. Shower ¥130.</td></tr>
+<tr><td>Parking</td><td>Free, 100 spaces, buses accepted</td></tr></tbody></table>
+<h2>Training and experiences</h2>
+<ul><li><b>Karate experience for visitors.</b> The Okinawa Traditional Karate-do Promotion Association runs a beginner-friendly session at the Kaikan: about 90 minutes (60 on the mat), ¥10,000 per person, for groups of three or more, with gi rental, a commemorative photo and an English-speaking guide. Book at least a month ahead.</li>
+<li><b>The Kaikan's own karate and Ryukyu kobudo programmes</b> are aimed at beginners, school trips and groups. The Kaikan arranges a teacher after you book, so it asks for at least a month's notice; prices are in its programme brochure.</li>
+<li><b>Tile breaking (瓦割り)</b> can be booked online; you get up to three attempts. A <b>kendo experience</b> is also bookable online.</li>
+<li><b>Regular classes.</b> Some groups train here every week, including <a href="@@/l/roster-072/@@">World Oshukai</a> (Shorin-ryu, Monday and Friday evenings) and the Daido-juku and Ryushikan kendo classes listed on the <a href="@@/l/okinawa-karate-kaikan/@@">Karate Kaikan page</a>.</li></ul>
+<p>If you want to train in a working dojo rather than a programme, see <a href="@@/visitors/@@">trial lessons and visitor prices</a>: many traditional dojo take visitors for ¥3,000–¥5,000 a session.</p>
+<h2>Getting there</h2>
+<ul><li><b>By car or taxi:</b> about 14 minutes from Naha Airport, longer at rush hour.</li>
+<li><b>By monorail and bus:</b> take the Yui Rail from Naha Airport to Ounoyama-koen station. From the Ounoyama-koen-eki-mae stop, take bus 101 or 105 towards Tomigusuku Junior High School and get off at Tomigusuku Koen-mae, then walk about 5 minutes.</li>
+<li><b>From the Prefectural Budokan (Ounoyama):</b> bus 101 or 105 from the Koen-mae stop on the station side, or bus 446 from the Route 58 side, to Tomigusuku Koen-mae.</li></ul>
+<h2>Tips for your visit</h2>
+<ul><li>Avoid Wednesdays, and check the official site before you go: tournaments and gradings sometimes take over the halls.</li>
+<li>If you want to see karate rather than just exhibits, ask at the desk whether any class or event is on that day.</li>
+<li>Around <a href="@@/guides/karate-day/@@">Karate Day</a> (25 October) the Kaikan hosts the yearly dedication demonstration by masters holding the prefecture's intangible cultural property title. In 2026 it was closed to the public and live-streamed.</li>
+<li>Bring your own gi only if you have booked training; the exhibition needs nothing special.</li></ul>
+<h2>Dojo near the Kaikan</h2>
+<p>Tomigusuku and neighbouring Naha have many dojo; see <a href="@@/areas/tomigusuku/@@">martial arts in Tomigusuku</a>, <a href="@@/areas/naha/karate/@@">karate dojo in Naha</a>, and, for something specific, <a href="@@/l/roster-087/@@">Shinbukan</a> (Shorin-ryu and kobudo, Tomigusuku) or <a href="@@/l/roster-089/@@">Tenshokai</a> (Goju-ryu, Tomigusuku). New to dojo life? Read <a href="@@/guides/dojo-etiquette/@@">dojo etiquette</a> first.</p>""",
+ },
+ "ja": {
+  "title": "沖縄空手会館の見学ガイド｜開館時間・料金・アクセス・空手体験",
+  "desc": "豊見城市の沖縄空手会館の開館時間、資料展示室の観覧料（一般400円）、空手体験（1人10,000円〜）、那覇空港からのアクセス、近くの道場をまとめました。",
+  "h1": "沖縄空手会館の見学ガイド",
+  "sub": "豊見城市にある県の空手の拠点。施設、料金、稽古・体験の方法。2026年11月11日確認。",
+  "sources": KAIKAN_SRC,
+  "body": """<p><b>沖縄空手会館</b>は、空手の保存・継承と普及のために沖縄県が整備した拠点施設です。2017年3月、豊見城市の高台に開館し、那覇空港から車で約15分です。一つの道場ではなく、資料展示室・大きな道場・カフェ・県の空手案内窓口などが集まった施設で、県の公式な空手行事の多くがここで行われます。</p>
+<div class="callout info"><b>概要：</b>資料展示室は9:00〜18:00（最終入館17:30）、一般400円。毎週水曜日と12月30日〜1月3日は休館。無料駐車場100台。空手体験は1人10,000円からで、約1か月前までの予約が必要です。所在地：豊見城市豊見城854-1、電話098-851-1025。</div>
+<h2>施設の内容</h2>
+<ul><li><b>資料展示室。</b>沖縄空手の歴史や、空手を世界に広めた人々を紹介しています。空手体験コーナーと映像シアターもあります。空手関係の図書を読める閲覧室は無料です（入口で記帳）。</li>
+<li><b>特別道場。</b>琉球王国時代の様式を取り入れた道場で、高段者の審査や空手の日の奉納演武などの行事に使われます。一般の稽古には使えませんが、カフェから眺めることができます。</li>
+<li><b>空手道場。</b>1,278㎡、試合場4面・観客席380席で、大会やセミナーに使われます。床は無塗装の赤松、壁と客席は檜です。</li>
+<li><b>鍛錬室・屋外鍛錬場・研修室</b>は、団体や道場が借りることができます。</li>
+<li><b>カラテカフェAGARI</b>（沖縄そばなどの昼食、11:00〜15:00）と売店。</li>
+<li><b>沖縄空手案内センター。</b>県の空手の案内窓口がここにあり、このサイトでも多くの掲載で参照している公式の道場ガイド<a href="http://okinawa-karate-navi.com/dojo/" rel="nofollow noopener" target="_blank">沖縄空手ナビ</a>を運営しています。</li></ul>
+<h2>開館時間と料金</h2>
+<table class="data"><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody>
+<tr><td>資料展示室</td><td>9:00〜18:00（最終入館17:30）</td></tr>
+<tr><td>道場・鍛錬施設</td><td>9:00〜21:00</td></tr>
+<tr><td>休館日</td><td>毎週水曜日（祝日の場合は別の日に振替）、12月30日〜1月3日</td></tr>
+<tr><td>資料展示室の観覧料</td><td>一般400円・高校生/大学生270円・小中学生130円（20名以上の団体は320円/220円/100円）</td></tr>
+<tr><td>道場・鍛錬室の利用</td><td>一般200円、子ども・学生・シニア110円（11回券あり）。シャワー130円。</td></tr>
+<tr><td>駐車場</td><td>無料・100台（大型バス可）</td></tr></tbody></table>
+<h2>稽古と体験</h2>
+<ul><li><b>旅行者向けの空手体験。</b>一般社団法人沖縄伝統空手道振興会が、会館で初心者向けの体験を行っています。約90分（体験約60分）、1人10,000円、3名以上で催行、道着レンタル・記念撮影・英語通訳ガイド付き。1か月前までに予約が必要です。</li>
+<li><b>会館の空手・琉球古武術体験プログラム</b>は、初心者や修学旅行・団体向けです。予約後に講師を手配するため、1か月前までの予約をお願いしています。料金はパンフレットに掲載されています。</li>
+<li><b>瓦割り体験</b>はオンラインで予約でき、3回まで挑戦できます。<b>剣道体験</b>もオンライン予約できます。</li>
+<li><b>定期の稽古。</b>毎週ここで稽古している団体もあります。例：<a href="@@/l/roster-072/@@">ワールド王修会</a>（少林流、月・金の夜）、<a href="@@/l/okinawa-karate-kaikan/@@">空手会館のページ</a>に載せている大道塾那覇・剣道の龍志館など。</li></ul>
+<p>体験プログラムではなく実際の道場で稽古したい場合は、<a href="@@/visitors/@@">体験レッスンと料金の一覧</a>をご覧ください。多くの伝統道場が1回3,000〜5,000円ほどでビジターを受け入れています。</p>
+<h2>アクセス</h2>
+<ul><li><b>車・タクシー：</b>那覇空港から約14分（時間帯により混雑します）。</li>
+<li><b>モノレールとバス：</b>ゆいレールで那覇空港駅から奥武山公園駅へ。「奥武山公園駅前」バス停から豊見城中学校行きの101番または105番に乗り、「豊見城公園前」で降りて徒歩約5分。</li>
+<li><b>県立武道館（奥武山）から：</b>駅側の「公園前」から101番・105番、または国道58号側の「公園前」から446番で「豊見城公園前」へ。</li></ul>
+<h2>見学のコツ</h2>
+<ul><li>水曜日は休館です。大会や審査で道場が使われている日もあるので、事前に公式サイトを確認しましょう。</li>
+<li>展示だけでなく空手そのものを見たい場合は、受付でその日に稽古や行事があるか尋ねてみましょう。</li>
+<li><a href="@@/guides/karate-day/@@">空手の日</a>（10月25日）には、県指定無形文化財保持者による奉納演武がここで行われます。2026年は一般入場はなく、生配信されました。</li>
+<li>道着は稽古を予約した場合のみ必要です。展示の見学に特別な準備はいりません。</li></ul>
+<h2>会館近くの道場</h2>
+<p>豊見城市や隣の那覇市には道場が数多くあります。<a href="@@/areas/tomigusuku/@@">豊見城市の武道・格闘技</a>、<a href="@@/areas/naha/karate/@@">那覇市の空手道場</a>、豊見城市の<a href="@@/l/roster-087/@@">信武舘</a>（少林流・古武道）や<a href="@@/l/roster-089/@@">転掌会</a>（剛柔流）もご覧ください。道場が初めての方は、先に<a href="@@/guides/dojo-etiquette/@@">道場の礼儀</a>をどうぞ。</p>""",
+ },
+}
+KD_SRC = [
+ ("Okinawa Prefecture — Karate Day (空手の日)", "https://www.pref.okinawa.jp/bunkakoryu/bunkageijutsu/1009556/1009629/1018652/1009632.html"),
+ ("Karate Day official site (karate-event.jp)", "https://karate-event.jp/"),
+ ("Karate Day official site — dedication demonstration", "https://karate-event.jp/demonstrations/"),
+ ("Karate Day official site — commemorative demonstration (記念演武祭)", "https://karate-event.jp/memorial-demonstration/"),
+ ("Ryukyu Shimpo — about 3,100 karate practitioners on Kokusai-dori (2025)", "https://ryukyushimpo.jp/news/sports/entry-4723324.html"),
+ ("Ryukyu Shimpo — about 2,600 karate practitioners on Kokusai-dori (9 Nov 2026)", "https://ryukyushimpo.jp/national/entry-5594236.html"),
+]
+KARATE_DAY = {
+ "slug": "karate-day", "date": "2026-11-11", "updated": "2026-11-11",
+ "en": {
+  "title": "Karate Day in Okinawa (25 October): events and how to watch",
+  "desc": "Okinawa's Karate Day, every 25 October: why the date, the yearly events (dedication demonstration, thousands on Kokusai-dori), and how to plan for 2027.",
+  "h1": "Karate Day in Okinawa",
+  "sub": "Every 25 October: the history, the events that happen each year, and planning for 2027. Updated 11 November 2026.",
+  "sources": KD_SRC,
+  "body": """<p><b>Karate Day</b> (空手の日, <i>karate no hi</i>) is 25 October. Okinawa, where karate was born, marks it with demonstrations by its senior masters and a mass demonstration in the middle of Naha, and the events run from late October into early November.</p>
+<div class="callout info"><b>Next Karate Day:</b> Monday 25 October 2027. The year's events and dates appear on the official site (karate-event.jp), usually in the autumn; we add them to this page as soon as they are published.</div>
+<h2>Why 25 October?</h2>
+<p>The Okinawa Prefectural Assembly resolved in March 2005 to make 25 October Karate Day. The date marks 25 October 1936, when, according to the prefecture, the written form 空手 (“empty hand”) was formally adopted for the art.</p>
+<h2>What happens each year</h2>
+<ul><li><b>Dedication demonstration (奉納演武).</b> On Karate Day itself, holders of the prefecture's intangible cultural property title for Okinawan karate and kobudo perform in the Special Dojo of the <a href="@@/guides/okinawa-karate-kaikan/@@">Okinawa Karate Kaikan</a>. In 2026 it was closed to the public and live-streamed on the official YouTube channel.</li>
+<li><b>Commemorative demonstration on Kokusai-dori (記念演武祭).</b> Thousands of karateka of every style, age and nationality fill Naha's main street and perform kata such as Fukyugata I together. More than 2,000 took part in 2024, about 3,100 in 2025 and about 2,600 in 2026 (held on 8 November that year).</li>
+<li><b>Other demonstrations and exhibitions.</b> Each year adds its own events. In 2026 a karate and kobudo demonstration at Shuri Castle Park celebrated the rebuilt main hall; it was the 50th of the cross-style demonstrations held monthly since the castle fire of October 2019.</li></ul>
+<h2>Planning a visit</h2>
+<ul><li><b>When:</b> plan for the last week of October and the first weeks of November, and check the official site for that year's dates. The mass demonstration is not always on the 25th.</li>
+<li><b>Where to stay:</b> Naha is the easiest base. The Yui Rail monorail reaches Shuri and the Kokusai-dori area, and the Karate Kaikan is a short bus or taxi ride from the airport.</li>
+<li><b>Watching:</b> outdoor events are free and formal in spirit. Stay quiet during demonstrations and ask before photographing individuals.</li>
+<li><b>Training:</b> the week is a good time to try a class. See <a href="@@/visitors/@@">trial lessons and visitor prices</a>, <a href="@@/areas/naha/karate/@@">karate dojo in Naha</a> and <a href="@@/english-friendly/@@">English-friendly places</a>.</li></ul>
+<h2>Past years</h2>
+<ul><li><a href="@@/guides/karate-day-2026/@@">Karate Day 2026</a>: the dedication demonstration at the Karate Kaikan, the Shuri Castle demonstration, and about 2,600 karateka on Kokusai-dori.</li></ul>""",
+ },
+ "ja": {
+  "title": "沖縄の空手の日（10月25日）｜毎年の行事と見学のしかた",
+  "desc": "毎年10月25日の「空手の日」。日付の由来、奉納演武や国際通りの記念演武祭など毎年の行事、2027年に向けた見学の準備をまとめました。",
+  "h1": "沖縄の空手の日",
+  "sub": "毎年10月25日。由来、毎年の行事、2027年の見学の準備。2026年11月11日更新。",
+  "sources": KD_SRC,
+  "body": """<p>10月25日は<b>「空手の日」</b>です。空手発祥の地・沖縄では、高段の先生方による演武や那覇中心部での大規模な演武祭が行われ、行事は10月下旬から11月上旬まで続きます。</p>
+<div class="callout info"><b>次の空手の日：</b>2027年10月25日（月）。その年の行事と日程は公式サイト（karate-event.jp）で例年秋ごろに発表されます。発表され次第、このページに追加します。</div>
+<h2>なぜ10月25日？</h2>
+<p>2005年3月、沖縄県議会が10月25日を「空手の日」とすることを決議しました。県によると、1936年10月25日に「空手」という表記が正式に用いられるようになったことにちなんでいます。</p>
+<h2>毎年の行事</h2>
+<ul><li><b>奉納演武。</b>空手の日当日、<a href="@@/guides/okinawa-karate-kaikan/@@">沖縄空手会館</a>の特別道場で、県指定無形文化財（沖縄の空手・古武道）の保持者が演武を奉納します。2026年は一般入場はなく、公式YouTubeチャンネルで生配信されました。</li>
+<li><b>国際通りの記念演武祭。</b>流派・年齢・国籍を越えた数千人の空手家が国際通りを埋め、普及型Ⅰなどを一斉に演武します。参加者は2024年が2,000人以上、2025年が約3,100人、2026年が約2,600人（この年は11月8日に開催）でした。</li>
+<li><b>そのほかの演武会・展示。</b>年ごとに独自の行事があります。2026年は首里城正殿の完成を記念した空手・古武道演武会が首里城公園で行われました。2019年10月の首里城火災以降、流派を超えて毎月開かれてきた演武会の50回目にあたります。</li></ul>
+<h2>見学の準備</h2>
+<ul><li><b>時期：</b>10月最終週から11月上旬を目安に、その年の日程を公式サイトで確認しましょう。記念演武祭は25日当日とは限りません。</li>
+<li><b>宿泊：</b>那覇が便利です。ゆいレールで首里や国際通り周辺へ行け、空手会館へも空港からバスやタクシーですぐです。</li>
+<li><b>見学：</b>屋外の行事は無料で見られますが、礼を重んじる場です。演武中は静かに見守り、個人を撮影する際は声をかけましょう。</li>
+<li><b>稽古：</b>体験にも良い時期です。<a href="@@/visitors/@@">体験レッスンと料金</a>、<a href="@@/areas/naha/karate/@@">那覇市の空手道場</a>、<a href="@@/english-friendly/@@">英語対応の道場・ジム</a>もご覧ください。</li></ul>
+<h2>過去の空手の日</h2>
+<ul><li><a href="@@/guides/karate-day-2026/@@">2026年の空手の日</a>：空手会館での奉納演武、首里城での演武会、国際通りで約2,600人の記念演武祭。</li></ul>""",
+ },
+}
+
 GUIDES = [
+KARATE_DAY,
+KAIKAN,
 {
  "events": [
   {"name_en": "Shuri Castle Main Hall completion commemorative karate and kobudo demonstration", "name_ja": "首里城正殿完成記念 空手・古武道演武会", "start": "2026-11-07T14:30:00+09:00", "end": "2026-11-07T17:40:00+09:00", "place_en": "Shuri Castle Park (free area)", "place_ja": "首里城公園（無料区域）", "street": "1-2 Shurikinjocho", "locality": "Naha", "url": "https://karate-event.jp/shurijo/"},
   {"name_en": "Karate Day commemorative demonstration 2026 (Kokusai-dori)", "name_ja": "令和8年 空手の日 記念演武祭（国際通り）", "start": "2026-11-08T15:00:00+09:00", "end": "2026-11-08T16:30:00+09:00", "place_en": "Kokusai-dori (Palette Kumoji to Tenbusu Naha)", "place_ja": "那覇市国際通り（パレット久茂地前〜てんぶす那覇前）", "street": "3-2-10 Makishi", "locality": "Naha", "url": "https://karate-event.jp/memorial-demonstration/"}
  ],
- "slug": "karate-day-2026", "date": "2026-10-18", "updated": "2026-11-09",
+ "slug": "karate-day-2026", "date": "2026-10-18", "updated": "2026-11-11",
  "en": {
   "title": "Karate Day 2026 in Okinawa: the events and how they went",
   "desc": "How Karate Day 2026 went in Okinawa: about 2,600 karateka on Kokusai-dori on 8 November, the Shuri Castle demonstration, and what the day marks.",
   "h1": "Karate Day 2026 in Okinawa",
   "sub": "What the day is, what happened this year, and tips for next year. Updated 9 November 2026.",
-  "body": """<p>Every year on 25 October, Okinawa celebrates <b>Karate Day</b> (空手の日, <i>karate no hi</i>). In 2026 it falls on a Sunday, and a week of demonstrations, exhibitions and street events surrounds it. Karate was born here, so this is the best time of year to see it performed by the people who keep the traditions alive.</p>
+  "body": """<div class="callout info">For the yearly overview and next year's dates, see <a href="@@/guides/karate-day/@@">Karate Day in Okinawa</a>. This page is the record of 2026.</div>
+<p>Every year on 25 October, Okinawa celebrates <b>Karate Day</b> (空手の日, <i>karate no hi</i>). In 2026 it falls on a Sunday, and a week of demonstrations, exhibitions and street events surrounds it. Karate was born here, so this is the best time of year to see it performed by the people who keep the traditions alive.</p>
 <h2>Why 25 October?</h2>
 <p>The Okinawa Prefectural Assembly resolved in March 2005 to make 25 October Karate Day. According to the prefecture, the date marks 25 October 1936, when the written form 空手 (“empty hand”) was formally adopted for the art.</p>
 <h2>What happened in 2026</h2>
@@ -41,7 +195,8 @@ GUIDES = [
   "desc": "2026年の沖縄「空手の日」。11月8日に国際通りで約2,600人が演武、11月7日の首里城での演武会、10月25日の奉納演武、空手の日の由来をまとめました。",
   "h1": "2026年 沖縄の空手の日",
   "sub": "由来、今年の催し、来年の見学のコツ。2026年11月9日更新。",
-  "body": """<p>毎年10月25日は、沖縄県が定める<b>「空手の日」</b>です。2026年は日曜日にあたり、前後に演武や展示、街なかのイベントが行われます。空手発祥の地で、伝統を守る方々の演武を見られる、一年で最も良い機会です。</p>
+  "body": """<div class="callout info">毎年の概要と次回の日程は<a href="@@/guides/karate-day/@@">沖縄の空手の日</a>をご覧ください。このページは2026年の記録です。</div>
+<p>毎年10月25日は、沖縄県が定める<b>「空手の日」</b>です。2026年は日曜日にあたり、前後に演武や展示、街なかのイベントが行われます。空手発祥の地で、伝統を守る方々の演武を見られる、一年で最も良い機会です。</p>
 <h2>なぜ10月25日？</h2>
 <p>2005年3月、沖縄県議会が10月25日を「空手の日」とすることを決議しました。県によると、この日は1936年10月25日に、「空手」という表記が正式に用いられるようになったことにちなんでいます。</p>
 <h2>2026年の催し（終了）</h2>
